@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">ussc</string>
+
+    <string name="password_hint">Password</string>
+    <string name="email_hint">Email</string>
+    <string name="sign_up_button_label">Sign Up</string>
+    <string name="fullname_hint">Full Name</string>
+    <string name="open">Open Camera</string>
+
+    <string name="title_activity_main_menu">MainMenuActivity</string>
+    <string name="mainmenu">Main Menu</string>
+    <string name="lostandfound">Lost and Found</string>
+    <string name="marketplace">MarketPlace</string>
+    <string name="advising">Advising</string>
+</resources>
