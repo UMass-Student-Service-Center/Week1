@@ -4,32 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusableInTouchMode="true"
+    android:padding="90dp"
     android:orientation="vertical"
     tools:context="com.example.u.ussc.MainMenuActivity">
 
+
     <TextView
         android:id="@+id/mainmenu"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/mainmenu" />
+        android:layout_gravity="center"
+        android:padding="15dp"
+        android:text="@string/mainmenu"
+        android:textSize="30dp" />
 
-    <TextView
+    <Button
         android:id="@+id/imageButton"
-        android:layout_width="200dp"
-        android:layout_height="80dp"
+        android:layout_width="250dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/lost"
+        android:textColor="@color/red"
         android:text="@string/lostandfound"/>
 
-    <TextView
+    <Button
         android:id="@+id/imageButton2"
-        android:layout_width="200dp"
-        android:layout_height="80dp"
-        android:text="@string/marketplace"/>
+        android:layout_width="250dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/cart"
+        android:textColor="@color/white"
+        android:text="@string/marketplace" />
 
-    <TextView
+    <Button
         android:id="@+id/imageButton3"
         android:layout_width="200dp"
         android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
         android:text="@string/advising"/>
-
 </LinearLayout>
