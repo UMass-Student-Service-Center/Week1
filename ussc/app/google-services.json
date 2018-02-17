@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "431765186030",
+    "firebase_url": "https://uml-ussc.firebaseio.com",
+    "project_id": "uml-ussc",
+    "storage_bucket": "uml-ussc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:431765186030:android:ec1bf41eba3d6bd6",
+        "android_client_info": {
+          "package_name": "com.example.u.ussc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "431765186030-nr2sdceta4h7gjc9klq65qilvhmucmfu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYahfTPmwSUMdT6q84ovFBIQrpCme1WKg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

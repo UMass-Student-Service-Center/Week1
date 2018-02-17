@@ -4,6 +4,7 @@
     <string name="password_hint">Password</string>
     <string name="email_hint">Email</string>
     <string name="sign_up_button_label">Sign Up</string>
+    <string name="log_in_button_label">Log In</string>
     <string name="fullname_hint">Full Name</string>
     <string name="open">Open Camera</string>
 
@@ -19,5 +20,14 @@
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
     <string name="logout">Log Out</string>
+    <string name="image_title_update">image_title_update</string>
+
+    <string name="login_error_message">Please enter an email address and password.</string>
+    <string name="login_error_title">Error!</string>
+    <string name="signup_invaild_email_message">Please enter a valid UMass Lowell email address.</string>
+    <string name="signup_error_message">Please enter an email address and password.</string>
+    <string name="signup_error_title">Error!</string>
+    <string name="signup_success">Account successfully created! You can now Log In.</string>
+
 
 </resources>
