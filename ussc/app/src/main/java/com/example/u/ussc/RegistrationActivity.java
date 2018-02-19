@@ -16,15 +16,22 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RegistrationActivity extends AppCompatActivity {
+    protected EditText fullNameEditText;
     protected EditText passwordEditText;
     protected EditText emailEditText;
     protected Button signUpButton;
     private FirebaseAuth mFirebaseAuth;
+    private DatabaseReference ref;
+    public static final String fb_database = "Profile";
+    private FirebaseUser mFirebaseUser;
+    private String mUserId;
     private static final String TAG = "SignUp";
 
     @Override
@@ -34,7 +41,9 @@ public class RegistrationActivity extends AppCompatActivity {
 
         // Initialize FirebaseAuth
         mFirebaseAuth = FirebaseAuth.getInstance();
+        ref = FirebaseDatabase.getInstance().getReference(fb_database);
 
+        fullNameEditText = (EditText) findViewById(R.id.fullnameField);
         passwordEditText = (EditText)findViewById(R.id.passwordField);
         emailEditText = (EditText)findViewById(R.id.emailField);
         signUpButton = (Button)findViewById(R.id.signupButton);
@@ -42,11 +51,14 @@ public class RegistrationActivity extends AppCompatActivity {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final String fullName = fullNameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
                 String email = emailEditText.getText().toString();
 
+
                 password = password.trim();
                 email = email.trim();
+                final String userEmail = email;
 
                 if (!isValidEmail(emailEditText.getText().toString())) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
@@ -68,7 +80,11 @@ public class RegistrationActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
+                                        //get the current user id
+                                        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+                                        mUserId = mFirebaseUser.getUid();
                                         sendEmailVerification();
+                                        createProfile(mUserId, userEmail, fullName);
                                         Intent intent = new Intent(RegistrationActivity.this, LogInActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -122,6 +138,17 @@ public class RegistrationActivity extends AppCompatActivity {
         // [END send_email_verification]
     }
 
+    // update node function
+    private boolean createProfile(String _muserid, String _museremail, String _mname ) {
+        String upload_id = ref.push().getKey();
+        ProfileItem pi = new ProfileItem(upload_id, _muserid, _museremail, _mname);
+        ref.setValue(pi);
+        Toast.makeText(getApplicationContext(), "Profile Created", Toast.LENGTH_LONG).show();
+        return true;
+    }
+
 }
+
+
 
 
