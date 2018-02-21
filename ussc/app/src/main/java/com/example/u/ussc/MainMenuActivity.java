@@ -45,7 +45,7 @@ public class MainMenuActivity extends AppCompatActivity {
         if (mFirebaseUser == null || !(user.isEmailVerified())) {
             // Not logged in, launch the Log In activity
             loadLogInView();
-        }else{
+        } else {
 
             //Buttons from the main menu
             lost_and_found = (Button) findViewById(R.id.lostandfound);
@@ -78,11 +78,35 @@ public class MainMenuActivity extends AppCompatActivity {
         }
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_profile:
+                //go to profile
+                goto_profile();
+                return true;
+
+            case R.id.action_logout:
+                //logout
+                mFirebaseAuth.signOut();
+                loadLogInView();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
+
+    private void goto_profile() {
+        Intent intent = new Intent(MainMenuActivity.this, ProfileActivity.class);
+        startActivity(intent);
+    }
+
     private void loadLogInView() {
         Intent intent = new Intent(this, LogInActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -94,12 +118,15 @@ public class MainMenuActivity extends AppCompatActivity {
         Intent intent = new Intent(MainMenuActivity.this, LostandFActivity.class);
         startActivity(intent);
     }
+
     private void goto_marketplace_() {
         Intent intent = new Intent(MainMenuActivity.this, MarketplaceActivity.class);
         startActivity(intent);
     }
+
     private void goto_advising() {
         Intent intent = new Intent(MainMenuActivity.this, AdvisingActivity.class);
         startActivity(intent);
     }
+
 }
