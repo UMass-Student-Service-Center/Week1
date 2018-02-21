@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainMenuActivity" >
+    tools:context=".MainActivity">
 
     <item
-        android:id="@+id/logout"
-        android:title="@string/logout"/>
-
+        android:id="@+id/action_acc"
+        android:title="@string/icon_home"
+        android:icon="@drawable/icon_home"
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_profile"
         android:title="@string/icon_profile"
         android:icon="@drawable/icon_profile"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/action_logout"
+        android:orderInCategory="100"
+        android:title="@string/logout"
+        app:showAsAction="never"/>
 
 </menu>

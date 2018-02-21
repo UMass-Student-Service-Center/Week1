@@ -20,6 +20,8 @@
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
     <string name="logout">Log Out</string>
+    <string name="icon_home">home</string>
+    <string name="icon_profile">profile</string>
     <string name="image_title_update">image_title_update</string>
 
     <string name="login_error_message">Please enter an email address and password.</string>
@@ -28,6 +30,7 @@
     <string name="signup_error_message">Please enter an email address and password.</string>
     <string name="signup_error_title">Error!</string>
     <string name="signup_success">Account successfully created! You can now Log In.</string>
+
 
 
 </resources>
