@@ -30,6 +30,9 @@
     <string name="signup_error_message">Please enter an email address and password.</string>
     <string name="signup_error_title">Error!</string>
     <string name="signup_success">Account successfully created! You can now Log In.</string>
+    <string name="title_activity_new_item__marketplace">new_item_MarketplaceActivity</string>
+
+    <string name="select">Select One</string>
 
 
 </resources>
