@@ -92,7 +92,7 @@ public class MainMenuActivity extends AppCompatActivity {
                 goto_profile();
                 return true;
 
-            case R.id.action_logout:
+            case R.id.logout:
                 //logout
                 mFirebaseAuth.signOut();
                 loadLogInView();
@@ -108,7 +108,7 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     private void loadLogInView() {
-        Intent intent = new Intent(this, LogInActivity.class);
+        Intent intent = new Intent(MainMenuActivity.this, LogInActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
