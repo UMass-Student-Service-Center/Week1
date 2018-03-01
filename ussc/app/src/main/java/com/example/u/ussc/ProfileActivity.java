@@ -6,13 +6,32 @@ import android.content.Intent;
 import android.view.View;
 import android.support.design.widget.FloatingActionButton;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 
 public class ProfileActivity extends AppCompatActivity {
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
+    private DatabaseReference databaseReference;
+    private String mUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        mUserId = mFirebaseUser.getUid();
+
+        databaseReference = FirebaseDatabase.getInstance().getReference(RegistrationActivity.fb_database);
+
 
         //add
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

@@ -209,16 +209,9 @@ public class RegistrationActivity extends AppCompatActivity {
         final String userEmail = _museremail;
         final String usersName = _mname;
 
-        StorageReference sf = mStorageRef.child(fb_storage + System.currentTimeMillis() + "." +
-                getImageExt(actualUri));
-        sf.putFile(actualUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                ProfileItem pi = new ProfileItem(upload_id, userId, userEmail, usersName,
-                        taskSnapshot.getDownloadUrl().toString());
-                ref.setValue(pi);
-            }
-        });
+        ProfileItem pi = new ProfileItem(upload_id, userId, userEmail, usersName,
+                _actualUri.toString());
+        ref.setValue(pi);
         Toast.makeText(getApplicationContext(), "Profile Created", Toast.LENGTH_LONG).show();
         return true;
     }
