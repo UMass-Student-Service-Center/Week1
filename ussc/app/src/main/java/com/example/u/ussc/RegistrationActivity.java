@@ -1,38 +1,60 @@
 package com.example.u.ussc;
 
+import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RegistrationActivity extends AppCompatActivity {
+    private static final int PICK_IMAGE_REQUEST = 0;
     protected EditText fullNameEditText;
     protected EditText passwordEditText;
     protected EditText emailEditText;
+    private ImageView imageView;
+    private Uri actualUri;
+    private Button imageBtn;
     protected Button signUpButton;
     private FirebaseAuth mFirebaseAuth;
+    private StorageReference mStorageRef;
     private DatabaseReference ref;
+    public static final String fb_storage = "image/";
     public static final String fb_database = "Profile";
     private FirebaseUser mFirebaseUser;
     private String mUserId;
     private static final String TAG = "SignUp";
+
+    Bitmap bm;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +63,15 @@ public class RegistrationActivity extends AppCompatActivity {
 
         // Initialize FirebaseAuth
         mFirebaseAuth = FirebaseAuth.getInstance();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
         ref = FirebaseDatabase.getInstance().getReference(fb_database);
 
+        imageView = (ImageView) findViewById(R.id.profile_image);
         fullNameEditText = (EditText) findViewById(R.id.fullnameField);
         passwordEditText = (EditText)findViewById(R.id.passwordField);
         emailEditText = (EditText)findViewById(R.id.emailField);
         signUpButton = (Button)findViewById(R.id.signupButton);
+        imageBtn = (Button) findViewById(R.id.select_image);
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +99,13 @@ public class RegistrationActivity extends AppCompatActivity {
                             .setPositiveButton(android.R.string.ok, null);
                     AlertDialog dialog = builder.create();
                     dialog.show();
+                }else if (actualUri == null){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
+                    builder.setMessage(R.string.signup_missing_image_message)
+                            .setTitle(R.string.signup_error_title)
+                            .setPositiveButton(android.R.string.ok, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 } else {
                     mFirebaseAuth.createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>() {
@@ -84,7 +116,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                         mFirebaseUser = mFirebaseAuth.getCurrentUser();
                                         mUserId = mFirebaseUser.getUid();
                                         sendEmailVerification();
-                                        createProfile(mUserId, userEmail, fullName);
+                                        createProfile(mUserId, userEmail, fullName, actualUri);
                                         Intent intent = new Intent(RegistrationActivity.this, LogInActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -102,6 +134,38 @@ public class RegistrationActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void openImageSelector(View v) {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"),
+                PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        super.onActivityResult(requestCode,resultCode, resultData);
+        if ((requestCode == PICK_IMAGE_REQUEST) &&
+                (resultCode == Activity.RESULT_OK) &&
+                (resultData != null) &&
+                (resultData.getData() != null)) {
+            actualUri = resultData.getData();
+            try {
+                bm = MediaStore.Images.Media.getBitmap(getContentResolver(),actualUri);
+                imageView.setImageBitmap(bm);
+            } catch (FileNotFoundException e){
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public String getImageExt (Uri uri) {
+        ContentResolver contentResolver = getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return  mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
     Boolean isValidEmail(String testEmail) {
@@ -139,10 +203,22 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     // update node function
-    private boolean createProfile(String _muserid, String _museremail, String _mname ) {
-        String upload_id = ref.push().getKey();
-        ProfileItem pi = new ProfileItem(upload_id, _muserid, _museremail, _mname);
-        ref.setValue(pi);
+    private boolean createProfile(String _muserid, String _museremail, String _mname, Uri _actualUri) {
+        final String upload_id = ref.push().getKey();
+        final String userId = _muserid;
+        final String userEmail = _museremail;
+        final String usersName = _mname;
+
+        StorageReference sf = mStorageRef.child(fb_storage + System.currentTimeMillis() + "." +
+                getImageExt(actualUri));
+        sf.putFile(actualUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                ProfileItem pi = new ProfileItem(upload_id, userId, userEmail, usersName,
+                        taskSnapshot.getDownloadUrl().toString());
+                ref.setValue(pi);
+            }
+        });
         Toast.makeText(getApplicationContext(), "Profile Created", Toast.LENGTH_LONG).show();
         return true;
     }

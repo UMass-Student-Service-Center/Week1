@@ -27,6 +27,7 @@
     <string name="login_error_message">Please enter an email address and password.</string>
     <string name="login_error_title">Error!</string>
     <string name="signup_invaild_email_message">Please enter a valid UMass Lowell email address.</string>
+    <string name="signup_missing_image_message">Please submit a picture or image for your profile image.</string>
     <string name="signup_error_message">Please enter an email address and password.</string>
     <string name="signup_error_title">Error!</string>
     <string name="signup_success">Account successfully created! You can now Log In.</string>

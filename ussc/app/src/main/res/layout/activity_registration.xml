@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/profile_image"
             android:layout_centerHorizontal="true"
+            android:onClick="openImageSelector"
             android:layout_gravity="center_horizontal"
             android:text="@string/open" />
 

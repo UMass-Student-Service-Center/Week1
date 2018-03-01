@@ -14,12 +14,19 @@ public class ProfileItem {
 
     public  ProfileItem() {}
 
+    public  ProfileItem(String _key, String _muserid,  String _muserEmail, String _name, String muri) {
+        key = _key;
+        muserId = _muserid;
+        muserEmail = _muserEmail;
+        name = _name;
+        images = muri;
+    }
+
     public  ProfileItem(String _key, String _muserid,  String _muserEmail, String _name) {
         key = _key;
         muserId = _muserid;
         muserEmail = _muserEmail;
         name = _name;
-
     }
 
     public void setMUserId(String muserid) {
