@@ -35,12 +35,6 @@
             android:text="@string/open" />
 
         <EditText
-            android:id="@+id/fullnameField"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/fullname_hint" />
-
-        <EditText
             android:id="@+id/emailField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

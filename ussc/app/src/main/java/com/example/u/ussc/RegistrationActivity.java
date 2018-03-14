@@ -67,7 +67,7 @@ public class RegistrationActivity extends AppCompatActivity {
         ref = FirebaseDatabase.getInstance().getReference(fb_database);
 
         imageView = (ImageView) findViewById(R.id.profile_image);
-        fullNameEditText = (EditText) findViewById(R.id.fullnameField);
+       // fullNameEditText = (EditText) findViewById(R.id.fullnameField);
         passwordEditText = (EditText)findViewById(R.id.passwordField);
         emailEditText = (EditText)findViewById(R.id.emailField);
         signUpButton = (Button)findViewById(R.id.signupButton);
@@ -76,10 +76,14 @@ public class RegistrationActivity extends AppCompatActivity {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String fullName = fullNameEditText.getText().toString();
+                //final String fullName = fullNameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
                 String email = emailEditText.getText().toString();
 
+                //set user's first name
+                String first_remove = email.replaceAll("@student.uml.edu","");
+                String second_remove = first_remove.replaceAll("[_]+[A-Z0-9a-z._%+-]{1,61}","");
+                final String fullName = second_remove;
 
                 password = password.trim();
                 email = email.trim();

@@ -6,4 +6,5 @@
     android:layout_height="match_parent"
     tools:context="com.example.u.ussc.new_item_MarketplaceActivity">
 
+
 </android.support.constraint.ConstraintLayout>
