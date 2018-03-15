@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".AdvisingEditorActivity">
+
+    <!-- Overview category -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="319dp"
+        android:orientation="horizontal">
+
+        <!-- Input fields -->
+
+        <!-- Input fields -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:paddingLeft="4dp">
+
+
+            <EditText
+                android:id="@+id/edit_course_name"
+                style="@style/EditorFieldStyle"
+                android:layout_width="match_parent"
+                android:layout_weight="2"
+                android:hint="Course Name"
+                android:inputType="textAutoCorrect" />
+
+            <EditText
+                android:id="@+id/edit_course_number"
+                style="@style/EditorFieldStyle"
+                android:hint="Course Number Ex.COMP.4650"
+                android:inputType="textAutoCorrect" />
+
+            <EditText
+                android:id="@+id/edit_course_description"
+                style="@style/EditorFieldStyle"
+                android:layout_width="match_parent"
+                android:layout_weight="2"
+                android:hint="Description"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/edit_course_prereq"
+                style="@style/EditorFieldStyle"
+                android:hint="Pre-Requisite Courses"
+                android:inputType="text" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/creditLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="Credits:"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/credit"
+                    app:layout_constraintEnd_toStartOf="@+id/credit"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/credit" />
+
+                <Spinner
+                    android:id="@+id/credit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/semesterLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="Semester:"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/semester"
+                    app:layout_constraintEnd_toStartOf="@+id/semester"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/semester" />
+
+                <Spinner
+                    android:id="@+id/semester"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    tools:layout_editor_absoluteX="84dp" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/yearLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="Year:"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/year"
+                    app:layout_constraintEnd_toStartOf="@+id/year"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/year" />
+
+                <Spinner
+                    android:id="@+id/year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    tools:layout_editor_absoluteX="0dp"
+                    tools:layout_editor_absoluteY="0dp" />
+
+            </android.support.constraint.ConstraintLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/save_class_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Class"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="10dp"
+        android:tint="@android:color/holo_green_dark" />
+</LinearLayout>

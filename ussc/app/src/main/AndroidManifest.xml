@@ -19,6 +19,7 @@
         <activity android:name=".LostandFActivity" />
         <activity android:name=".MarketplaceActivity" />
         <activity android:name=".AdvisingActivity" />
+        <activity android:name=".AdvisingEditorActivity" />
         <activity android:name=".LogInActivity" />
         <activity android:name=".RegistrationActivity" />
         >
