@@ -31,9 +31,19 @@
     <string name="signup_error_message">Please enter an email address and password.</string>
     <string name="signup_error_title">Error!</string>
     <string name="signup_success">Account successfully created! You can now Log In.</string>
-    <string name="title_activity_new_item__marketplace">new_item_MarketplaceActivity</string>
 
     <string name="select">Select One</string>
+
+    <string name="what_did_you">What did you lose?</string>
+    <string name="tell_">Please tell us....</string>
+    <string name="description">Description</string>
+    <string name="desc_">Please describe what did you lose in a few words....</string>
+    <string name="reward">Reward</string>
+    <string name="pricedollarsign">$</string>
+    <string name="do_you">Do you have an image?</string>
+    <string name="select_image">Select image</string>
+    <string name="item">Item</string>
+
 
     <style name="EditorFieldStyle">
         <item name="android:layout_height">wrap_content</item>
