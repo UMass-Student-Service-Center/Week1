@@ -33,8 +33,8 @@ public class AdvisingContract {
         public final static String TABLE_NAME = "advising";
 
         public final static String _ID = BaseColumns._ID;
-        public final static String COL_SEMESTER = "semester";
-        public final static String COL_YEAR = "YEAR";
+//        public final static String COL_SEMESTER = "semester";
+        public final static String COL_YEAR = "year";
         public final static String COL_NUMBER = "number";
         public final static String COL_NAME = "name";
         public final static String COL_CREDITS = "credits";

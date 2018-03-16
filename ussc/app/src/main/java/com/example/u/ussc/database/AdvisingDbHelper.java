@@ -17,7 +17,7 @@ public class AdvisingDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "advising.db";
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 4;
 
     public AdvisingDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -27,13 +27,13 @@ public class AdvisingDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String SQL_CREATE_ADVISING = "CREATE TABLE " + AdvisingEntry.TABLE_NAME + " ("
                 + AdvisingEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + AdvisingEntry.COL_SEMESTER + "TEXT NOT NULL, "
-                + AdvisingEntry.COL_YEAR + "INTEGER NOT NULL DEFAULT 0, "
-                + AdvisingEntry.COL_NUMBER + " TEXT NOT NULL, "
-                + AdvisingEntry.COL_NAME + " TEXT NOT NULL, "
-                + AdvisingEntry.COL_CREDITS + " INTEGER NOT NULL DEFAULT 0, "
-                + AdvisingEntry.COL_DESCRIPTION + " TEXT NOT NULL DEFAULT 'No Info ', "
-                + AdvisingEntry.COL_PREREQ + "  TEXT NOT NULL DEFAULT 'new' "
+//                + AdvisingEntry.COL_SEMESTER + " TEXT NOT NULL, "
+                + AdvisingEntry.COL_YEAR + " TEXT, "
+                + AdvisingEntry.COL_NUMBER + " TEXT, "
+                + AdvisingEntry.COL_NAME + " TEXT, "
+                + AdvisingEntry.COL_CREDITS + " TEXT, "
+                + AdvisingEntry.COL_DESCRIPTION + " TEXT, "
+                + AdvisingEntry.COL_PREREQ + "  TEXT"
                 + ");";
 
         db.execSQL(SQL_CREATE_ADVISING);

@@ -27,6 +27,14 @@
         <activity android:name=".two_choicesActivity" />
         <activity android:name=".new_item_MarketplaceActivity" />
         <activity android:name=".item_LostandFActivity"></activity>
+
+        <provider
+            android:name=".database.AdvisingProvider"
+            android:authorities="com.example.u.ussc"
+            android:enabled="true"
+            android:exported="true">
+        </provider>
+
     </application>
 
 </manifest>

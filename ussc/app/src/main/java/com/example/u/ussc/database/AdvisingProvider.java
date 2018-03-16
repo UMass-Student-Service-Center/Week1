@@ -213,7 +213,4 @@ public class AdvisingProvider extends ContentProvider {
 
         return rowsUpdated;
     }
-
-
-
 }
