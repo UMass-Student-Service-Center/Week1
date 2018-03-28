@@ -5,25 +5,25 @@ package com.example.u.ussc;
  */
 
 public class ProfileItem {
-    private String key;
     private String muserId;
     private String muserEmail;
     private String name;
     private String major;
     private String images;
+    private String signUpDate;
 
     public  ProfileItem() {}
 
-    public  ProfileItem(String _key, String _muserid,  String _muserEmail, String _name, String muri) {
-        key = _key;
+    public  ProfileItem(String _muserid,  String _muserEmail, String _name, String _muserDate, String muri) {
         muserId = _muserid;
         muserEmail = _muserEmail;
         name = _name;
+        signUpDate = _muserDate;
         images = muri;
+
     }
 
-    public  ProfileItem(String _key, String _muserid,  String _muserEmail, String _name) {
-        key = _key;
+    public  ProfileItem(String _muserid,  String _muserEmail, String _name) {
         muserId = _muserid;
         muserEmail = _muserEmail;
         name = _name;
@@ -48,8 +48,6 @@ public class ProfileItem {
     public void setImages(String images) {
         this.images = images;
     }
-
-    public String getKey() { return key;}
 
     public String getMUserId() { return muserId;}
 
