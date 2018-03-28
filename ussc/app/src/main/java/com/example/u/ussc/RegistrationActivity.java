@@ -231,7 +231,6 @@ public class RegistrationActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Profile Created", Toast.LENGTH_LONG).show();
         return true;
     }
-
 }
 
 
