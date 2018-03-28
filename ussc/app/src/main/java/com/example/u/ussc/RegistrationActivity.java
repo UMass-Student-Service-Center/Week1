@@ -25,15 +25,24 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.DatabaseError;
+import android.app.ProgressDialog;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.UUID;
+
 
 public class RegistrationActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 0;
@@ -47,6 +56,8 @@ public class RegistrationActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private StorageReference mStorageRef;
     private DatabaseReference ref;
+    private DatabaseReference databaseReference;
+    private ProgressDialog progressDialog;
     public static final String fb_storage = "image/";
     public static final String fb_database = "Profile";
     private FirebaseUser mFirebaseUser;
@@ -208,14 +219,15 @@ public class RegistrationActivity extends AppCompatActivity {
 
     // update node function
     private boolean createProfile(String _muserid, String _museremail, String _mname, Uri _actualUri) {
-        final String upload_id = ref.push().getKey();
+        final String upload_id =  ref.push().getKey();
         final String userId = _muserid;
         final String userEmail = _museremail;
         final String usersName = _mname;
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
-        ProfileItem pi = new ProfileItem(upload_id, userId, userEmail, usersName,
-                _actualUri.toString());
-        ref.setValue(pi);
+        ProfileItem pi = new ProfileItem(userId, userEmail, usersName,
+                date.toString(), _actualUri.toString());
+        ref.child(upload_id).setValue(pi);
         Toast.makeText(getApplicationContext(), "Profile Created", Toast.LENGTH_LONG).show();
         return true;
     }
