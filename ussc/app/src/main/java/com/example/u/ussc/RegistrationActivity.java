@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.app.ProgressDialog;
+import android.app.Dialog;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,6 +27,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -223,12 +226,47 @@ public class RegistrationActivity extends AppCompatActivity {
         final String userId = _muserid;
         final String userEmail = _museremail;
         final String usersName = _mname;
-        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        final Uri actualUri = _actualUri;
+        final String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
-        ProfileItem pi = new ProfileItem(userId, userEmail, usersName,
-                date.toString(), _actualUri.toString());
-        ref.child(upload_id).setValue(pi);
-        Toast.makeText(getApplicationContext(), "Profile Created", Toast.LENGTH_LONG).show();
+        final ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setTitle("Uploading");
+        dialog.show();
+
+        System.out.print(date);
+
+        StorageReference sf = mStorageRef.child(fb_storage + System.currentTimeMillis() + "." + getImageExt(actualUri));
+
+        sf.putFile(actualUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                dialog.dismiss();
+                Toast.makeText(getApplicationContext(), "uploaded",Toast.LENGTH_SHORT).show();
+
+                //set data
+                ProfileItem pi = new ProfileItem(userId, userEmail, usersName,
+                        date.toString(), actualUri.toString());
+
+                //save data
+                String upload_id = ref.push().getKey();
+                ref.child(upload_id).setValue(pi);
+                // ref.child("Books").push().setValue(s);
+            }
+        })
+                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                        dialog.setMessage("Uploaded" + (int) progress + "0");
+
+                    }
+                });
+        dialog.dismiss();
+
+        //ProfileItem pi = new ProfileItem(userId, userEmail, usersName,
+                //date.toString(), _actualUri.toString());
+        //ref.child(upload_id).setValue(pi);
+        //Toast.makeText(getApplicationContext(), "Profile Created", Toast.LENGTH_LONG).show();
         return true;
     }
 }
