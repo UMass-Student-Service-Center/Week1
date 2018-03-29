@@ -1,24 +1,38 @@
 /**
- * Created by Lundy on 2/18/2018.
+ * Created by Lundy on 3/27/2018.
  */
 
 package com.example.u.ussc;
 
+import java.util.ArrayList;
+
 public class ConversationItem {
+    private String conversationId;
     private String muserId1;
     private String muserId2;
     private String muser1Image;
     private String muser2Image;
-    private String conversationId;
-    private MessageItem[] messages;
+    private ArrayList<String> messageKeys;
 
     public  ConversationItem() {}
 
-    public  ConversationItem(String _key, String _muserid,  String _muserEmail, String _name, String muri) {
-
+    public  ConversationItem(String _conversationId, String _userid1,  String _userId2, String _uri1,
+                             String _uri2) {
+        conversationId = _conversationId;
+        muserId1 = _userid1;
+        muserId2 = _userId2;
+        muser1Image = _uri1;
+        muser2Image = _uri2;
     }
 
-    public  ConversationItem(String _key, String _muserid,  String _muserEmail, String _name) {
+    public  ConversationItem(String _conversationId, String _userid1,  String _userId2, String _uri1,
+                             String _uri2,  String _messageKeys) {
+        conversationId = _conversationId;
+        muserId1 = _userid1;
+        muserId2 = _userId2;
+        muser1Image = _uri1;
+        muser2Image = _uri2;
+        messageKeys.add(_messageKeys) ;
 
     }
 
@@ -43,7 +57,7 @@ public class ConversationItem {
 
     public void setConversationId(String conversationId) {this.conversationId = conversationId;}
 
-    public MessageItem[] getMessages() {return messages;}
+    public ArrayList<String> getMessages() {return messageKeys;}
 
-    public void setMessages(MessageItem[] messages) {this.messages = messages;}
+    public void setMessages(ArrayList<String> messageKeys) {this.messageKeys = messageKeys;}
 }

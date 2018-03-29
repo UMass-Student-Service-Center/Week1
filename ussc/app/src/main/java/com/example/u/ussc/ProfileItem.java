@@ -1,5 +1,9 @@
 package com.example.u.ussc;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 /**
  * Created by Lundy on 2/18/2018.
  */
@@ -18,15 +22,8 @@ public class ProfileItem {
         muserId = _muserid;
         muserEmail = _muserEmail;
         name = _name;
-        signUpDate = _muserDate;
+        signUpDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());;
         images = muri;
-
-    }
-
-    public  ProfileItem(String _muserid,  String _muserEmail, String _name) {
-        muserId = _muserid;
-        muserEmail = _muserEmail;
-        name = _name;
     }
 
     public void setMUserId(String muserid) {
@@ -48,6 +45,10 @@ public class ProfileItem {
     public void setImages(String images) {
         this.images = images;
     }
+
+    public void setSignUpDate(String signUpDate) { this.signUpDate = signUpDate; }
+
+    public String getSignUpDate() { return signUpDate; }
 
     public String getMUserId() { return muserId;}
 
