@@ -3,6 +3,8 @@ package com.example.u.ussc;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.support.design.widget.FloatingActionButton;
 
@@ -43,5 +45,39 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_profile, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.conversations:
+                // Go to conversations page
+                goto_conversations();
+                break;
+
+            case R.id.logout:
+                //logout
+                mFirebaseAuth.signOut();
+                loadLogInView();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void loadLogInView() {
+        Intent intent = new Intent(ProfileActivity.this, LogInActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    private void goto_conversations() {
+        Intent intent = new Intent(ProfileActivity.this, ConversationsActivity.class);
+        startActivity(intent);
     }
 }

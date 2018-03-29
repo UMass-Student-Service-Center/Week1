@@ -3,39 +3,37 @@
  */
 package com.example.u.ussc;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class MessageItem {
     private String messageId;
     private String senderId;
     private String message;
-
-    public MessageItem (){}
+    private String messageDate;
 
     public MessageItem (String _messageId, String _senderId, String _message){
-
+        messageId = _messageId;
+        senderId = _senderId;
+        message = _message;
+        messageDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault()).format(new Date());
     }
 
-    public String getMessageId() {
-        return messageId;
-    }
+    //Getters and Setters
+    public void setMessagId(String messageId) { this.messageId = messageId; }
 
-    public void setMessage_id(String messageId) {
-        this.messageId = messageId;
-    }
+    public void setSenderId(String senderId) { this.senderId = senderId; }
 
-    public String getSender_id() {
-        return senderId;
-    }
+    public void setMessage(String message) { this.message = message; }
 
-    public void setSenderId(String senderId) {
-        this.senderId = senderId;
-    }
+    public void setMessageDate(String messageDate) { this.messageDate = messageDate; }
 
-    public String getMessage() {
-        return message;
-    }
+    public String getMessageId() { return messageId; }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+    public String getSenderId() { return senderId; }
 
+    public String getMessage() { return message; }
+
+    public String getMessageDate() { return messageDate; }
 }

@@ -16,13 +16,11 @@ public class ProfileItem {
     private String images;
     private String signUpDate;
 
-    public  ProfileItem() {}
-
     public  ProfileItem(String _muserid,  String _muserEmail, String _name, String _muserDate, String muri) {
         muserId = _muserid;
         muserEmail = _muserEmail;
         name = _name;
-        signUpDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());;
+        signUpDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         images = muri;
     }
 

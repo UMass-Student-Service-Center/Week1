@@ -44,6 +44,8 @@
     <string name="select_image">Select image</string>
     <string name="item">Item</string>
 
+    <string name="conversations">Conversations</string>
+
 
     <style name="EditorFieldStyle">
         <item name="android:layout_height">wrap_content</item>
