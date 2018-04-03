@@ -1,3 +1,6 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+
+    <!-- Height of each conversation list item -->
+    <dimen name="conversation_list_item_height">99dp</dimen>
 </resources>
