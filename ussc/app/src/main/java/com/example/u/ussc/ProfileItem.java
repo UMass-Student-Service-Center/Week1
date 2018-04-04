@@ -12,9 +12,11 @@ public class ProfileItem {
     private String muserId;
     private String muserEmail;
     private String name;
-    private String major;
+    //private String major;
     private String images;
     private String signUpDate;
+
+    public ProfileItem() {}
 
     public  ProfileItem(String _muserid,  String _muserEmail, String _name, String _muserDate, String muri) {
         muserId = _muserid;
@@ -36,9 +38,7 @@ public class ProfileItem {
         this.name = name;
     }
 
-    public void setMajor(String major) {
-        this.major = major;
-    }
+    //public void setMajor(String major) { this.major = major; }
 
     public void setImages(String images) {
         this.images = images;
@@ -54,7 +54,7 @@ public class ProfileItem {
 
     public String getName() { return name;}
 
-    public String getMajor() { return major;}
+    //public String getMajor() { return major;}
 
     public String getImages() { return images;}
 }

@@ -37,7 +37,7 @@ public class ConversationsActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ConversationsActivity.this, two_choicesActivity.class);
+                Intent intent = new Intent(ConversationsActivity.this, MessageUserActivity.class);
                 startActivity(intent);
             }
         });
