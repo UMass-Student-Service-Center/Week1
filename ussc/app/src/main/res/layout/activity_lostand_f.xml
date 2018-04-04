@@ -14,7 +14,20 @@
         android:iconifiedByDefault="false">
         <requestFocus />
     </SearchView>
-
+    <Button
+        android:id="@+id/all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="display all"
+        android:layout_below="@id/searchbook_m"
+        android:textSize="18sp"/>
+    <ListView
+        android:id="@+id/list_1"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/all">
+    </ListView>
 
 
 </RelativeLayout>
