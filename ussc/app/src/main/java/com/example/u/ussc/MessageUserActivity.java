@@ -48,6 +48,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+import java.lang.Thread;
 
 public class MessageUserActivity extends AppCompatActivity{
     private static final int PICK_IMAGE_REQUEST = 0;
@@ -66,7 +68,9 @@ public class MessageUserActivity extends AppCompatActivity{
     public static final String fb_message_database = "Conversation";
     private FirebaseUser mFirebaseUser;
     private String mUserId;
-    private List<ProfileItem> members_list;
+    private String tempString;
+    private ProfileItem userInfo1;
+    private ProfileItem userInfo2;
     private static final String TAG = "SignUp";
     Bitmap bm;
 
@@ -87,6 +91,11 @@ public class MessageUserActivity extends AppCompatActivity{
         message = (EditText)findViewById(R.id.editText3);
         imageBtn = (Button) findViewById(R.id.text_mess);
 
+        //members_list = new ArrayList<>();
+        //members_list2 = new ArrayList<>();
+        userInfo1 = new ProfileItem();
+        userInfo2 = new ProfileItem();
+
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please wait loading.....");
         progressDialog.show();
@@ -95,54 +104,61 @@ public class MessageUserActivity extends AppCompatActivity{
         imageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                Query query = databaseReferenceProfile.orderByChild("muserId").startAt(uidToSendTo.toString()).endAt(uidToSendTo.toString());
-                query.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        progressDialog.dismiss();
-                        members_list.clear();
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                            ProfileItem pi = snapshot.getValue(ProfileItem.class);
-                            members_list.add(pi);
-                        }
-                    }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        progressDialog.dismiss();
-                    }
-                });
-*/
-                Query query2 = databaseReferenceProfile.orderByChild("muserId").startAt(mUserId).endAt(mUserId);
-                query2.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        progressDialog.dismiss();
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                            Log.e("user 2 id:", mUserId);
-                            ProfileItem pi = snapshot.getValue(ProfileItem.class);
-                            //members_list.add(pi);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        progressDialog.dismiss();
-                    }
-                });
-
-
-                //ProfileItem pi1 = members_list.get(0);
-                //ProfileItem pi2 = members_list.get(0);
-
-                //Log.e("user 2 id:", mUserId);
+                tempString = uidToSendTo.getText().toString();
+                ProfileItem pi1 = firstQuery();
 
                 //createConversation(pi1.getMUserId(), pi2.getMUserId(), pi1.getImages(), pi2.getImages());
 
             }
         });
     }
+
+    // Get the first query
+    private ProfileItem firstQuery(){
+        Query query = databaseReferenceProfile.orderByChild("muserId").startAt(tempString).endAt(tempString);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                progressDialog.dismiss();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    ProfileItem pi = snapshot.getValue(ProfileItem.class);
+                    userInfo1 = pi;
+                    ProfileItem pi2 = secondQuery();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                progressDialog.dismiss();
+            }
+        });
+        return userInfo1;
+    }
+
+    // Get the second query
+    private ProfileItem secondQuery(){
+        Query query2 = databaseReferenceProfile.orderByChild("muserId").startAt(mUserId).endAt(mUserId);
+        query2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                progressDialog.dismiss();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    ProfileItem pi = snapshot.getValue(ProfileItem.class);
+                    userInfo2 = pi;
+                    Log.e("user 1 id:", userInfo1.getMUserId());
+                    Log.e("user 2 id:", userInfo2.getMUserId());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                progressDialog.dismiss();
+            }
+        });
+        return userInfo2;
+    }
+
     // update node function
     private boolean createConversation(String _muserid1, String _muserid2, String _actualUri1, String _actualUri2) {
         final String upload_id =  ref.push().getKey();
