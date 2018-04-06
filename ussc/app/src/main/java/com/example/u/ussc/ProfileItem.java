@@ -57,4 +57,5 @@ public class ProfileItem {
     //public String getMajor() { return major;}
 
     public String getImages() { return images;}
+
 }
