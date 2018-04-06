@@ -46,14 +46,9 @@ dependencies {
     implementation 'com.firebase:firebase-client-android:2.5.0'
     implementation 'com.google.firebase:firebase-database:11.8.0'
     implementation 'com.google.firebase:firebase-auth:11.8.0'
-    compile 'hani.momanii.supernova_emoji_library:supernova-emoji-library:0.0.2'
-    compile 'com.github.lguipeng:BubbleView:1.0.1'
+    implementation 'hani.momanii.supernova_emoji_library:supernova-emoji-library:0.0.2'
+    implementation 'com.github.lguipeng:BubbleView:1.0.1'
     testImplementation 'junit:junit:4.12'
 }
-
-
-
-
-
 
 apply plugin: 'com.google.gms.google-services'

@@ -9,9 +9,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.view.*;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,8 +20,12 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -48,9 +52,13 @@ public class item_LostandFActivity extends AppCompatActivity {
     private DatabaseReference ref;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
+    private DatabaseReference databaseReference;
     private DatabaseReference mDatabase;
     private String mUserId;
     private String strDate;
+
+    private String user_names;
+    private String Userimages;
     public static final String fb_storage = "image/";
     public static final String fb_database = "LostandFound";
     @Override
@@ -72,6 +80,55 @@ public class item_LostandFActivity extends AppCompatActivity {
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         strDate = sdf.format(c.getTime());
+
+        databaseReference = FirebaseDatabase.getInstance().getReference(RegistrationActivity.fb_database);
+
+        Query query = databaseReference.orderByChild("muserId").equalTo(mUserId);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+               // progressDialog.dismiss();
+               // list_item_s.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    ProfileItem ln = snapshot.getValue(ProfileItem.class);
+                    user_names = ln.getName();
+                    Userimages = ln.getImages();
+                    //list_item_s.add(ln);
+                }
+                //adapter = new item_list_Adapter(LostandFActivity.this,R.layout.lostandf_item, list_item_s);
+                //listView.setAdapter(adapter);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //progressDialog.dismiss();
+            }
+        });
+
+        /*
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //progressDialog.dismiss();
+                //list_item_s.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    item_names ln = snapshot.getValue(item_names.class);
+                    if (ln.getUserid().equals(mUserId)){
+
+                    }
+
+                  //  list_item_s.add(ln);
+                }
+
+                ///adapter = new item_list_Adapter(LostandFActivity.this, R.layout.lostandf_item, list_item_s);
+                //listView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+               // progressDialog.dismiss();
+            }
+        });
+        */
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -137,7 +194,7 @@ public class item_LostandFActivity extends AppCompatActivity {
 
                     //set data
                     //item_names(String user_id,String mtitle,String mimage,String mdecr,String mprice,String mtime)
-                    item_names s = new item_names(mUserId, txt_title.getText().toString(),taskSnapshot.getDownloadUrl().toString(), txt_desc.getText().toString(),txt_price.getText().toString(),strDate);
+                    item_names s = new item_names(mUserId,user_names,Userimages, txt_title.getText().toString(),taskSnapshot.getDownloadUrl().toString(), txt_desc.getText().toString(),txt_price.getText().toString(),strDate);
 
                     //save data
                     String upload_id = ref.push().getKey();
