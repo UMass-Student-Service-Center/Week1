@@ -47,11 +47,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:11.8.0'
     implementation 'com.google.firebase:firebase-auth:11.8.0'
     implementation 'hani.momanii.supernova_emoji_library:supernova-emoji-library:0.0.2'
-<<<<<<< HEAD
     implementation 'com.github.lguipeng:BubbleView:1.0.1'
-=======
-    compile 'com.github.lguipeng:BubbleView:1.0.1'
->>>>>>> e401d5210a20de67e038036df15c83a8f2dc0b2d
     testImplementation 'junit:junit:4.12'
 }
 
