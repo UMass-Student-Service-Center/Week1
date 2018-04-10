@@ -13,6 +13,8 @@ public class MessageItem {
     private String message;
     private String messageDate;
 
+    public MessageItem() {}
+
     public MessageItem (String _messageId, String _senderId, String _message){
         messageId = _messageId;
         senderId = _senderId;
