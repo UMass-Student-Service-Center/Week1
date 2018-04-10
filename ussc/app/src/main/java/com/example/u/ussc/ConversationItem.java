@@ -49,7 +49,7 @@ public class ConversationItem {
 
     public void setMuser2Image(String muser2Image) {this.muser2Image = muser2Image;}
 
-    public void setMessages(ArrayList<String> messageKeys) {this.messageKeys = messageKeys;}
+    public void setMessageKeys(ArrayList<String> messageKeys) {this.messageKeys = messageKeys;}
 
     public String getConversationId() {return conversationId;}
 
@@ -61,5 +61,5 @@ public class ConversationItem {
 
     public String getMuser2Image() {return muser2Image;}
 
-    public ArrayList<String> getMessages() {return messageKeys;}
+    public ArrayList<String> getMessageKeys() {return messageKeys;}
 }
