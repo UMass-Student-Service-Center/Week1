@@ -14,6 +14,8 @@ public class ConversationItem {
     private String muser2Image;
     private ArrayList<String> messageKeys;
 
+    public ConversationItem () {messageKeys = new ArrayList<String>(0);}
+
     public  ConversationItem(String _conversationId, String _userid1,  String _userId2, String _uri1,
                              String _uri2) {
         conversationId = _conversationId;
@@ -21,6 +23,7 @@ public class ConversationItem {
         muserId2 = _userId2;
         muser1Image = _uri1;
         muser2Image = _uri2;
+        messageKeys = new ArrayList<String>(0);
     }
 
     public  ConversationItem(String _conversationId, String _userid1,  String _userId2, String _uri1,
@@ -30,6 +33,7 @@ public class ConversationItem {
         muserId2 = _userId2;
         muser1Image = _uri1;
         muser2Image = _uri2;
+        messageKeys = new ArrayList<String>(0);
         messageKeys.add(_messageKeys) ;
 
     }

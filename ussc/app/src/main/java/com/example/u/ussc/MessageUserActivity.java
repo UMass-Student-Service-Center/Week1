@@ -63,12 +63,15 @@ public class MessageUserActivity extends AppCompatActivity{
     private DatabaseReference ref;
     private DatabaseReference databaseReferenceConversation;
     private DatabaseReference databaseReferenceProfile;
+    private DatabaseReference databaseReferenceMessage;
     private ProgressDialog progressDialog;
     public static final String fb_profile_database = "Profile";
-    public static final String fb_message_database = "Conversation";
+    public static final String fb_conversation_database = "Conversation";
+    public static final String fb_message_database = "Message";
     private FirebaseUser mFirebaseUser;
     private String mUserId;
-    private String tempString;
+    private String receiverID;
+    private String messageToSend;
     private ProfileItem userInfo1;
     private ProfileItem userInfo2;
     private static final String TAG = "SignUp";
@@ -83,16 +86,15 @@ public class MessageUserActivity extends AppCompatActivity{
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         mUserId = mFirebaseUser.getUid();
 
-        ref = FirebaseDatabase.getInstance().getReference(fb_message_database);
-        databaseReferenceConversation = FirebaseDatabase.getInstance().getReference(fb_message_database);
+        ref = FirebaseDatabase.getInstance().getReference(fb_conversation_database);
+        databaseReferenceConversation = FirebaseDatabase.getInstance().getReference(fb_conversation_database);
         databaseReferenceProfile = FirebaseDatabase.getInstance().getReference(fb_profile_database);
+        databaseReferenceMessage = FirebaseDatabase.getInstance().getReference(fb_message_database);
 
         uidToSendTo = (EditText) findViewById(R.id.editText2);
         message = (EditText)findViewById(R.id.editText3);
         imageBtn = (Button) findViewById(R.id.text_mess);
 
-        //members_list = new ArrayList<>();
-        //members_list2 = new ArrayList<>();
         userInfo1 = new ProfileItem();
         userInfo2 = new ProfileItem();
 
@@ -104,19 +106,16 @@ public class MessageUserActivity extends AppCompatActivity{
         imageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                tempString = uidToSendTo.getText().toString();
-                ProfileItem pi1 = firstQuery();
-
-                //createConversation(pi1.getMUserId(), pi2.getMUserId(), pi1.getImages(), pi2.getImages());
-
+            receiverID = uidToSendTo.getText().toString();
+            messageToSend = message.getText().toString();
+            ProfileItem pi1 = firstQuery();
             }
         });
     }
 
     // Get the first query
     private ProfileItem firstQuery(){
-        Query query = databaseReferenceProfile.orderByChild("muserId").startAt(tempString).endAt(tempString);
+        Query query = databaseReferenceProfile.orderByChild("muserId").startAt(receiverID).endAt(receiverID);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -146,8 +145,7 @@ public class MessageUserActivity extends AppCompatActivity{
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     ProfileItem pi = snapshot.getValue(ProfileItem.class);
                     userInfo2 = pi;
-                    Log.e("user 1 id:", userInfo1.getMUserId());
-                    Log.e("user 2 id:", userInfo2.getMUserId());
+                    createConversation(userInfo1.getMUserId(), userInfo2.getMUserId(), userInfo1.getImages(), userInfo2.getImages());
                 }
             }
 
@@ -162,21 +160,27 @@ public class MessageUserActivity extends AppCompatActivity{
     // update node function
     private boolean createConversation(String _muserid1, String _muserid2, String _actualUri1, String _actualUri2) {
         final String upload_id =  ref.push().getKey();
+        final String message_upload_id = databaseReferenceMessage.push().getKey();
         final String userId1 = _muserid1;
         final String userId2 = _muserid2;
         final String actualUri1 = _actualUri1;
         final String actualUri2 = _actualUri2;
+        final String _messageToSend = messageToSend;
+
+        MessageItem mi = new MessageItem(message_upload_id, userId2, _messageToSend);
+
 
         final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setTitle("Uploading");
         dialog.show();
 
         //set data
-        ConversationItem ci = new ConversationItem(upload_id, userId1, userId2, actualUri1, actualUri2);
+        ConversationItem ci = new ConversationItem(upload_id, userId1, userId2, actualUri1, actualUri2, message_upload_id);
 
         //save data
-        //String upload_id = ref.push().getKey();
+        databaseReferenceMessage.child(message_upload_id).setValue(mi);
         ref.child(upload_id).setValue(ci);
+        dialog.dismiss();
 
         return true;
 
