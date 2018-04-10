@@ -37,10 +37,10 @@
     <string name="what_did_you">What did you lose?</string>
     <string name="tell_">Please tell us....</string>
     <string name="description">Description</string>
-    <string name="desc_">Please describe what did you lose in a few words....</string>
+    <string name="desc_">Please describe what you lost in a few words....</string>
 
     <string name="what_did_you_f">What did you found?</string>
-    <string name="desc_f">Please describe what did you found in a few words....</string>
+    <string name="desc_f">Please describe what you found in a few words....</string>
 
     <string name="reward">Reward</string>
     <string name="pricedollarsign">$</string>
