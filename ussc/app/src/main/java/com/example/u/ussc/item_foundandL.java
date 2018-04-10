@@ -36,7 +36,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class item_LostandFActivity extends AppCompatActivity {
+public class item_foundandL extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 0;
     private EditText txt_title;
     private EditText txt_desc;
@@ -64,7 +64,7 @@ public class item_LostandFActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item__lostand_f);
+        setContentView(R.layout.activity_item_foundand_l);
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
         ref = FirebaseDatabase.getInstance().getReference(fb_database);
@@ -72,10 +72,10 @@ public class item_LostandFActivity extends AppCompatActivity {
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         mUserId = mFirebaseUser.getUid();
 
-        imageView = (ImageView) findViewById(R.id.image_view);
-        txt_title = (EditText) findViewById(R.id.user_lost);
-        txt_desc = (EditText) findViewById(R.id.user_describe);
-        txt_price = (EditText) findViewById(R.id.user_amount);
+        imageView = (ImageView) findViewById(R.id.image_view_f);
+        txt_title = (EditText) findViewById(R.id.user_found);
+        txt_desc = (EditText) findViewById(R.id.user_describe_f);
+        //txt_price = (EditText) findViewById(R.id.user_amount);
 
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -144,7 +144,7 @@ public class item_LostandFActivity extends AppCompatActivity {
         //get data
         title = txt_title.getText().toString();
         desc = txt_desc.getText().toString();
-        price = txt_price.getText().toString();
+        price = "none";
         //sspinner = mspinner.getSelectedItem().toString();
 
 
@@ -165,7 +165,7 @@ public class item_LostandFActivity extends AppCompatActivity {
 
                     //set data
                     //item_names(String user_id,String mtitle,String mimage,String mdecr,String mprice,String mtime)
-                    item_names s = new item_names(mUserId,user_names,Userimages, txt_title.getText().toString(),taskSnapshot.getDownloadUrl().toString(), txt_desc.getText().toString(),txt_price.getText().toString(),strDate);
+                    item_names s = new item_names(mUserId,user_names,Userimages, txt_title.getText().toString(),taskSnapshot.getDownloadUrl().toString(), txt_desc.getText().toString(),price,strDate);
 
                     //save data
                     String upload_id = ref.push().getKey();
@@ -191,7 +191,9 @@ public class item_LostandFActivity extends AppCompatActivity {
                  ref.child("Price").setValue(price);
                  ref.child("Books").push().setValue(s);
                  */
-        Intent intent = new Intent(item_LostandFActivity.this, ProfileActivity.class);
+
+
+        Intent intent = new Intent(item_foundandL.this, ProfileActivity.class);
         startActivity(intent);
 
     }
@@ -210,3 +212,4 @@ public class item_LostandFActivity extends AppCompatActivity {
 
 }
 //}
+

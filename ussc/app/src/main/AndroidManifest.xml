@@ -27,15 +27,16 @@
         <activity android:name=".new_item_MarketplaceActivity" />
         <activity android:name=".item_LostandFActivity" />
         <activity android:name=".MessageUserActivity" />
-        <activity android:name=".ConversationsActivity" > </activity>
+        <activity android:name=".ConversationsActivity" />
 
         <provider
             android:name=".database.AdvisingProvider"
             android:authorities="com.example.u.ussc"
             android:enabled="true"
-            android:exported="true">
-        </provider>
+            android:exported="true" />
 
+        <activity android:name=".item_foundandL" />
+        <activity android:name=".add_lostorfoundActivity"></activity>
     </application>
 
 </manifest>

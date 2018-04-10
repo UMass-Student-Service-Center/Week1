@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".item_foundandL">
+
+    <!-- What did you lose -->
+    <TextView
+        android:id="@+id/found_what"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:text="@string/what_did_you_f"/>
+
+    <EditText
+        android:id="@+id/user_found"
+        android:hint="@string/tell_"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:nextFocusDown="@+id/found_what"/>
+
+    <!-- describe -->
+    <TextView
+        android:id="@+id/describe_f"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:text="@string/description"/>
+
+    <EditText
+        android:id="@+id/user_describe_f"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/desc_f"
+        android:textSize="20sp"
+        android:inputType="textMultiLine"/>
+
+    <!-- reward -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="8">
+        <TextView
+            android:id="@+id/reward_f"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:text="@string/reward"/>
+        <TextView
+            android:id="@+id/user_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="none"/>
+            android:textSize="25sp"/>
+    </LinearLayout>
+
+    <!-- UPLOAD IMAGE TEXT -->
+    <TextView
+        android:id="@+id/image_title_f"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/do_you" />
+
+    <Button
+        android:id="@+id/select_image_f"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/select_image"
+        android:onClick="openImageSelector"/>
+
+
+    <ImageView
+        android:id="@+id/image_view_f"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:contentDescription="@string/item"
+        android:rotation="90" />
+
+</LinearLayout>
