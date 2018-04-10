@@ -34,7 +34,7 @@ public class two_choicesActivity extends AppCompatActivity {
     }
 
     private void goto_lost_and_found() {
-        Intent intent = new Intent(two_choicesActivity.this, item_LostandFActivity.class);
+        Intent intent = new Intent(two_choicesActivity.this, add_lostorfoundActivity.class);
         startActivity(intent);
     }
 

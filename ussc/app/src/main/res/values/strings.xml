@@ -38,6 +38,10 @@
     <string name="tell_">Please tell us....</string>
     <string name="description">Description</string>
     <string name="desc_">Please describe what did you lose in a few words....</string>
+
+    <string name="what_did_you_f">What did you found?</string>
+    <string name="desc_f">Please describe what did you found in a few words....</string>
+
     <string name="reward">Reward</string>
     <string name="pricedollarsign">$</string>
     <string name="do_you">Do you have an image?</string>
@@ -52,7 +56,6 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:textAppearance">?android:textAppearanceMedium</item>
     </style>
-
 
 
 </resources>
