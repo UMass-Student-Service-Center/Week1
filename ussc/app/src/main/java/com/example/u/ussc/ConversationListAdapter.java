@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class ConversationListAdapter extends ArrayAdapter<ConversationReferenceItem>{
     private Activity context;
     private int resource;
-    private List<ConversationReferenceItem> listItem1;
+    private ArrayList<ConversationReferenceItem> listItem1;
 
     public ConversationListAdapter(@NonNull Activity context, @LayoutRes int resource, @NonNull ArrayList<ConversationReferenceItem> li) {
         super(context, resource, li);
@@ -36,17 +36,17 @@ public class ConversationListAdapter extends ArrayAdapter<ConversationReferenceI
         View v = inflater.inflate(resource,null);
 
         TextView TextView1 = (TextView) v.findViewById(R.id.members_text_view);
-        TextView1.setText(listItem1.get(position).getMuserId1());
+        TextView1.setText(listItem1.get(position).getMuserName());
 
         TextView TextView2 = (TextView) v.findViewById(R.id.last_message_text_view);
         TextView2.setText(listItem1.get(position).getLastMessage());
 
         TextView TextView3 = (TextView) v.findViewById(R.id.last_message_time_text_view);
-        TextView3.setText(listItem1.get(position).getLastMessage());
+        TextView3.setText(listItem1.get(position).getLastMessageDate());
 
         // image
         de.hdodenhof.circleimageview.CircleImageView imageView = (de.hdodenhof.circleimageview.CircleImageView) v.findViewById(R.id.profile_image);
-        Glide.with(context).load(listItem1.get(position).getMuser1Image()).into(imageView);
+        Glide.with(context).load(listItem1.get(position).getMuserImage()).into(imageView);
 
         return v;
     }

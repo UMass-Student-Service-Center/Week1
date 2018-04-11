@@ -46,6 +46,8 @@ public class ConversationsActivity extends AppCompatActivity {
         mUserId = mFirebaseUser.getUid();
         databaseReferenceConversation = FirebaseDatabase.getInstance().getReference(fb_conversation_database);
 
+        listView = (ListView) findViewById(R.id.conversation_list);
+
         conversationRefrences = new ArrayList<ConversationReferenceItem>(0);
 
         progressDialog = new ProgressDialog(this);
@@ -55,7 +57,7 @@ public class ConversationsActivity extends AppCompatActivity {
 
         //ProfileItem pi1 = firstQuery();
         //firstQuery();
-        //secondQuery();
+        secondQuery();
 
         //add (needs to be changed to write messages)
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -67,7 +69,7 @@ public class ConversationsActivity extends AppCompatActivity {
             }
         });
     }
-/*
+
     // Get the first query
     private void firstQuery() {
         Query query = databaseReferenceConversation.orderByChild("muserId1").startAt(mUserId).endAt(mUserId);
@@ -81,7 +83,8 @@ public class ConversationsActivity extends AppCompatActivity {
                     //ProfileItem pi2 = secondQuery();
                     ConversationItem ci = snapshot.getValue(ConversationItem.class);
                     ConversationReferenceItem cri = new ConversationReferenceItem(ci.getConversationId(),
-                            ci.getMuserId1(), ci.getMuser1Image(), "hello", ci.getMessageKeys());
+                            ci.getMuserId1(), ci.getMuser1Image(), ci.getLastMessage(), ci.getLastMessageDate(),
+                            ci.getMessageKeys());
                     conversationRefrences.add(cri);
                     if (!conversationRefrences.isEmpty()){
                         Log.e("LOGGED MESSAGE", "Something was added");
@@ -114,16 +117,20 @@ public class ConversationsActivity extends AppCompatActivity {
                     ConversationItem ci = snapshot.getValue(ConversationItem.class);
                     Log.e("LOGGED MESSAGE", ci.getConversationId());
                     ConversationReferenceItem cri = new ConversationReferenceItem(ci.getConversationId(),
-                            ci.getMuserId1(), ci.getMuser1Image(), "hello", ci.getMessageKeys());
+                            ci.getMuserName1(), ci.getMuser1Image(), ci.getLastMessage(), ci.getLastMessageDate(),
+                            ci.getMessageKeys());
                     conversationRefrences.add(cri);
-                    if (!conversationRefrences.isEmpty()){
-                        Log.e("LOGGED MESSAGE", "Something was added");
+                    if (conversationRefrences.isEmpty()){
+                        Log.e("LOGGED MESSAGE", "it's empty");
                     }else{
-                        Log.e("LOGGED MESSAGE", ci.getConversationId());
+                        Log.e("ci.getConversationId", conversationRefrences.get(0).getConversationId());
+                        Log.e("ci.getLastMessage", conversationRefrences.get(0).getLastMessage());
+                        Log.e("ci.getMuser1Image", conversationRefrences.get(0).getMuserImage());
+                        Log.e("ci.getMuserId1", conversationRefrences.get(0).getMuserName());
                     }
 
                 }
-                adapter = new ConversationListAdapter(ConversationsActivity.this,R.layout.activity_conversations, conversationRefrences);
+                adapter = new ConversationListAdapter(ConversationsActivity.this,R.layout.list_conversation, conversationRefrences);
                 listView.setAdapter(adapter);
             }
 
@@ -134,5 +141,4 @@ public class ConversationsActivity extends AppCompatActivity {
         });
         //return userInfo2;
     }
-    */
 }

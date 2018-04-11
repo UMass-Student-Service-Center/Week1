@@ -8,41 +8,46 @@ import java.util.ArrayList;
 
 public class ConversationReferenceItem {
     private String conversationId;
-    private String muserId1;
-    private String muser1Image;
+    private String muserName;
+    private String muserImage;
     private String lastMessage;
+    private String lastMessageDate;
     private ArrayList<String> messageKeys;
 
     public ConversationReferenceItem () { messageKeys = new ArrayList<String>(0); }
 
-    public ConversationReferenceItem (String _conversationId, String _muserId1, String _muser1Image,
-                                       String _lastMessage, ArrayList<String> _messageKeys) {
+    public ConversationReferenceItem (String _conversationId, String _muserName, String _muserImage,
+                                       String _lastMessage, String _lastMessageDate, ArrayList<String> _messageKeys) {
         messageKeys = new ArrayList<String>(0);
         conversationId = _conversationId;
-        muserId1 = _muserId1;
-        muser1Image = _muser1Image;
+        muserName = _muserName;
+        muserImage = _muserImage;
         lastMessage = _lastMessage;
+        lastMessageDate = _lastMessageDate;
         messageKeys = _messageKeys;
     }
 
-
-    public String getConversationId() { return conversationId; }
-
     public void setConversationId(String conversationId) { this.conversationId = conversationId; }
 
-    public String getMuserId1() { return muserId1; }
+    public void setMuserName(String muserName) { this.muserName = muserName; }
 
-    public void setMuserId1(String muserId1) { this.muserId1 = muserId1; }
-
-    public String getMuser1Image() { return muser1Image; }
-
-    public void setMuser1Image(String muser1Image) { this.muser1Image = muser1Image; }
-
-    public String getLastMessage() { return lastMessage; }
+    public void setMuserImage(String muserImage) { this.muserImage = muserImage; }
 
     public void setLastMessage(String lastMessage) { this.lastMessage = lastMessage; }
 
-    public ArrayList<String> getMessageKeys() { return messageKeys; }
+    public void setLastMessageDate(String lastMessageDate) { this.lastMessageDate = lastMessageDate; }
 
     public void setMessageKeys(ArrayList<String> messageKeys) { this.messageKeys = messageKeys; }
+
+    public String getConversationId() { return conversationId; }
+
+    public String getMuserName() { return muserName; }
+
+    public String getMuserImage() { return muserImage; }
+
+    public String getLastMessage() { return lastMessage; }
+
+    public ArrayList<String> getMessageKeys() { return messageKeys; }
+
+    public String getLastMessageDate() { return lastMessageDate; }
 }

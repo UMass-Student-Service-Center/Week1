@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:context="com.example.u.ussc.ProfileActivity">
+
+    <ListView
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:fastScrollEnabled="true"
+        android:divider="@color/white"
+        android:layout_weight="1"
+        android:id="@+id/list"> </ListView>
+
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        tools:context=".MainActivity"
+        android:gravity="center_vertical">
+
+    <EditText
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_weight="1" android:id="@+id/txt"
+        style="@style/edittext_msg">
+    </EditText>
+
+    <Button
+        android:background="@drawable/ic_send"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/btnSend"
+        style="@style/btn"/>
+
+</LinearLayout>
+
+</LinearLayout>
+

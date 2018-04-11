@@ -145,7 +145,8 @@ public class MessageUserActivity extends AppCompatActivity{
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     ProfileItem pi = snapshot.getValue(ProfileItem.class);
                     userInfo2 = pi;
-                    createConversation(userInfo1.getMUserId(), userInfo2.getMUserId(), userInfo1.getImages(), userInfo2.getImages());
+                    createConversation(userInfo1.getMUserId(), userInfo2.getMUserId(), userInfo1.getImages(),
+                            userInfo2.getImages(), userInfo1.getName(), userInfo2.getName());
                 }
             }
 
@@ -158,16 +159,22 @@ public class MessageUserActivity extends AppCompatActivity{
     }
 
     // update node function
-    private boolean createConversation(String _muserid1, String _muserid2, String _actualUri1, String _actualUri2) {
+    private boolean createConversation(String _muserid1, String _muserid2, String _actualUri1, String _actualUri2,
+                                       String _muserName1, String _muserName2) {
         final String upload_id =  ref.push().getKey();
         final String message_upload_id = databaseReferenceMessage.push().getKey();
         final String userId1 = _muserid1;
         final String userId2 = _muserid2;
         final String actualUri1 = _actualUri1;
         final String actualUri2 = _actualUri2;
+        final String userName1 = _muserName1;
+        final String userName2 = _muserName2;
         final String _messageToSend = messageToSend;
 
-        MessageItem mi = new MessageItem(message_upload_id, userId2, _messageToSend);
+        MessageItem mi = new MessageItem(message_upload_id, upload_id, userId2, _messageToSend);
+
+        final String lastMessage = mi.getMessage();
+        final String lastMessageDate = mi.getMessageDate();
 
 
         final ProgressDialog dialog = new ProgressDialog(this);
@@ -175,7 +182,8 @@ public class MessageUserActivity extends AppCompatActivity{
         dialog.show();
 
         //set data
-        ConversationItem ci = new ConversationItem(upload_id, userId1, userId2, actualUri1, actualUri2, message_upload_id);
+        ConversationItem ci = new ConversationItem(upload_id, userId1, userId2, actualUri1, actualUri2,
+                userName1, userName2, lastMessage, lastMessageDate, message_upload_id);
 
         //save data
         databaseReferenceMessage.child(message_upload_id).setValue(mi);
