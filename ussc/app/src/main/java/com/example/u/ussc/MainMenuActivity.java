@@ -2,20 +2,20 @@ package com.example.u.ussc;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-
-import java.util.List;
 
 public class MainMenuActivity extends AppCompatActivity {
 
@@ -30,11 +30,42 @@ public class MainMenuActivity extends AppCompatActivity {
     private Button lost_and_found;
     private Button advising;
     private ProgressDialog progressDialog;
+    private BottomNavigationView bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
+        bottomNavigation = (BottomNavigationView)findViewById(R.id.bottom_navigation);
+        bottomNavigation.inflateMenu(R.menu.menu_home);
+        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_lostandfound:
+                        //go to lost and found
+                        goto_lost_and_found();
+                        return true;
+                    case R.id.action_market:
+                        //go to marketplace
+                        goto_marketplace_();
+                        return true;
+                    case R.id.action_advising:
+                        //go to advising
+                        goto_advising();
+                        return true;
+                    case R.id.action_chat:
+                        //go to chat
+                        goto_conversations();
+                        return true;
+                    case R.id.action_profile:
+                        //go to profile
+                        goto_profile();
+                        return true;
+                }
+                return true;
+            }
+        });
 
         // Initialize Firebase Auth and Database Reference
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -102,11 +133,6 @@ public class MainMenuActivity extends AppCompatActivity {
 
     }
 
-    private void goto_profile() {
-        Intent intent = new Intent(MainMenuActivity.this, ProfileActivity.class);
-        startActivity(intent);
-    }
-
     private void loadLogInView() {
         Intent intent = new Intent(MainMenuActivity.this, LogInActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -126,6 +152,16 @@ public class MainMenuActivity extends AppCompatActivity {
 
     private void goto_advising() {
         Intent intent = new Intent(MainMenuActivity.this, AdvisingActivity.class);
+        startActivity(intent);
+    }
+
+    private void goto_conversations() {
+        Intent intent = new Intent(MainMenuActivity.this, ConversationsActivity.class);
+        startActivity(intent);
+    }
+
+    private void goto_profile() {
+        Intent intent = new Intent(MainMenuActivity.this, ProfileActivity.class);
         startActivity(intent);
     }
 

@@ -5,19 +5,30 @@
     tools:context=".MainActivity">
 
     <item
-        android:id="@+id/action_home"
-        android:title="@string/icon_home"
-        android:icon="@drawable/icon_home"
+        android:id="@+id/action_lostandfound"
+        android:title="@string/icon_lostandfound"
+        android:icon="@drawable/action_lostandf"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_market"
+        android:title="@string/icon_market"
+        android:icon="@drawable/action_market"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_advising"
+        android:title="@string/icon_advising"
+        android:icon="@drawable/action_advising"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_chat"
+        android:title="@string/icon_chat"
+        android:icon="@drawable/action_chat"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_profile"
         android:title="@string/icon_profile"
         android:icon="@drawable/icon_profile"
         app:showAsAction="always" />
-    <item
-        android:id="@+id/action_logout"
-        android:orderInCategory="100"
-        android:title="@string/logout"
-        app:showAsAction="never"/>
+
 
 </menu>

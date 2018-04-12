@@ -21,6 +21,10 @@
     <string name="cancel">Cancel</string>
     <string name="logout">Log Out</string>
     <string name="icon_home">home</string>
+    <string name="icon_market">Marketplace</string>
+    <string name="icon_lostandfound">Lost and Found</string>
+    <string name="icon_advising">Advising</string>
+    <string name="icon_chat">Chat</string>
     <string name="icon_profile">profile</string>
     <string name="image_title_update">image_title_update</string>
 

@@ -158,10 +158,7 @@ public class LostandFActivity extends AppCompatActivity {
                 // finish();
                 return true;
             //break;
-            case R.id.action_logout:
-                mFirebaseAuth.signOut();
-                loadLogInView();
-                break;
+
         }
         return super.onOptionsItemSelected(item);
     }
