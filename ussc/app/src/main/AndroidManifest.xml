@@ -28,6 +28,7 @@
         <activity android:name=".item_LostandFActivity" />
         <activity android:name=".MessageUserActivity" />
         <activity android:name=".ConversationsActivity" />
+        <activity android:name=".ChatRoomActivity" />
 
         <provider
             android:name=".database.AdvisingProvider"

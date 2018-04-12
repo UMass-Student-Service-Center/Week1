@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,13 +29,17 @@ public class ConversationsActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference databaseReferenceConversation;
+    private DatabaseReference databaseReferenceMessage;
     private ProgressDialog progressDialog;
     private ArrayList<ConversationReferenceItem> conversationRefrences;
     private String mUserId;
     private ConversationListAdapter adapter;
     private ListView listView;
+    public ConversationReferenceItem listName;
     public  String tempUser = "ySjOLxPHiua08gofQoWMznnVFO92";
+    public static ArrayList<MessageItem> messageList;
     public static final String fb_conversation_database = "Conversation";
+    public static final String fb_message_database = "Message";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +50,13 @@ public class ConversationsActivity extends AppCompatActivity {
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         mUserId = mFirebaseUser.getUid();
         databaseReferenceConversation = FirebaseDatabase.getInstance().getReference(fb_conversation_database);
+        databaseReferenceMessage = FirebaseDatabase.getInstance().getReference(fb_message_database);
 
         listView = (ListView) findViewById(R.id.conversation_list);
 
         conversationRefrences = new ArrayList<ConversationReferenceItem>(0);
+        messageList = new ArrayList<MessageItem>(0);
+
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please wait loading.....");
@@ -58,6 +66,18 @@ public class ConversationsActivity extends AppCompatActivity {
         //ProfileItem pi1 = firstQuery();
         //firstQuery();
         secondQuery();
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
+                messageList.clear();
+                ConversationReferenceItem tempListName = conversationRefrences.get(i);
+                listName = tempListName;
+                thirdQuery(listName.getConversationId());
+                Intent intent = new Intent(ConversationsActivity.this, ChatRoomActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //add (needs to be changed to write messages)
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -109,26 +129,15 @@ public class ConversationsActivity extends AppCompatActivity {
         query2.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("LOGGED MESSAGE", "Something was added");
                 progressDialog.dismiss();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     //ProfileItem pi = snapshot.getValue(ProfileItem.class);
                     //userInfo2 = pi;
                     ConversationItem ci = snapshot.getValue(ConversationItem.class);
-                    Log.e("LOGGED MESSAGE", ci.getConversationId());
                     ConversationReferenceItem cri = new ConversationReferenceItem(ci.getConversationId(),
                             ci.getMuserName1(), ci.getMuser1Image(), ci.getLastMessage(), ci.getLastMessageDate(),
                             ci.getMessageKeys());
                     conversationRefrences.add(cri);
-                    if (conversationRefrences.isEmpty()){
-                        Log.e("LOGGED MESSAGE", "it's empty");
-                    }else{
-                        Log.e("ci.getConversationId", conversationRefrences.get(0).getConversationId());
-                        Log.e("ci.getLastMessage", conversationRefrences.get(0).getLastMessage());
-                        Log.e("ci.getMuser1Image", conversationRefrences.get(0).getMuserImage());
-                        Log.e("ci.getMuserId1", conversationRefrences.get(0).getMuserName());
-                    }
-
                 }
                 adapter = new ConversationListAdapter(ConversationsActivity.this,R.layout.list_conversation, conversationRefrences);
                 listView.setAdapter(adapter);
@@ -141,4 +150,47 @@ public class ConversationsActivity extends AppCompatActivity {
         });
         //return userInfo2;
     }
+
+    private void thirdQuery(String conversationID) {
+        Query query3 = databaseReferenceMessage.orderByChild("conversationId").startAt(conversationID).endAt(conversationID);
+        query3.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("LOGGED MESSAGE", "Something was added");
+                progressDialog.dismiss();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    //ProfileItem pi = snapshot.getValue(ProfileItem.class);
+                    //userInfo2 = pi;
+                    MessageItem mi = snapshot.getValue(MessageItem.class);
+                    Log.e("LOGGED MESSAGE", mi.getConversationId());
+                    messageList.add(mi);
+                    if (messageList.isEmpty()){
+                        Log.e("LOGGED MESSAGE", "it's empty");
+                    }else{
+                        Log.e("mi.getConversationId", messageList.get(0).getConversationId());
+                        Log.e("mi.getLastMessage", messageList.get(0).getMessage());
+                        Log.e("mi.getMessageDate", messageList.get(0).getMessageDate());
+                        Log.e("mi.getMuserId1", messageList.get(0).getSenderId());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                progressDialog.dismiss();
+            }
+        });
+    }
+
+/*
+    public void sort(ArrayList<MessageItem> ml){
+        int size = ml.size();
+        if (size >= 1) {
+            String minDate = ml.get(0).getMessageDate();
+            for (int i = 0; i < size; i++){
+
+            }
+        }
+    }
+    */
 }
