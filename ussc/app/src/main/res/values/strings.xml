@@ -38,12 +38,20 @@
 
     <string name="select">Select One</string>
 
+    <!-- lost -->
     <string name="what_did_you">What did you lose?</string>
     <string name="tell_">Please tell us....</string>
     <string name="description">Description</string>
     <string name="desc_">Please describe what you lost in a few words....</string>
 
-    <string name="what_did_you_f">What did you find?</string>
+    <!-- marketplace -->
+    <string name="what_are_you_s">What are you selling?</string>
+    <string name="desc_sell">Please describe what are you selling in a few words....</string>
+    <string name="price">Price</string>
+    <string name="amount">amount</string>
+
+    <!-- found -->
+    <string name="what_did_you_f">What did you found?</string>
     <string name="desc_f">Please describe what you found in a few words....</string>
 
     <string name="reward">Reward</string>
@@ -53,7 +61,6 @@
     <string name="item">Item</string>
 
     <string name="conversations">Conversations</string>
-
 
     <style name="EditorFieldStyle">
         <item name="android:layout_height">wrap_content</item>

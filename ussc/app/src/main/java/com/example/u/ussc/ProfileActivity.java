@@ -2,6 +2,8 @@ package com.example.u.ussc;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -28,11 +30,43 @@ public class ProfileActivity extends AppCompatActivity {
     private String user_names;
     private String Userimages;
     private String User_year;
+    private BottomNavigationView bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        bottomNavigation = (BottomNavigationView)findViewById(R.id.bottom_navigation);
+        bottomNavigation.inflateMenu(R.menu.menu_profile);
+        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_lostandfound:
+                        //go to lost and found
+                        goto_lost_and_found();
+                        return true;
+                    case R.id.action_market:
+                        //go to marketplace
+                        goto_marketplace_();
+                        return true;
+                    case R.id.action_advising:
+                        //go to advising
+                        goto_advising();
+                        return true;
+                    case R.id.action_chat:
+                        //go to chat
+                        goto_conversations();
+                        return true;
+                    case R.id.action_profile:
+                        //go to profile
+                        goto_profile();
+                        return true;
+                }
+                return true;
+            }
+        });
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
@@ -94,17 +128,12 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_profile, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.conversations:
-                // Go to conversations page
-                goto_conversations();
-                break;
-
             case R.id.logout:
                 //logout
                 mFirebaseAuth.signOut();
@@ -121,8 +150,28 @@ public class ProfileActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void goto_lost_and_found() {
+        Intent intent = new Intent(ProfileActivity.this, LostandFActivity.class);
+        startActivity(intent);
+    }
+
+    private void goto_marketplace_() {
+        Intent intent = new Intent(ProfileActivity.this, MarketplaceActivity.class);
+        startActivity(intent);
+    }
+
+    private void goto_advising() {
+        Intent intent = new Intent(ProfileActivity.this, AdvisingActivity.class);
+        startActivity(intent);
+    }
+
     private void goto_conversations() {
         Intent intent = new Intent(ProfileActivity.this, ConversationsActivity.class);
+        startActivity(intent);
+    }
+
+    private void goto_profile() {
+        Intent intent = new Intent(ProfileActivity.this, ProfileActivity.class);
         startActivity(intent);
     }
 }

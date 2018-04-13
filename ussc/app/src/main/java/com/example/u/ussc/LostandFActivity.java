@@ -3,6 +3,7 @@ package com.example.u.ussc;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,6 +37,7 @@ public class LostandFActivity extends AppCompatActivity {
     private SearchView searchView;
     private Button all;
     private ProgressDialog progressDialog;
+    private BottomNavigationView bottomNavigation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,17 +124,7 @@ public class LostandFActivity extends AppCompatActivity {
                     return false;
                 }
             });
-        /*
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
-                    item_names listName = books_list.get(i);
-                    DatabaseReference dR = FirebaseDatabase.getInstance().getReference(item_LostandFActivity.fb_database).child(listName.getKey());
-                    showUpdateDeleteDialog(listName.getKey(),listName.getTitle(),listName.getIsbn(),listName.getPrice(), listName.getCond() ,listName.getImages(), listName.getMUserId(),i, listName.getMUserEmail());
-                    //return true;
-                }
-            });
-            */
+
         }
 
     }
@@ -167,39 +159,31 @@ public class LostandFActivity extends AppCompatActivity {
         Intent intent = new Intent(LostandFActivity.this, ProfileActivity.class);
         startActivity(intent);
     }
-/*
-    private void showUpdateDeleteDialog(final String mkey,final String title,final String isbn, String price, String cond,final String muri,final String _muserid, int position,final String _museremail) {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = getLayoutInflater();
-        final View dialogView = inflater.inflate(R.layout.buyers_view, null);
-        dialogBuilder.setView(dialogView);
-        String dollarSign="$";
-        String condition="Condition: ";
 
-        final TextView txt_title = (TextView) dialogView.findViewById(R.id.title_view);
-        txt_title.setText(title);
-        final TextView txt_isbn = (TextView) dialogView.findViewById(R.id.isbn_view);
-        txt_isbn.setText(isbn);
-        final TextView txt_price = (TextView) dialogView.findViewById(R.id.price_view);
-        txt_price.setText(dollarSign + price);
-        final TextView spinnerGenre = (TextView) dialogView.findViewById(R.id.cond_view);
-        spinnerGenre.setText(condition + cond);
-        final ImageView imageView = (ImageView) dialogView.findViewById(R.id.image_buyer);
-        Glide.with(LostandFActivity.this).load(books_list.get(position).getImages()).into(imageView);
-        final Button buttonsend = (Button) dialogView.findViewById(R.id.buttonsend);
-
-        buttonsend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //sendEmail(_museremail, title);
-            }
-        });
-
-        dialogBuilder.setTitle("Book View");
-        final AlertDialog b = dialogBuilder.create();
-        b.show();
+    private void goto_lost_and_found() {
+        Intent intent = new Intent(LostandFActivity.this, LostandFActivity.class);
+        startActivity(intent);
     }
-    */
+
+    private void goto_marketplace_() {
+        Intent intent = new Intent(LostandFActivity.this, MarketplaceActivity.class);
+        startActivity(intent);
+    }
+
+    private void goto_advising() {
+        Intent intent = new Intent(LostandFActivity.this, AdvisingActivity.class);
+        startActivity(intent);
+    }
+
+    private void goto_conversations() {
+        Intent intent = new Intent(LostandFActivity.this, ConversationsActivity.class);
+        startActivity(intent);
+    }
+
+    private void goto_profile() {
+        Intent intent = new Intent(LostandFActivity.this, ProfileActivity.class);
+        startActivity(intent);
+    }
 
 }
 
