@@ -7,20 +7,27 @@
     tools:context="com.example.u.ussc.MarketplaceActivity">
 
     <SearchView
-        android:id="@+id/searchbook"
+        android:id="@+id/searchbook_m"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:queryHint=" "
         android:iconifiedByDefault="false">
         <requestFocus />
     </SearchView>
+    <Button
+        android:id="@+id/all_m"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="display all"
+        android:layout_below="@id/searchbook_m"
+        android:textSize="18sp"/>
 
     <ListView
-        android:id="@+id/list"
+        android:id="@+id/list_m"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/searchbook">
+        android:layout_below="@id/searchbook_m">
     </ListView>
 
 </RelativeLayout>
