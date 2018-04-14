@@ -11,9 +11,13 @@ public class item_names {
     private String name;
     private String user_image;
 
+
+
+    private String item_type;
+
     public item_names(){}
 
-    public item_names(String user_id,String user_n ,String u_image ,String mtitle,String mimage,String mdecr,String mprice,String mtime){
+    public item_names(String user_id,String user_n,String type ,String u_image ,String mtitle,String mimage,String mdecr,String mprice,String mtime){
         userid = user_id;
         name = user_n;
         user_image = u_image;
@@ -22,6 +26,7 @@ public class item_names {
         descr = mdecr;
         price = mprice;
         time = mtime;
+        item_type = type;
     }
 
     public String getUserid() {
@@ -71,6 +76,7 @@ public class item_names {
     public void setTime(String time) {
         this.time = time;
     }
+
     public String getName() {
         return name;
     }
@@ -83,7 +89,9 @@ public class item_names {
         return user_image;
     }
 
-    public void setUser_image(String user_image) {
-        this.user_image = user_image;
-    }
+    public void setUser_image(String user_image) { this.user_image = user_image; }
+
+    public String getItem_type() { return item_type; }
+
+    public void setItem_type(String item_type) { this.item_type = item_type; }
 }

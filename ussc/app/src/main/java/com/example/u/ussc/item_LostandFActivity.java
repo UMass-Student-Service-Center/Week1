@@ -9,10 +9,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -41,11 +43,7 @@ public class item_LostandFActivity extends AppCompatActivity {
     private EditText txt_title;
     private EditText txt_desc;
     private EditText txt_price;
-    private String title;
-    private String desc;
-    private String price;
-    //private String sspinner;
-    //private Spinner mspinner;
+    private Button imageBtn;
     private ImageView imageView;
     private Uri actualUri;
     private StorageReference mStorageRef;
@@ -76,9 +74,10 @@ public class item_LostandFActivity extends AppCompatActivity {
         txt_title = (EditText) findViewById(R.id.user_lost);
         txt_desc = (EditText) findViewById(R.id.user_describe);
         txt_price = (EditText) findViewById(R.id.user_amount);
+        imageBtn = (Button) findViewById(R.id.select_image);
 
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss MM-dd-yyyy");
         strDate = sdf.format(c.getTime());
 
         databaseReference = FirebaseDatabase.getInstance().getReference(RegistrationActivity.fb_database);
@@ -140,20 +139,32 @@ public class item_LostandFActivity extends AppCompatActivity {
     }
 
     //DISPLAY INPUT DIALOG
-    private void savebook() {
+    private boolean savebook() {
+        boolean isAllOk = true;
         //get data
-        title = txt_title.getText().toString();
-        desc = txt_desc.getText().toString();
-        price = txt_price.getText().toString();
-        //sspinner = mspinner.getSelectedItem().toString();
+        final String title = txt_title.getText().toString();
+        final String desc = txt_desc.getText().toString();
+        final String price = txt_price.getText().toString();
 
-
-
-        if(title != null && desc !=null && price != null &&  actualUri != null) {
+        //checks for user inputs are valid
+        if (!checkIfValueSet(txt_title, "Title")) {
+            isAllOk = false;
+        }if (!checkIfValueSet(txt_desc, "Description")) {
+            isAllOk = false;
+        }if (!checkIfValueSet(txt_price, "Price")) {
+            isAllOk = false;
+        }if (actualUri == null) {
+            isAllOk = false;
+            imageBtn.setError("Missing image");
+        }if (!isAllOk) {
+            return false;
+        }else {
             final ProgressDialog dialog = new ProgressDialog(this);
             dialog.setTitle("Uploading");
             dialog.show();
             mUserId = mFirebaseUser.getUid();
+            final String reward_of_item ="Reward offer: $" + price;
+            final String type = "Lose item";
 
             StorageReference sf = mStorageRef.child(fb_storage + System.currentTimeMillis() + "." + getImageExt(actualUri));
 
@@ -165,7 +176,7 @@ public class item_LostandFActivity extends AppCompatActivity {
 
                     //set data
                     //item_names(String user_id,String mtitle,String mimage,String mdecr,String mprice,String mtime)
-                    item_names s = new item_names(mUserId,user_names,Userimages, txt_title.getText().toString(),taskSnapshot.getDownloadUrl().toString(), txt_desc.getText().toString(),txt_price.getText().toString(),strDate);
+                    item_names s = new item_names(mUserId,user_names, type,Userimages, title,taskSnapshot.getDownloadUrl().toString(), desc,reward_of_item,strDate);
 
                     //save data
                     String upload_id = ref.push().getKey();
@@ -182,31 +193,35 @@ public class item_LostandFActivity extends AppCompatActivity {
                         }
                     });
             dialog.dismiss();
-        }else {
-            Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
-        }
-                 /*
-                 ref.child("Title").setValue(title);
-                 ref.child("ISBN").setValue(isbn);
-                 ref.child("Price").setValue(price);
-                 ref.child("Books").push().setValue(s);
-                 */
+
         Intent intent = new Intent(item_LostandFActivity.this, ProfileActivity.class);
         startActivity(intent);
+            return true;
+        }
+    }
 
+    //checks for all user inputs are valid and returns a boolean if is valid or not
+    private boolean checkIfValueSet(EditText text, String description) {
+        if (TextUtils.isEmpty(text.getText())) {
+            text.setError("Missing " + description);
+            return false;
+        } else {
+            text.setError(null);
+            return true;
+        }
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-                // Save pet to database
-                savebook();
-                // Exit activity
+                // Save data to firebase
+                if (!savebook()) {
+                    // saying to onOptionsItemSelected that user clicked button
+                    return true;
+                }
                 finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
 }
-//}

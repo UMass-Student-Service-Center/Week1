@@ -9,10 +9,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -41,11 +43,7 @@ public class add_item_marketplaceActivity extends AppCompatActivity {
     private EditText txt_title;
     private EditText txt_desc;
     private EditText txt_price;
-    private String title;
-    private String desc;
-    private String price;
-    //private String sspinner;
-    //private Spinner mspinner;
+    private Button imageBtn;
     private ImageView imageView;
     private Uri actualUri;
     private StorageReference mStorageRef;
@@ -72,13 +70,15 @@ public class add_item_marketplaceActivity extends AppCompatActivity {
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         mUserId = mFirebaseUser.getUid();
 
+        //edittext and imageview setup
         imageView = (ImageView) findViewById(R.id.image_view_s);
         txt_title = (EditText) findViewById(R.id.user_sel);
         txt_desc = (EditText) findViewById(R.id.user_describe_s);
         txt_price = (EditText) findViewById(R.id.user_amount);
+        imageBtn = (Button) findViewById(R.id.select_image_s);
 
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss MM-dd-yyyy");
         strDate = sdf.format(c.getTime());
 
         databaseReference = FirebaseDatabase.getInstance().getReference(RegistrationActivity.fb_database);
@@ -88,12 +88,13 @@ public class add_item_marketplaceActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     ProfileItem ln = snapshot.getValue(ProfileItem.class);
                     user_names = ln.getName();
                     Userimages = ln.getImages();
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 //progressDialog.dismiss();
@@ -101,6 +102,7 @@ public class add_item_marketplaceActivity extends AppCompatActivity {
         });
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_details, menu);
@@ -120,40 +122,57 @@ public class add_item_marketplaceActivity extends AppCompatActivity {
         // The ACTION_OPEN_DOCUMENT intent was sent with the request code READ_REQUEST_CODE.
         // If the request code seen here doesn't match, it's the response to some other intent,
         // and the below code shouldn't run at all.
-        super.onActivityResult(requestCode,resultCode, resultData);
+        super.onActivityResult(requestCode, resultCode, resultData);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && resultData != null && resultData.getData() != null) {
             actualUri = resultData.getData();
             try {
-                Bitmap bm = MediaStore.Images.Media.getBitmap(getContentResolver(),actualUri);
+                Bitmap bm = MediaStore.Images.Media.getBitmap(getContentResolver(), actualUri);
                 imageView.setImageBitmap(bm);
-            } catch (FileNotFoundException e){
+            } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
-    public String getImageExt (Uri uri) {
+
+    public String getImageExt(Uri uri) {
         ContentResolver contentResolver = getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-        return  mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
     //DISPLAY INPUT DIALOG
-    private void savebook() {
+    private boolean savebook() {
+        boolean isAllOk = true;
         //get data
-        title = txt_title.getText().toString();
-        desc = txt_desc.getText().toString();
-        price = txt_price.getText().toString();
-        //sspinner = mspinner.getSelectedItem().toString();
+        final String title = txt_title.getText().toString();
+        final String desc = txt_desc.getText().toString();
+        final String price = txt_price.getText().toString();
 
-
-
-        if(title != null && desc !=null && price != null &&  actualUri != null) {
+        //checks for user inputs are valid
+        if (!checkIfValueSet(txt_title, "Title")) {
+            isAllOk = false;
+        }
+        if (!checkIfValueSet(txt_desc, "Description")) {
+            isAllOk = false;
+        }
+        if (!checkIfValueSet(txt_price, "Price")) {
+            isAllOk = false;
+        }
+        if (actualUri == null) {
+            isAllOk = false;
+            imageBtn.setError("Missing image");
+        }
+        if (!isAllOk) {
+            return false;
+        } else {
             final ProgressDialog dialog = new ProgressDialog(this);
             dialog.setTitle("Uploading");
             dialog.show();
             mUserId = mFirebaseUser.getUid();
+            final String price_of_item = "Price $" + price;
+            final String type = "For Sale";
 
             StorageReference sf = mStorageRef.child(fb_storage + System.currentTimeMillis() + "." + getImageExt(actualUri));
 
@@ -161,16 +180,13 @@ public class add_item_marketplaceActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     dialog.dismiss();
-                    Toast.makeText(getApplicationContext(), "uploaded",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "uploaded", Toast.LENGTH_SHORT).show();
 
-                    //set data
-                    //item_names(String user_id,String mtitle,String mimage,String mdecr,String mprice,String mtime)
-                    item_names s = new item_names(mUserId,user_names,Userimages, txt_title.getText().toString(),taskSnapshot.getDownloadUrl().toString(), txt_desc.getText().toString(),txt_price.getText().toString(),strDate);
+                    item_names s = new item_names(mUserId, user_names, type, Userimages, title, taskSnapshot.getDownloadUrl().toString(), desc, price_of_item, strDate);
 
                     //save data
                     String upload_id = ref.push().getKey();
                     ref.child(upload_id).setValue(s);
-                    // ref.child("Books").push().setValue(s);
                 }
             })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -182,30 +198,35 @@ public class add_item_marketplaceActivity extends AppCompatActivity {
                         }
                     });
             dialog.dismiss();
-        }else {
-            Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(add_item_marketplaceActivity.this, ProfileActivity.class);
+            startActivity(intent);
+            return true;
         }
-                 /*
-                 ref.child("Title").setValue(title);
-                 ref.child("ISBN").setValue(isbn);
-                 ref.child("Price").setValue(price);
-                 ref.child("Books").push().setValue(s);
-                 */
-        Intent intent = new Intent(add_item_marketplaceActivity.this, ProfileActivity.class);
-        startActivity(intent);
 
+    }
+
+    //checks for all user inputs are valid and returns a boolean if is valid or not
+    private boolean checkIfValueSet(EditText text, String description) {
+        if (TextUtils.isEmpty(text.getText())) {
+            text.setError("Missing " + description);
+            return false;
+        } else {
+            text.setError(null);
+            return true;
+        }
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-                // Save pet to database
-                savebook();
-                // Exit activity
+                // Save data to firebase
+                if (!savebook()) {
+                    // saying to onOptionsItemSelected that user clicked button
+                    return true;
+                }
                 finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
 }
