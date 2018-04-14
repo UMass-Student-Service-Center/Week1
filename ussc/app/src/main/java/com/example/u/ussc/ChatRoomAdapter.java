@@ -17,7 +17,7 @@ public class ChatRoomAdapter extends BaseAdapter {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private String mUserId;
-    private ArrayList<MessageItem> messageList;
+    public static ArrayList<MessageItem> messageList;
     private Context context;
     private LayoutInflater inflater;
 

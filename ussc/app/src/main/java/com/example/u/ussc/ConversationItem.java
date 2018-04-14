@@ -87,4 +87,6 @@ public class ConversationItem {
     public String getLastMessageDate() { return lastMessageDate; }
 
     public ArrayList<String> getMessageKeys() {return messageKeys;}
+
+    public void addMessageKey(String newMessageKey){messageKeys.add(newMessageKey);}
 }

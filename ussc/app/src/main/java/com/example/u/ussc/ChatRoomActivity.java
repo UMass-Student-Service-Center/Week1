@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,10 +36,14 @@ public class ChatRoomActivity extends AppCompatActivity {
     private String mUserId;
     private Button send;
     private ConversationItem currentConverstion;
-    private String conversationID;
     private ArrayList<String> messageKeys;
     private int arraySize;
     private String messageToSend;
+    private ConversationItem ci;
+    private ListView listView;
+    public ArrayList<MessageItem> messageList;
+    public String conversationID;
+    public static String ConversationID;
 
 
     @Override
@@ -58,14 +63,6 @@ public class ChatRoomActivity extends AppCompatActivity {
         progressDialog.show();
         progressDialog.dismiss();
 
-        message = (EditText)findViewById(R.id.messageTxt);
-
-        arraySize = ConversationsActivity.messageList.size();
-        messageKeys = new ArrayList<String>(0);
-        for (int i = 0; i < arraySize; i++){
-            messageKeys.add(ConversationsActivity.messageList.get(i).getMessageId());
-        }
-
         /*
         STILL NEED TO CREATE A NEW MESSAGE AND THEN ADD IT TO THE FIREBASE, AND THEN ADD THE MESSAGE
         KEY TO messageKeys AND SET THE messageKeys CHILD OF CONVERSATION ON THE FIREBASE TO THE NEW
@@ -73,19 +70,26 @@ public class ChatRoomActivity extends AppCompatActivity {
         UPDATE IT ON THIS PAGE AND THEN RESEND THE SAME CONVERSATIONITEM BACK TO FIREBASE.
          */
 
-        conversationID = ConversationsActivity.messageList.get(0).getConversationId();
-
-        ListView listView = (ListView)findViewById(R.id.chatRoomList);
+        listView = (ListView)findViewById(R.id.chatRoomList);
         ChatRoomAdapter adapter = new ChatRoomAdapter(ConversationsActivity.messageList,this);
         listView.setAdapter(adapter);
+
+        message = (EditText)findViewById(R.id.messageTxt);
+        conversationID = ConversationsActivity.listName.getConversationId();
+
+        messageKeys = new ArrayList<String>(0);
+        messageKeys = ConversationsActivity.listName.getMessageKeys();
+        arraySize = messageKeys.size();
+
         //add (needs to be changed to write messages)
         send = (Button)findViewById(R.id.btnSend);
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 messageToSend = message.getText().toString();
-                //addQuery();
-
+                addQuery();
+                Intent intent = new Intent(ChatRoomActivity.this, ConversationsActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -97,8 +101,9 @@ public class ChatRoomActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 progressDialog.dismiss();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    ConversationItem ci = snapshot.getValue(ConversationItem.class);
-                    currentConverstion = ci;
+                    ci = snapshot.getValue(ConversationItem.class);
+                    Log.e("ConversationID", ci.getConversationId());
+                    sendMessage();
                 }
             }
 
@@ -107,5 +112,35 @@ public class ChatRoomActivity extends AppCompatActivity {
                 progressDialog.dismiss();
             }
         });
+        //sendMessage();
+    }
+
+    // update node function
+    private void sendMessage() {
+        final String upload_id =  ConversationsActivity.listName.getConversationId();
+        final String message_upload_id = databaseReferenceMessage.push().getKey();
+        final String messageToSend = message.getText().toString();;
+
+        MessageItem mi = new MessageItem(message_upload_id, upload_id, mUserId, messageToSend);
+
+        final String lastMessage = mi.getMessage();
+        final String lastMessageDate = mi.getMessageDate();
+
+
+        final ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setTitle("Uploading");
+        dialog.show();
+
+        //set data
+        //ConversationItem tempCI = ci;
+        ci.setLastMessage(mi.getMessage());
+        ci.setLastMessageDate(mi.getMessageDate());
+        ci.addMessageKey(mi.getMessageId());
+
+        //save data
+        databaseReferenceMessage.child(message_upload_id).setValue(mi);
+        databaseReferenceConversation.child(upload_id).child("lastMessage").setValue(mi.getMessage());
+        databaseReferenceConversation.child(upload_id).child("lastMessageDate").setValue(mi.getMessageDate());
+        dialog.dismiss();
     }
 }
