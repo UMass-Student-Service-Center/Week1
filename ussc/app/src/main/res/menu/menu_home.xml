@@ -5,21 +5,6 @@
     tools:context=".MainActivity">
 
     <item
-        android:id="@+id/action_lostandfound"
-        android:title="@string/icon_lostandfound"
-        android:icon="@drawable/action_lostandf"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/action_market"
-        android:title="@string/icon_market"
-        android:icon="@drawable/action_market"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/action_advising"
-        android:title="@string/icon_advising"
-        android:icon="@drawable/action_advising"
-        app:showAsAction="always" />
-    <item
         android:id="@+id/action_chat"
         android:title="@string/icon_chat"
         android:icon="@drawable/action_chat"

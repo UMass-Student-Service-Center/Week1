@@ -39,7 +39,7 @@ public class two_choicesActivity extends AppCompatActivity {
     }
 
     private void goto_marketplace_() {
-        Intent intent = new Intent(two_choicesActivity.this, new_item_MarketplaceActivity.class);
+        Intent intent = new Intent(two_choicesActivity.this, add_item_marketplaceActivity.class);
         startActivity(intent);
     }
 }
