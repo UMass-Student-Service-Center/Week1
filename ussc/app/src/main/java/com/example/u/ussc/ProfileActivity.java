@@ -4,11 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -21,22 +22,34 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class ProfileActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference databaseReference;
+    private DatabaseReference databaseReference_1;
+    private DatabaseReference databaseReference_2;
     private String mUserId;
+    private ListView listView_1;
+    private ListView listView_2;
+    private List<item_names> list_item_1;
+    private List<item_names> list_item_2;
+    private item_list_Adapter adapter;
     private String user_names;
     private String Userimages;
     private String User_year;
+    private Button market;
+    private Button lostanffound;
     private BottomNavigationView bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
+        //setContentView(R.layout.profile_2);
         bottomNavigation = (BottomNavigationView)findViewById(R.id.bottom_navigation);
         bottomNavigation.inflateMenu(R.menu.menu_profile);
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -109,19 +122,95 @@ public class ProfileActivity extends AppCompatActivity {
                     //progressDialog.dismiss();
                 }
             });
+            list_item_1 = new ArrayList<>();
+            list_item_2 = new ArrayList<>();
+            listView_1 = (ListView) findViewById(R.id.list1);
+            market = (Button) findViewById(R.id.market_1);
+            lostanffound = (Button) findViewById(R.id.lost_2);
 
+            databaseReference_1 = FirebaseDatabase.getInstance().getReference(item_LostandFActivity.fb_database);
+            databaseReference_2 = FirebaseDatabase.getInstance().getReference(add_item_marketplaceActivity.fb_database);
 
-
-
-            //add
-            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-            fab.setOnClickListener(new View.OnClickListener() {
+            lostanffound.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(ProfileActivity.this, two_choicesActivity.class);
-                    startActivity(intent);
+                    databaseReference_1.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            //progressDialog.dismiss();
+                            list_item_1.clear();
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                item_names ln = snapshot.getValue(item_names.class);
+                                if (ln.getUserid().equals(mUserId))
+                                    list_item_1.add(ln);
+                            }
+
+                            adapter = new item_list_Adapter(ProfileActivity.this, R.layout.lostandf_item, list_item_1);
+                            listView_1.setAdapter(adapter);
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            // progressDialog.dismiss();
+                        }
+                    });
                 }
             });
+
+            market.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    databaseReference_2.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            //progressDialog.dismiss();
+                            list_item_1.clear();
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                item_names ln = snapshot.getValue(item_names.class);
+                                if (ln.getUserid().equals(mUserId))
+                                    list_item_1.add(ln);
+                            }
+
+                            adapter = new item_list_Adapter(ProfileActivity.this, R.layout.lostandf_item, list_item_1);
+                            listView_1.setAdapter(adapter);
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            // progressDialog.dismiss();
+                        }
+                    });
+                }
+            });
+
+            /*
+            databaseReference_2 = FirebaseDatabase.getInstance().getReference(add_item_marketplaceActivity.fb_database);//add_item_marketplaceActivity.fb_database
+
+            databaseReference_2.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    //progressDialog.dismiss();
+                    list_item_2.clear();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        item_names ln = snapshot.getValue(item_names.class);
+                        if (ln.getUserid().equals(mUserId))
+                            list_item_2.add(ln);
+                    }
+
+                    adapter = new item_list_Adapter(ProfileActivity.this, R.layout.lostandf_item, list_item_2);
+                    listView_2.setAdapter(adapter);
+                    Utility.setListViewHeightBasedOnChildren(listView_2);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // progressDialog.dismiss();
+                }
+            });
+
+            */
 
         }
     }
@@ -134,6 +223,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.add:
+                // back home
+                goto_add();
+                return true;
             case R.id.logout:
                 //logout
                 mFirebaseAuth.signOut();
@@ -141,6 +234,11 @@ public class ProfileActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void goto_add() {
+        Intent intent = new Intent(ProfileActivity.this, two_choicesActivity.class);
+        startActivity(intent);
     }
 
     private void loadLogInView() {
@@ -174,4 +272,5 @@ public class ProfileActivity extends AppCompatActivity {
         Intent intent = new Intent(ProfileActivity.this, ProfileActivity.class);
         startActivity(intent);
     }
+
 }

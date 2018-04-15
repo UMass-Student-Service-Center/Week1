@@ -3,9 +3,9 @@ package com.example.u.ussc;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -45,6 +45,32 @@ public class LostandFActivity extends AppCompatActivity {
         // Initialize Firebase Auth and Database Reference
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        bottomNavigation = (BottomNavigationView)findViewById(R.id.bottom_navigation);
+        bottomNavigation.inflateMenu(R.menu.menu_lostandfound);
+        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_market:
+                        //go to marketplace
+                        goto_marketplace_();
+                        return true;
+                    case R.id.action_advising:
+                        //go to advising
+                        goto_advising();
+                        return true;
+                    case R.id.action_chat:
+                        //go to chat
+                        goto_conversations();
+                        return true;
+                    case R.id.action_profile:
+                        //go to profile
+                        goto_profile();
+                        return true;
+                }
+                return true;
+            }
+        });
         final FirebaseUser user = mFirebaseAuth.getCurrentUser();
         //mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -136,24 +162,6 @@ public class LostandFActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_profile:
-                //
-                account();
-                // Exit activity
-                // finish();
-                return true;
-            //break;
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
     //DISPLAY INPUT DIALOG
     private void account() {
         Intent intent = new Intent(LostandFActivity.this, ProfileActivity.class);

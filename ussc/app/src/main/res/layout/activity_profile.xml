@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context="com.example.u.ussc.ProfileActivity">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +21,7 @@
             android:layout_height="180dp"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
-            android:padding="20dp"
+            android:padding="10dp"
             android:src="@drawable/ic_launcher_background"
             app:civ_border_color="#FF000000"
             app:civ_border_width="2dp" />
@@ -27,6 +29,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:text="Member since "
             android:id="@+id/user_n"/>
 
@@ -46,40 +49,43 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/since"
                 android:text="2018" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/market_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/marketplace"
+                android:textSize="12sp"/>
+
+            <Button
+                android:id="@+id/lost_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/lostandfound"
+                android:textSize="12sp"/>
+
         </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/lostandfound" />
+            android:text=" " />
 
         <ListView
             android:id="@+id/list1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"></ListView>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/marketplace" />
-
-        <ListView
-            android:id="@+id/list2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"></ListView>
+            android:orientation="vertical">
+        </ListView>
 
     </LinearLayout>
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_input_add" />
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
@@ -88,4 +94,5 @@
         app:itemIconTint="@color/black"
         app:itemTextColor="@color/red"
         android:layout_alignParentBottom="true" />
+
 </RelativeLayout>

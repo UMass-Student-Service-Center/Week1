@@ -36,6 +36,7 @@
     <string name="signup_error_title">Error!</string>
     <string name="signup_success">Account successfully created! You can now Log In.</string>
 
+    <string name="add">Add</string>
     <string name="select">Select One</string>
 
     <!-- lost -->
