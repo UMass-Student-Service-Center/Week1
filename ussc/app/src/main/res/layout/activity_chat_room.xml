@@ -15,6 +15,7 @@
         android:fastScrollEnabled="true"
         android:divider="@color/white"
         android:layout_weight="1"
+        android:layout_gravity="bottom"
         android:id="@+id/chatRoomList"> </ListView>
 
 

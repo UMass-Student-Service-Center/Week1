@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ConversationsActivity extends AppCompatActivity {
@@ -35,9 +36,10 @@ public class ConversationsActivity extends AppCompatActivity {
     private String mUserId;
     private ConversationListAdapter adapter;
     private ListView listView;
-    public ConversationReferenceItem listName;
+    public static ConversationReferenceItem listName;
     public  String tempUser = "ySjOLxPHiua08gofQoWMznnVFO92";
     public static ArrayList<MessageItem> messageList;
+    public ArrayList<MessageItem> tempMessageList;
     public static final String fb_conversation_database = "Conversation";
     public static final String fb_message_database = "Message";
 
@@ -56,7 +58,7 @@ public class ConversationsActivity extends AppCompatActivity {
 
         conversationRefrences = new ArrayList<ConversationReferenceItem>(0);
         messageList = new ArrayList<MessageItem>(0);
-
+        tempMessageList = new ArrayList<MessageItem>(0);
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please wait loading.....");
@@ -64,16 +66,15 @@ public class ConversationsActivity extends AppCompatActivity {
         progressDialog.dismiss();
 
         //ProfileItem pi1 = firstQuery();
-        //firstQuery();
-        secondQuery();
+        firstQuery();
+        //secondQuery();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
-                messageList.clear();
                 ConversationReferenceItem tempListName = conversationRefrences.get(i);
                 listName = tempListName;
-                thirdQuery(listName.getConversationId());
+                messageList = thirdQuery(listName.getConversationId());
                 Intent intent = new Intent(ConversationsActivity.this, ChatRoomActivity.class);
                 startActivity(intent);
             }
@@ -106,11 +107,13 @@ public class ConversationsActivity extends AppCompatActivity {
                             ci.getMuserId1(), ci.getMuser1Image(), ci.getLastMessage(), ci.getLastMessageDate(),
                             ci.getMessageKeys());
                     conversationRefrences.add(cri);
+                    /*
                     if (!conversationRefrences.isEmpty()){
                         Log.e("LOGGED MESSAGE", "Something was added");
                     }else{
                         Log.e("LOGGED MESSAGE", ci.getConversationId());
                     }
+                    */
                 }
                 secondQuery();
             }
@@ -151,19 +154,24 @@ public class ConversationsActivity extends AppCompatActivity {
         //return userInfo2;
     }
 
-    private void thirdQuery(String conversationID) {
+    private ArrayList<MessageItem> thirdQuery(String conversationID) {
+        //messageList.clear();
+        tempMessageList.clear();
         Query query3 = databaseReferenceMessage.orderByChild("conversationId").startAt(conversationID).endAt(conversationID);
         query3.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("LOGGED MESSAGE", "Something was added");
+                //Log.e("LOGGED MESSAGE", "Something was added");
                 progressDialog.dismiss();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     //ProfileItem pi = snapshot.getValue(ProfileItem.class);
                     //userInfo2 = pi;
                     MessageItem mi = snapshot.getValue(MessageItem.class);
-                    Log.e("LOGGED MESSAGE", mi.getConversationId());
-                    messageList.add(mi);
+                    //Log.e("LOGGED MESSAGE", mi.getConversationId());
+                    //messageList.add(mi);
+                    tempMessageList.add(mi);
+                    //tempMessageList = messageList;
+                    /*
                     if (messageList.isEmpty()){
                         Log.e("LOGGED MESSAGE", "it's empty");
                     }else{
@@ -172,6 +180,7 @@ public class ConversationsActivity extends AppCompatActivity {
                         Log.e("mi.getMessageDate", messageList.get(0).getMessageDate());
                         Log.e("mi.getMuserId1", messageList.get(0).getSenderId());
                     }
+                    */
                 }
             }
 
@@ -180,8 +189,12 @@ public class ConversationsActivity extends AppCompatActivity {
                 progressDialog.dismiss();
             }
         });
+        return tempMessageList;
     }
 
+    public static ArrayList<MessageItem> getMessageList() {
+        return messageList;
+    }
 /*
     public void sort(ArrayList<MessageItem> ml){
         int size = ml.size();
