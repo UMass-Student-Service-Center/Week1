@@ -1,10 +1,12 @@
 package com.example.u.ussc;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.content.Context;
+import android.widget.TextView;
 
 import com.github.library.bubbleview.BubbleTextView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -48,16 +50,25 @@ public class ChatRoomAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
         View v = view;
+        MessageItem mi = messageList.get(position);
 
-        if(view == null){
-            if(messageList.get(position).getSenderId().equals(mUserId)){
-                v = inflater.inflate(R.layout.activity_message_sent, null);
-            }else{
-                v = inflater.inflate(R.layout.activity_message_received, null);
-            }
+        if(mi.getSenderId().equals(mUserId)){
+            //v = inflater.inflate(R.layout.activity_message_sent, null);
+            v = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+                    .inflate(R.layout.activity_message_sent, viewGroup, false);
+        }else if (!mi.getSenderId().equals(mUserId)){
+            //v = inflater.inflate(R.layout.activity_message_received, null);
+            v = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+                    .inflate(R.layout.activity_message_received, viewGroup, false);
         }
 
+        TextView senderName = (TextView)v.findViewById(R.id.senderName);
         BubbleTextView bubbleTextView = (BubbleTextView)v.findViewById(R.id.bubblechat);
+        if(messageList.get(position).getSenderId().equals(mUserId)){
+            senderName.setText(ConversationsActivity.sendUser);
+        }else {
+            senderName.setText(ConversationsActivity.receiveUser);
+        }
         bubbleTextView.setText(messageList.get(position).getMessage());
 
         return v;

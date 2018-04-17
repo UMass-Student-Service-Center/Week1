@@ -2,8 +2,20 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/inChatMessage"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+    <TextView
+        android:id="@+id/senderName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="text"
+        android:textSize="14sp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="20dp"
+        />
 
     <com.github.library.bubbleview.BubbleTextView
         android:layout_width="wrap_content"
