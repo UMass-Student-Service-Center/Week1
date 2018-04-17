@@ -31,6 +31,7 @@ public class ConversationsActivity extends AppCompatActivity {
     private FirebaseUser mFirebaseUser;
     private DatabaseReference databaseReferenceConversation;
     private DatabaseReference databaseReferenceMessage;
+    private static DatabaseReference staticDatabaseReferenceMessage;
     private ProgressDialog progressDialog;
     private ArrayList<ConversationReferenceItem> conversationRefrences;
     private String mUserId;
@@ -40,8 +41,11 @@ public class ConversationsActivity extends AppCompatActivity {
     public  String tempUser = "ySjOLxPHiua08gofQoWMznnVFO92";
     public static ArrayList<MessageItem> messageList;
     public ArrayList<MessageItem> tempMessageList;
+    public static ArrayList<MessageItem> tempMessageList2;
     public static final String fb_conversation_database = "Conversation";
     public static final String fb_message_database = "Message";
+    public static String sendUser;
+    public static String receiveUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,7 @@ public class ConversationsActivity extends AppCompatActivity {
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         mUserId = mFirebaseUser.getUid();
         databaseReferenceConversation = FirebaseDatabase.getInstance().getReference(fb_conversation_database);
+        staticDatabaseReferenceMessage = FirebaseDatabase.getInstance().getReference(fb_message_database);
         databaseReferenceMessage = FirebaseDatabase.getInstance().getReference(fb_message_database);
 
         listView = (ListView) findViewById(R.id.conversation_list);
@@ -59,6 +64,8 @@ public class ConversationsActivity extends AppCompatActivity {
         conversationRefrences = new ArrayList<ConversationReferenceItem>(0);
         messageList = new ArrayList<MessageItem>(0);
         tempMessageList = new ArrayList<MessageItem>(0);
+        tempMessageList2 = new ArrayList<MessageItem>(0);
+
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please wait loading.....");
@@ -74,6 +81,7 @@ public class ConversationsActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
                 ConversationReferenceItem tempListName = conversationRefrences.get(i);
                 listName = tempListName;
+                setUsers(listName.getConversationId());
                 messageList = thirdQuery(listName.getConversationId());
                 Intent intent = new Intent(ConversationsActivity.this, ChatRoomActivity.class);
                 startActivity(intent);
@@ -99,21 +107,11 @@ public class ConversationsActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 progressDialog.dismiss();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    //ProfileItem pi = snapshot.getValue(ProfileItem.class);
-                    //userInfo1 = pi;
-                    //ProfileItem pi2 = secondQuery();
                     ConversationItem ci = snapshot.getValue(ConversationItem.class);
                     ConversationReferenceItem cri = new ConversationReferenceItem(ci.getConversationId(),
-                            ci.getMuserId1(), ci.getMuser1Image(), ci.getLastMessage(), ci.getLastMessageDate(),
+                            ci.getMuserName2(), ci.getMuser2Image(), ci.getLastMessage(), ci.getLastMessageDate(),
                             ci.getMessageKeys());
                     conversationRefrences.add(cri);
-                    /*
-                    if (!conversationRefrences.isEmpty()){
-                        Log.e("LOGGED MESSAGE", "Something was added");
-                    }else{
-                        Log.e("LOGGED MESSAGE", ci.getConversationId());
-                    }
-                    */
                 }
                 secondQuery();
             }
@@ -164,23 +162,8 @@ public class ConversationsActivity extends AppCompatActivity {
                 //Log.e("LOGGED MESSAGE", "Something was added");
                 progressDialog.dismiss();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    //ProfileItem pi = snapshot.getValue(ProfileItem.class);
-                    //userInfo2 = pi;
                     MessageItem mi = snapshot.getValue(MessageItem.class);
-                    //Log.e("LOGGED MESSAGE", mi.getConversationId());
-                    //messageList.add(mi);
                     tempMessageList.add(mi);
-                    //tempMessageList = messageList;
-                    /*
-                    if (messageList.isEmpty()){
-                        Log.e("LOGGED MESSAGE", "it's empty");
-                    }else{
-                        Log.e("mi.getConversationId", messageList.get(0).getConversationId());
-                        Log.e("mi.getLastMessage", messageList.get(0).getMessage());
-                        Log.e("mi.getMessageDate", messageList.get(0).getMessageDate());
-                        Log.e("mi.getMuserId1", messageList.get(0).getSenderId());
-                    }
-                    */
                 }
             }
 
@@ -192,18 +175,61 @@ public class ConversationsActivity extends AppCompatActivity {
         return tempMessageList;
     }
 
+    private static ArrayList<MessageItem> fourthQuery(String conversationID) {
+        //messageList.clear();
+        //tempMessageList.clear();
+        tempMessageList2.clear();
+        Query query4 = staticDatabaseReferenceMessage.orderByChild("conversationId").startAt(conversationID).endAt(conversationID);
+        query4.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Log.e("LOGGED MESSAGE", "Something was added");
+                //progressDialog.dismiss();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    MessageItem mi = snapshot.getValue(MessageItem.class);
+                    tempMessageList2.add(mi);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //progressDialog.dismiss();
+            }
+        });
+        return tempMessageList2;
+    }
+
+    public void setUsers(String conversationID) {
+        Query query5 = databaseReferenceConversation.orderByChild("conversationId").startAt(conversationID).endAt(conversationID);
+        query5.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Log.e("LOGGED MESSAGE", "Something was added");
+                progressDialog.dismiss();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    ConversationItem ci = snapshot.getValue(ConversationItem.class);
+                    if(ci.getMuserId1().equals(mUserId)) {
+                        sendUser = ci.getMuserName1();
+                        receiveUser = ci.getMuserName2();
+                    } else {
+                        sendUser = ci.getMuserName2();
+                        receiveUser = ci.getMuserName1();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                progressDialog.dismiss();
+            }
+        });
+    }
+
     public static ArrayList<MessageItem> getMessageList() {
         return messageList;
     }
-/*
-    public void sort(ArrayList<MessageItem> ml){
-        int size = ml.size();
-        if (size >= 1) {
-            String minDate = ml.get(0).getMessageDate();
-            for (int i = 0; i < size; i++){
 
-            }
-        }
+    public static void refreshMessageList(){
+        messageList = fourthQuery(listName.getConversationId());
     }
-    */
 }

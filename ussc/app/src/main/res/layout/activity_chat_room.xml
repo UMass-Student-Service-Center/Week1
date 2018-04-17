@@ -7,16 +7,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    tools:context="com.example.u.ussc.ChatRoomActivity">
+    tools:context="com.example.u.ussc.ChatRoomActivity"
+    android:descendantFocusability="beforeDescendants" >
 
     <ListView
+        android:id="@+id/chatRoomList"
         android:layout_height="0dp"
         android:layout_width="match_parent"
         android:fastScrollEnabled="true"
         android:divider="@color/white"
         android:layout_weight="1"
         android:layout_gravity="bottom"
-        android:id="@+id/chatRoomList"> </ListView>
+        tools:listitem="@layout/activity_message_received" > </ListView>
 
 
     <LinearLayout

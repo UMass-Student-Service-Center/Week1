@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -73,6 +74,8 @@ public class ChatRoomActivity extends AppCompatActivity {
         listView = (ListView)findViewById(R.id.chatRoomList);
         ChatRoomAdapter adapter = new ChatRoomAdapter(ConversationsActivity.messageList,this);
         listView.setAdapter(adapter);
+        listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+        listView.setStackFromBottom(true);
 
         message = (EditText)findViewById(R.id.messageTxt);
         conversationID = ConversationsActivity.listName.getConversationId();
@@ -90,8 +93,20 @@ public class ChatRoomActivity extends AppCompatActivity {
                 addQuery();
                 Intent intent = new Intent(ChatRoomActivity.this, ConversationsActivity.class);
                 startActivity(intent);
+                //ConversationsActivity.refreshMessageList();
             }
         });
+    }
+
+    protected void onResume() {
+        super.onResume();
+
+        listView.clearFocus();
+        listView = (ListView)findViewById(R.id.chatRoomList);
+        ChatRoomAdapter adapter = new ChatRoomAdapter(ConversationsActivity.messageList,this);
+        listView.setAdapter(adapter);
+        listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+        listView.setStackFromBottom(true);
     }
 
     private void addQuery(){
