@@ -1,5 +1,6 @@
 package com.example.u.ussc;
 
+import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
@@ -10,8 +11,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,8 +22,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.u.ussc.database.AdvisingContract.AdvisingEntry;
 
+import com.example.u.ussc.database.AdvisingContract.AdvisingEntry;
+import com.google.gson.Gson;
+
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -30,6 +39,8 @@ import java.util.Calendar;
 
 public class AdvisingEditorActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
+
+    private static final String TAG = "editorAcivity";
 
     private static final int EXISTING_ADVISING_LOADER = 0;
 
@@ -45,14 +56,17 @@ public class AdvisingEditorActivity extends AppCompatActivity implements
 
     };
 
-    private EditText mClassName;
-    private EditText mClassDescription;
-    private EditText mClassNumber; //col_quantity
+    private Spinner mClassName;
+    private Spinner mClassDescription;
+    private Spinner mClassNumber; //col_quantity
+    private Spinner mClassCredits;
     private EditText mClassPrereq;
 
     private Uri mCurrentProductUri;
 
     private boolean mProductHasChanged = false;
+
+    private String myJson;
 
 //    private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
 //        @Override
@@ -62,10 +76,15 @@ public class AdvisingEditorActivity extends AppCompatActivity implements
 //        }
 //    };
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
+
+        //res/raw/json file
+        myJson= inputStreamToString(getResources().openRawResource(R.raw.cs_catalog));
+        classModel myModel = new Gson().fromJson(myJson, classModel.class);
 
         //populate drop down
         String[] semesterArr = new String[] { "Fall", "Winter", "Spring", "Summer"};
@@ -83,15 +102,75 @@ public class AdvisingEditorActivity extends AppCompatActivity implements
         Spinner spinYear = (Spinner)findViewById(R.id.year);
         spinYear.setAdapter(adapterYear);
 
-        String[] creditsArr = new String[] {"1","3","4"};
-        ArrayAdapter<String> adapterCredits = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, creditsArr);
-        Spinner spinCredits =  (Spinner) findViewById(R.id.credit);
-        spinCredits.setAdapter(adapterCredits);
 
-        mClassName = findViewById(R.id.edit_course_name);
-        mClassDescription = findViewById(R.id.edit_course_description);
-        mClassNumber = findViewById(R.id.edit_course_number);
+        //adding the course values to their respective spinner
+        ArrayList<String> idArr = new ArrayList<String>();
+        ArrayList<String> nameArr = new ArrayList<String>();
+        ArrayList<String> descriptionArr = new ArrayList<String>();
+        ArrayList<String> creditArr = new ArrayList<String>();
+        for(int i=0;i < myModel.list.size(); i++) {
+            idArr.add(myModel.list.get(i).id);
+            nameArr.add(myModel.list.get(i).name);
+            descriptionArr.add(myModel.list.get(i).description);
+            creditArr.add(myModel.list.get(i).credits);
+        }
+
+        ArrayAdapter<String> adapterId = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,idArr);
+        mClassNumber = (Spinner) findViewById(R.id.edit_course_number);
+        mClassNumber.setAdapter(adapterId);
+
+        ArrayAdapter<String> adapterName = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,nameArr);
+        mClassName = (Spinner) findViewById(R.id.edit_course_name);
+        mClassName.setAdapter(adapterName);
+
+
+        ArrayAdapter<String> adapterDescription = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,descriptionArr);
+        mClassDescription = (Spinner) findViewById(R.id.edit_course_description);
+        mClassDescription.setEnabled(false);
+        mClassDescription.setAdapter(adapterDescription);
+
+        ArrayAdapter<String> adapterCredits = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,creditArr);
+        mClassCredits = (Spinner) findViewById(R.id.credit);
+        mClassCredits.setEnabled(false);
+        mClassCredits.setAdapter(adapterCredits);
+
+//        mClassName = findViewById(R.id.edit_course_name);
+//        mClassDescription = findViewById(R.id.edit_course_description);
+//        mClassNumber = findViewById(R.id.edit_course_number);
         mClassPrereq = findViewById(R.id.edit_course_prereq);
+
+        //when course name changes other fields change with it
+        mClassName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,int position, long arg3) {
+                mClassDescription.setSelection(position);
+                mClassNumber.setSelection(position);
+                mClassCredits.setSelection(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+
+            }
+
+        });
+
+        mClassNumber.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,int position, long arg3) {
+                mClassDescription.setSelection(position);
+                mClassName.setSelection(position);
+                mClassCredits.setSelection(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+
+            }
+
+        });
 
 //        mClassName.setOnTouchListener(mTouchListener);
 //        mClassDescription.setOnTouchListener(mTouchListener);
@@ -142,29 +221,29 @@ public class AdvisingEditorActivity extends AppCompatActivity implements
             String description = cursor.getString(i_COL_DESCRIPTION);
 
             //We updates fields to values on DB
-            mClassName.setText(name);
-            mClassNumber.setText(number);
-            mClassPrereq.setText(prereq);
-            mClassDescription.setText(description);
+//            mClassName.setText(name);
+//            mClassNumber.setText(number);
+//            mClassPrereq.setText(prereq);
+//            mClassDescription.setText(description);
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mClassName.setText("");
-        mClassNumber.setText("");
-        mClassPrereq.setText("");
-        mClassDescription.setText("");
+//        mClassName.setSel;
+//        mClassNumber.setText("");
+//        mClassPrereq.setText("");
+//        mClassDescription.setText("");
 
     }
 
     private void saveProduct() {
         //Read Values from text field
-        String nameString = mClassName.getText().toString().trim();
-        String descriptionString = mClassDescription.getText().toString().trim();
-        String numberString = mClassNumber.getText().toString().toString();
+        String nameString = mClassName.getSelectedItem().toString().trim();
+        String descriptionString = mClassDescription.getSelectedItem().toString().trim();
+        String numberString = mClassNumber.getSelectedItem().toString().toString();
         String prereqString = mClassPrereq.getText().toString().trim();
-
+        String creditString = mClassCredits.getSelectedItem().toString();
         //Check if is new or if an update
         if (TextUtils.isEmpty(nameString) || TextUtils.isEmpty(descriptionString)
                 || TextUtils.isEmpty(numberString)
@@ -177,10 +256,13 @@ public class AdvisingEditorActivity extends AppCompatActivity implements
 
         ContentValues values = new ContentValues();
 
+
+        //TODO: Add semester season and credit to the data base
         values.put(AdvisingEntry.COL_NAME, nameString);
         values.put(AdvisingEntry.COL_DESCRIPTION, descriptionString);
         values.put(AdvisingEntry.COL_NUMBER, numberString);
         values.put(AdvisingEntry.COL_PREREQ, prereqString);
+        values.put(AdvisingEntry.COL_CREDITS, creditString);
 
 
         if (mCurrentProductUri == null) {
@@ -210,5 +292,17 @@ public class AdvisingEditorActivity extends AppCompatActivity implements
         }
 
 
+    }
+
+    //for reading in json file
+    public String inputStreamToString(InputStream inputStream) {
+        try {
+            byte[] bytes = new byte[inputStream.available()];
+            inputStream.read(bytes, 0, bytes.length);
+            String json = new String(bytes);
+            return json;
+        } catch (IOException e) {
+            return null;
+        }
     }
 }

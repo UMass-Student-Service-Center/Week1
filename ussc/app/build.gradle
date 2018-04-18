@@ -49,6 +49,7 @@ dependencies {
     implementation 'hani.momanii.supernova_emoji_library:supernova-emoji-library:0.0.2'
     implementation 'com.github.lguipeng:BubbleView:1.0.1'
     testImplementation 'junit:junit:4.12'
+    compile 'com.google.code.gson:gson:2.8.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

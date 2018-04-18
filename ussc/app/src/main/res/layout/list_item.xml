@@ -1,60 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:minHeight="50dp">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:textAppearanceMedium"
-        android:textColor="#2B3D4D"  />
+        android:textColor="#2B3D4D" />
 
     <TextView
         android:id="@+id/course_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:textAppearanceSmall"
-        android:textColor="#AEB6BD"
-        app:layout_constraintTop_toBottomOf="@id/name"/>
+        android:textColor="#AEB6BD" />
 
     <TextView
-        android:id="@+id/credits"
+        android:id="@+id/credit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginLeft="43dp"
         android:textAppearance="?android:textAppearanceMedium"
-        android:textColor="#AEB6BD"
-        app:layout_constraintLeft_toRightOf="@id/course_number"
-        android:layout_marginBottom="8dp" />
+        android:textColor="#AEB6BD" />
 
     <TextView
         android:id="@+id/semester_plus_year"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:textAppearanceMedium"
-        app:layout_constraintLeft_toRightOf="@+id/credits"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="8dp"
+        android:textAppearance="?android:textAppearanceMedium" />
 
     <TextView
         android:id="@+id/description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        app:layout_constraintBottom_toBottomOf="@id/course_number"
         android:inputType="textMultiLine" />
 
     <TextView
         android:id="@+id/course_prereq"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:ems="10"
-        android:inputType="textMultiLine"
-        app:layout_constraintBottom_toBottomOf="@id/description"/>
+        android:inputType="textMultiLine" />
 
+    <TextView
+        android:id="@+id/credits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="43dp"
+        android:textAppearance="?android:textAppearanceMedium" />
 
-</android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.LinearLayoutCompat>

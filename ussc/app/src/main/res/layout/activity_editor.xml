@@ -26,27 +26,22 @@
             android:paddingLeft="4dp">
 
 
-            <EditText
+            <Spinner
                 android:id="@+id/edit_course_name"
                 style="@style/EditorFieldStyle"
                 android:layout_width="match_parent"
-                android:layout_weight="2"
-                android:hint="Course Name"
-                android:inputType="textAutoCorrect" />
+                android:layout_weight="2" />
 
-            <EditText
+            <Spinner
                 android:id="@+id/edit_course_number"
                 style="@style/EditorFieldStyle"
-                android:hint="Course Number Ex.COMP.4650"
                 android:inputType="textAutoCorrect" />
 
-            <EditText
+            <Spinner
                 android:id="@+id/edit_course_description"
                 style="@style/EditorFieldStyle"
                 android:layout_width="match_parent"
-                android:layout_weight="2"
-                android:hint="Description"
-                android:inputType="text" />
+                android:layout_weight="2" />
 
             <EditText
                 android:id="@+id/edit_course_prereq"
