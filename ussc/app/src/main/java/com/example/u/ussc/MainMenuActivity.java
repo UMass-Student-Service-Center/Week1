@@ -3,7 +3,6 @@ package com.example.u.ussc;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -36,36 +35,7 @@ public class MainMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
-        bottomNavigation = (BottomNavigationView)findViewById(R.id.bottom_navigation);
-        bottomNavigation.inflateMenu(R.menu.menu_home);
-        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_lostandfound:
-                        //go to lost and found
-                        goto_lost_and_found();
-                        return true;
-                    case R.id.action_market:
-                        //go to marketplace
-                        goto_marketplace_();
-                        return true;
-                    case R.id.action_advising:
-                        //go to advising
-                        goto_advising();
-                        return true;
-                    case R.id.action_chat:
-                        //go to chat
-                        goto_conversations();
-                        return true;
-                    case R.id.action_profile:
-                        //go to profile
-                        goto_profile();
-                        return true;
-                }
-                return true;
-            }
-        });
+
 
         // Initialize Firebase Auth and Database Reference
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -118,16 +88,14 @@ public class MainMenuActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            //go to profile
             case R.id.action_profile:
-                //go to profile
                 goto_profile();
                 return true;
-
-            case R.id.logout:
-                //logout
-                mFirebaseAuth.signOut();
-                loadLogInView();
-                break;
+            //go to chat
+            case R.id.action_chat:
+                goto_conversations();
+                return true;
         }
         return super.onOptionsItemSelected(item);
 

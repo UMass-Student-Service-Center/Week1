@@ -2,7 +2,6 @@ package com.example.u.ussc;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -50,36 +49,6 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         //setContentView(R.layout.profile_2);
-        bottomNavigation = (BottomNavigationView)findViewById(R.id.bottom_navigation);
-        bottomNavigation.inflateMenu(R.menu.menu_profile);
-        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_lostandfound:
-                        //go to lost and found
-                        goto_lost_and_found();
-                        return true;
-                    case R.id.action_market:
-                        //go to marketplace
-                        goto_marketplace_();
-                        return true;
-                    case R.id.action_advising:
-                        //go to advising
-                        goto_advising();
-                        return true;
-                    case R.id.action_chat:
-                        //go to chat
-                        goto_conversations();
-                        return true;
-                    case R.id.action_profile:
-                        //go to profile
-                        goto_profile();
-                        return true;
-                }
-                return true;
-            }
-        });
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
@@ -217,14 +186,30 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_profile, menu);
         return true;
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            //go to lost and found
+            case R.id.action_lostandfound:
+                goto_lost_and_found();
+                return true;
+            //go to marketplace
+            case R.id.action_market:
+                goto_marketplace_();
+                return true;
+            //go to advising
+            case R.id.action_advising:
+                goto_advising();
+                return true;
+            //go to chat
+            case R.id.action_chat:
+                goto_conversations();
+                return true;
+            // add item
             case R.id.add:
-                // back home
                 goto_add();
                 return true;
             case R.id.logout:
@@ -268,9 +253,5 @@ public class ProfileActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void goto_profile() {
-        Intent intent = new Intent(ProfileActivity.this, ProfileActivity.class);
-        startActivity(intent);
-    }
 
 }

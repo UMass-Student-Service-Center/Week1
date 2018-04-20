@@ -3,9 +3,9 @@ package com.example.u.ussc;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -47,6 +47,8 @@ public class MarketplaceActivity extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         final FirebaseUser user = mFirebaseAuth.getCurrentUser();
+
+        /*
         bottomNavigation = (BottomNavigationView)findViewById(R.id.bottom_navigation);
         bottomNavigation.inflateMenu(R.menu.menu_market);
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -73,6 +75,7 @@ public class MarketplaceActivity extends AppCompatActivity {
                 return true;
             }
         });
+        */
         //mDatabase = FirebaseDatabase.getInstance().getReference();
 
         if (mFirebaseUser == null || !(user.isEmailVerified())) {
@@ -154,6 +157,33 @@ public class MarketplaceActivity extends AppCompatActivity {
 
         }
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_market, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_lostandfound:
+                //go to lost and found
+                goto_lost_and_found();
+                return true;
+            case R.id.action_advising:
+                //go to advising
+                goto_advising();
+                return true;
+            case R.id.action_chat:
+                //go to chat
+                goto_conversations();
+                return true;
+            case R.id.action_profile:
+                //go to profile
+                goto_profile();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void loadLogInView() {

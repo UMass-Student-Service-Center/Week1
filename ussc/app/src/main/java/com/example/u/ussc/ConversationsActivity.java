@@ -9,7 +9,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -23,7 +24,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ConversationsActivity extends AppCompatActivity {
@@ -97,6 +97,33 @@ public class ConversationsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_conversations, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            //go to lost and found
+            case R.id.action_lostandfound:
+                goto_lost_and_found();
+                return true;
+            //go to marketplace
+            case R.id.action_market:
+                goto_marketplace_();
+                return true;
+            //go to advising
+            case R.id.action_advising:
+                goto_advising();
+                return true;
+            //go to profile
+            case R.id.action_profile:
+                goto_profile();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     // Get the first query
@@ -231,5 +258,25 @@ public class ConversationsActivity extends AppCompatActivity {
 
     public static void refreshMessageList(){
         messageList = fourthQuery(listName.getConversationId());
+    }
+    private void goto_lost_and_found() {
+        Intent intent = new Intent(ConversationsActivity.this, LostandFActivity.class);
+        startActivity(intent);
+    }
+
+    private void goto_marketplace_() {
+        Intent intent = new Intent(ConversationsActivity.this, MarketplaceActivity.class);
+        startActivity(intent);
+    }
+
+    private void goto_advising() {
+        Intent intent = new Intent(ConversationsActivity.this, AdvisingActivity.class);
+        startActivity(intent);
+    }
+
+
+    private void goto_profile() {
+        Intent intent = new Intent(ConversationsActivity.this, ProfileActivity.class);
+        startActivity(intent);
     }
 }
