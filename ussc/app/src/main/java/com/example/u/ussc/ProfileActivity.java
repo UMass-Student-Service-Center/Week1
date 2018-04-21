@@ -154,33 +154,6 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             });
 
-            /*
-            databaseReference_2 = FirebaseDatabase.getInstance().getReference(add_item_marketplaceActivity.fb_database);//add_item_marketplaceActivity.fb_database
-
-            databaseReference_2.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    //progressDialog.dismiss();
-                    list_item_2.clear();
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        item_names ln = snapshot.getValue(item_names.class);
-                        if (ln.getUserid().equals(mUserId))
-                            list_item_2.add(ln);
-                    }
-
-                    adapter = new item_list_Adapter(ProfileActivity.this, R.layout.lostandf_item, list_item_2);
-                    listView_2.setAdapter(adapter);
-                    Utility.setListViewHeightBasedOnChildren(listView_2);
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    // progressDialog.dismiss();
-                }
-            });
-
-            */
-
         }
     }
 

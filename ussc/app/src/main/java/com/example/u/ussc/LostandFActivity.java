@@ -59,8 +59,8 @@ public class LostandFActivity extends AppCompatActivity {
 
             list_item_s = new ArrayList<>();
             listView = (ListView) findViewById(R.id.list_1);
-            searchView = (SearchView) findViewById(R.id.searchbook_m);
-            all = (Button) findViewById(R.id.all);
+            searchView = (SearchView) findViewById(R.id.searchbook);
+            //all = (Button) findViewById(R.id.all);
 
             list_item_s = new ArrayList<>();
             progressDialog = new ProgressDialog(this);
@@ -71,6 +71,7 @@ public class LostandFActivity extends AppCompatActivity {
 
             progressDialog.dismiss();
 
+            /*
             all.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -96,6 +97,7 @@ public class LostandFActivity extends AppCompatActivity {
                     });
                 }
             });
+            */
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
                 @Override
@@ -103,8 +105,9 @@ public class LostandFActivity extends AppCompatActivity {
 
                 @Override
                 public boolean onQueryTextChange(final String newText) {
-                    //Query query = databaseReference.orderByChild("isbn").startAt(newText).endAt("~");
-                    Query query = databaseReference.orderByChild("title").startAt(newText).endAt(newText);
+                    Query query = databaseReference.orderByChild("title").startAt(newText).endAt("~");
+                    //Query query = databaseReference.orderByChild("title").startAt(newText).endAt(newText);
+                    //Query query = databaseReference.orderByChild("title").equalTo(newText);
                     query.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -193,6 +196,88 @@ public class LostandFActivity extends AppCompatActivity {
     private void goto_profile() {
         Intent intent = new Intent(LostandFActivity.this, ProfileActivity.class);
         startActivity(intent);
+    }
+    public void ButtonOnClick(View v) {
+        switch (v.getId()) {
+                //
+            case R.id.lost_l:
+                display_lost();
+                break;
+            case R.id.found_f:
+                //
+                display_found();
+                break;
+
+            case R.id.all_a:
+                //
+                display_all();
+                break;
+        }
+    }
+
+    public void display_lost(){
+        Query query = databaseReference.orderByChild("item_type").equalTo("Lose item");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                progressDialog.dismiss();
+                list_item_s.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    item_names ln = snapshot.getValue(item_names.class);
+                    list_item_s.add(ln);
+                }
+                adapter = new item_list_Adapter(LostandFActivity.this,R.layout.lostandf_item, list_item_s);
+                listView.setAdapter(adapter);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                progressDialog.dismiss();
+            }
+        });
+    }
+
+    public void display_found(){
+        Query query = databaseReference.orderByChild("item_type").equalTo("item found");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                progressDialog.dismiss();
+                list_item_s.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    item_names ln = snapshot.getValue(item_names.class);
+                    list_item_s.add(ln);
+                }
+                adapter = new item_list_Adapter(LostandFActivity.this,R.layout.lostandf_item, list_item_s);
+                listView.setAdapter(adapter);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                progressDialog.dismiss();
+            }
+        });
+    }
+
+    public void display_all(){
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                progressDialog.dismiss();
+                list_item_s.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    item_names ln = snapshot.getValue(item_names.class);
+                    //if (ln.getMUserId().equals(mUserId))
+                    list_item_s.add(ln);
+                }
+
+                adapter = new item_list_Adapter(LostandFActivity.this, R.layout.lostandf_item, list_item_s);
+                listView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                progressDialog.dismiss();
+            }
+        });
     }
 
 }

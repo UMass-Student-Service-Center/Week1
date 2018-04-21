@@ -181,11 +181,11 @@ public class add_item_marketplaceActivity extends AppCompatActivity {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     dialog.dismiss();
                     Toast.makeText(getApplicationContext(), "uploaded", Toast.LENGTH_SHORT).show();
-
-                    item_names s = new item_names(mUserId, user_names, type, Userimages, title, taskSnapshot.getDownloadUrl().toString(), desc, price_of_item, strDate);
+                    // set data
+                    String upload_id = ref.push().getKey();
+                    item_names s = new item_names(upload_id,mUserId, user_names, type, Userimages, title, taskSnapshot.getDownloadUrl().toString(), desc, price_of_item, strDate);
 
                     //save data
-                    String upload_id = ref.push().getKey();
                     ref.child(upload_id).setValue(s);
                 }
             })
