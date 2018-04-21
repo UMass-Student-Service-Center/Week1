@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".AdvisingActivity">
@@ -7,4 +8,25 @@
     <item
         android:id="@+id/reset_list"
         android:title="Reset List"/>
+    <item
+        android:id="@+id/action_lostandfound"
+        android:title="@string/icon_lostandfound"
+        android:icon="@drawable/action_lostandf"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_market"
+        android:title="@string/icon_market"
+        android:icon="@drawable/action_market"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_chat"
+        android:title="@string/icon_chat"
+        android:icon="@drawable/action_chat"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_profile"
+        android:title="@string/icon_profile"
+        android:icon="@drawable/icon_profile"
+        app:showAsAction="always"/>
+
 </menu>

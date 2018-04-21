@@ -100,6 +100,22 @@ public class AdvisingActivity extends AppCompatActivity implements
             case R.id.reset_list:
                 deleteAllItems();
                 return true;
+            //go to lost and found
+            case R.id.action_lostandfound:
+                goto_lost_and_found();
+                return true;
+            //go to marketplace
+            case R.id.action_market:
+                goto_marketplace_();
+                return true;
+            //go to chat
+            case R.id.action_chat:
+                goto_conversations();
+                return true;
+            //go to profile
+            case R.id.action_profile:
+                goto_profile();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -107,6 +123,27 @@ public class AdvisingActivity extends AppCompatActivity implements
     private void deleteAllItems() {
         int rowsDeleted = getContentResolver().delete(AdvisingEntry.CONTENT_URI, null, null);
         //Log.v("CatalogActivity", rowsDeleted + " rows deleted from products database");
+    }
+
+    private void goto_lost_and_found() {
+        Intent intent = new Intent(AdvisingActivity.this, LostandFActivity.class);
+        startActivity(intent);
+    }
+
+    private void goto_marketplace_() {
+        Intent intent = new Intent(AdvisingActivity.this, MarketplaceActivity.class);
+        startActivity(intent);
+    }
+
+
+    private void goto_conversations() {
+        Intent intent = new Intent(AdvisingActivity.this, ConversationsActivity.class);
+        startActivity(intent);
+    }
+
+    private void goto_profile() {
+        Intent intent = new Intent(AdvisingActivity.this, ProfileActivity.class);
+        startActivity(intent);
     }
 
 }
