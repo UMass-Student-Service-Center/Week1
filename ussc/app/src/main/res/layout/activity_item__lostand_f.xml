@@ -51,11 +51,17 @@
         android:layout_height="wrap_content"
         android:textSize="25sp"
         android:text="@string/reward"/>
+        <TextView
+            android:id="@+id/price_sign"
+            android:text="@string/pricedollarsign"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"/>
     <EditText
         android:id="@+id/user_amount"
-        android:hint="@string/pricedollarsign"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="number"
         android:textSize="25sp"/>
     </LinearLayout>
 
