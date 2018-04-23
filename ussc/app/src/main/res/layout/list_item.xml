@@ -18,41 +18,26 @@
         android:textColor="#AEB6BD" />
 
     <TextView
-        android:id="@+id/credit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="43dp"
-        android:textAppearance="?android:textAppearanceMedium"
-        android:textColor="#AEB6BD" />
-
-    <TextView
-        android:id="@+id/semester_plus_year"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:textAppearance="?android:textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textMultiLine" />
-
-    <TextView
         android:id="@+id/course_prereq"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:ems="10"
-        android:inputType="textMultiLine" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:ems="5" />
 
     <TextView
         android:id="@+id/credits"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="43dp"
-        android:textAppearance="?android:textAppearanceMedium" />
+        android:textAppearance="?android:textAppearanceMedium"
+        android:layout_marginLeft="20dp"
+        android:ems="5"/>
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:ems="10"
+        android:inputType="textMultiLine" />
 
 </android.support.v7.widget.LinearLayoutCompat>

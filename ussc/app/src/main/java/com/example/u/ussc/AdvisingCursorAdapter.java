@@ -33,7 +33,7 @@ public class AdvisingCursorAdapter extends CursorAdapter {
         TextView courseNumberTextView  = (TextView) view.findViewById(R.id.course_number);
         TextView descriptionTextView = (TextView) view.findViewById(R.id.description);
         TextView creditTextView = (TextView) view.findViewById(R.id.credits);
-        TextView semesterTextView = (TextView) view.findViewById(R.id.semester_plus_year);
+        //TextView semesterTextView = (TextView) view.findViewById(R.id.semester_plus_year);
         TextView prereqTextView = (TextView) view.findViewById(R.id.course_prereq);
 
 

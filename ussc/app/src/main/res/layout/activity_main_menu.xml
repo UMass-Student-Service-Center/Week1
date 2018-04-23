@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.u.ussc.MainMenuActivity">
+    tools:context="com.example.u.ussc.MainMenuActivity"
+    android:background="@drawable/gradient">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
         android:layout_width="match_parent"
@@ -12,11 +13,17 @@
         android:padding="90dp"
         android:orientation="vertical">
 
+        <android.support.v7.widget.AppCompatImageView
+            android:src="@drawable/logo"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="250dp"
+            android:layout_height="250dp" />
+
         <TextView
             android:id="@+id/mainmenu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center_horizontal"
             android:padding="15dp"
             android:text="@string/mainmenu"
             android:textSize="30dp" />
@@ -26,8 +33,6 @@
             android:layout_width="250dp"
             android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/lost"
-            android:textColor="@color/red"
             android:text="@string/lostandfound"/>
 
         <Button
@@ -35,14 +40,12 @@
             android:layout_width="250dp"
             android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/cart"
-            android:textColor="@color/white"
             android:text="@string/marketplace" />
 
         <Button
             android:id="@+id/advising"
-            android:layout_width="200dp"
-            android:layout_height="80dp"
+            android:layout_width="250dp"
+            android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
             android:text="@string/advising"/>
     </LinearLayout>
