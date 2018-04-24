@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -36,6 +37,7 @@ public class MarketplaceActivity extends AppCompatActivity {
     private item_list_Adapter adapter;
     private SearchView searchView;
     private Button all;
+    private Button sendMessage;
     private ProgressDialog progressDialog;
     private BottomNavigationView bottomNavigation;
 
@@ -90,6 +92,7 @@ public class MarketplaceActivity extends AppCompatActivity {
             listView = (ListView) findViewById(R.id.list_m);
             searchView = (SearchView) findViewById(R.id.searchbook_m);
             all = (Button) findViewById(R.id.all_m);
+            sendMessage = (Button) findViewById(R.id.text_mess);
 
             list_item_s = new ArrayList<>();
             progressDialog = new ProgressDialog(this);
@@ -125,6 +128,7 @@ public class MarketplaceActivity extends AppCompatActivity {
                     });
                 }
             });
+
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
                 @Override
@@ -155,8 +159,29 @@ public class MarketplaceActivity extends AppCompatActivity {
                 }
             });
 
-        }
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
+                    /*
+                    sendMessage.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(MarketplaceActivity.this, MessageUserActivity.class);
+                            startActivity(intent);
+                        }
+                    });*/
+                    //ConversationReferenceItem tempListName = conversationRefrences.get(i);
+                    //listName = tempListName;
+                    //setUsers(listName.getConversationId());
+                    //messageList = thirdQuery(listName.getConversationId());
+                    //Intent intent = new Intent(ConversationsActivity.this, ChatRoomActivity.class);
+                    //startActivity(intent);
+                    Intent intent = new Intent(MarketplaceActivity.this, MainMenuActivity.class);
+                    startActivity(intent);
+                }
+            });
 
+        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
