@@ -10,14 +10,13 @@ public class item_names {
     //private ProfileItem name;
     private String name;
     private String user_image;
-
-
-
+    private String item_key;
     private String item_type;
 
     public item_names(){}
 
-    public item_names(String user_id,String user_n,String type ,String u_image ,String mtitle,String mimage,String mdecr,String mprice,String mtime){
+    public item_names(String key, String user_id,String user_n,String type ,String u_image ,String mtitle,String mimage,String mdecr,String mprice,String mtime){
+        item_key = key;
         userid = user_id;
         name = user_n;
         user_image = u_image;
@@ -94,4 +93,8 @@ public class item_names {
     public String getItem_type() { return item_type; }
 
     public void setItem_type(String item_type) { this.item_type = item_type; }
+
+    public String getItem_key() { return item_key; }
+
+    public void setItem_key(String item_key) { this.item_key = item_key; }
 }

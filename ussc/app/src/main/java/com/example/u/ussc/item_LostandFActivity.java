@@ -175,11 +175,11 @@ public class item_LostandFActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "uploaded",Toast.LENGTH_SHORT).show();
 
                     //set data
+                    String upload_id = ref.push().getKey();
                     //item_names(String user_id,String mtitle,String mimage,String mdecr,String mprice,String mtime)
-                    item_names s = new item_names(mUserId,user_names, type,Userimages, title,taskSnapshot.getDownloadUrl().toString(), desc,reward_of_item,strDate);
+                    item_names s = new item_names(upload_id,mUserId,user_names, type,Userimages, title,taskSnapshot.getDownloadUrl().toString(), desc,reward_of_item,strDate);
 
                     //save data
-                    String upload_id = ref.push().getKey();
                     ref.child(upload_id).setValue(s);
                     // ref.child("Books").push().setValue(s);
                 }

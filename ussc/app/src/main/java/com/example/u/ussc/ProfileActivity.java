@@ -2,14 +2,17 @@ package com.example.u.ussc;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,7 +45,7 @@ public class ProfileActivity extends AppCompatActivity {
     private String User_year;
     private Button market;
     private Button lostanffound;
-    private BottomNavigationView bottomNavigation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +95,7 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             });
             list_item_1 = new ArrayList<>();
-            list_item_2 = new ArrayList<>();
+            //list_item_2 = new ArrayList<>();
             listView_1 = (ListView) findViewById(R.id.list1);
             market = (Button) findViewById(R.id.market_1);
             lostanffound = (Button) findViewById(R.id.lost_2);
@@ -153,37 +156,33 @@ public class ProfileActivity extends AppCompatActivity {
                     });
                 }
             });
-
-            /*
-            databaseReference_2 = FirebaseDatabase.getInstance().getReference(add_item_marketplaceActivity.fb_database);//add_item_marketplaceActivity.fb_database
-
-            databaseReference_2.addValueEventListener(new ValueEventListener() {
+            listView_1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    //progressDialog.dismiss();
-                    list_item_2.clear();
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        item_names ln = snapshot.getValue(item_names.class);
-                        if (ln.getUserid().equals(mUserId))
-                            list_item_2.add(ln);
-                    }
-
-                    adapter = new item_list_Adapter(ProfileActivity.this, R.layout.lostandf_item, list_item_2);
-                    listView_2.setAdapter(adapter);
-                    Utility.setListViewHeightBasedOnChildren(listView_2);
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    // progressDialog.dismiss();
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    item_names lisName = list_item_1.get(i);
+                    Toast.makeText(ProfileActivity.this, lisName.getItem_key(), Toast.LENGTH_LONG).show();
                 }
             });
 
-            */
 
+
+
+/*
+            listView_1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int i, long l) {
+                    item_names listName = list_item_1.get(i);
+                    //DatabaseReference dR = FirebaseDatabase.getInstance().getReference(EditActivity.fb_database).child(listName.getKey());
+                    // showUpdateDeleteDialog(listName.getKey(),listName.getTitle(),listName.getIsbn(),listName.getPrice(), listName.getCond() ,listName.getImages(), listName.getMUserId(),i, listName.getMUserEmail());
+                   // showUpdateDeleteDialog(listName.getItem_key());
+                    showUpdateDeleteDialog("hi");
+                    return true;
+                }
+            });
+*/
         }
-    }
 
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_profile, menu);
@@ -252,6 +251,43 @@ public class ProfileActivity extends AppCompatActivity {
         Intent intent = new Intent(ProfileActivity.this, ConversationsActivity.class);
         startActivity(intent);
     }
+    private void showUpdateDeleteDialog(final String mkey){
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.delete_and_update, null);
+        dialogBuilder.setView(dialogView);
 
+        final Button buttonUpdate = (Button) dialogView.findViewById(R.id.buttonUpdate);
+        final Button buttonDelete = (Button) dialogView.findViewById(R.id.buttonDelete);
+
+        dialogBuilder.setTitle("UPDATE OR DELETE");
+        final AlertDialog b = dialogBuilder.create();
+        b.show();
+
+        buttonUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
+
+        buttonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                booksremove(mkey);
+                list_item_1.clear();
+                adapter.notifyDataSetChanged();
+                b.dismiss();
+            }
+        });
+    }
+
+    //delete node function
+    public boolean booksremove(String id){
+        //getting rhe specified node reference
+        DatabaseReference dR = FirebaseDatabase.getInstance().getReference(add_item_marketplaceActivity.fb_database).child(id);
+        //removing node
+        dR.removeValue();
+        return true;
+    }
 
 }
