@@ -52,7 +52,7 @@
     <string name="amount">amount</string>
 
     <!-- found -->
-    <string name="what_did_you_f">What did you found?</string>
+    <string name="what_did_you_f">What did you find?</string>
     <string name="desc_f">Please describe what you found in a few words....</string>
 
     <string name="reward">Reward</string>
