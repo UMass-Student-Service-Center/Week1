@@ -50,6 +50,7 @@ public class ConversationsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("Chatrooms");
         setContentView(R.layout.activity_conversations);
 
         mFirebaseAuth = FirebaseAuth.getInstance();

@@ -235,7 +235,7 @@ public class LostandFActivity extends AppCompatActivity {
     }
 
     public void display_lost(){
-        Query query = databaseReference.orderByChild("item_type").equalTo("Lost Item");
+        Query query = databaseReference.orderByChild("item_type").equalTo("Lost item");
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -243,7 +243,9 @@ public class LostandFActivity extends AppCompatActivity {
                 list_item_s.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     item_names ln = snapshot.getValue(item_names.class);
-                    list_item_s.add(ln);
+                    if(!ln.getUserid().equals(mUserId)) {
+                        list_item_s.add(ln);
+                    }
                 }
                 adapter = new item_list_Adapter(LostandFActivity.this,R.layout.lostandf_item, list_item_s);
                 listView.setAdapter(adapter);
@@ -264,7 +266,9 @@ public class LostandFActivity extends AppCompatActivity {
                 list_item_s.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     item_names ln = snapshot.getValue(item_names.class);
-                    list_item_s.add(ln);
+                    if(!ln.getUserid().equals(mUserId)) {
+                        list_item_s.add(ln);
+                    }
                 }
                 adapter = new item_list_Adapter(LostandFActivity.this,R.layout.lostandf_item, list_item_s);
                 listView.setAdapter(adapter);
@@ -285,7 +289,9 @@ public class LostandFActivity extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     item_names ln = snapshot.getValue(item_names.class);
                     //if (ln.getMUserId().equals(mUserId))
-                    list_item_s.add(ln);
+                    if(!ln.getUserid().equals(mUserId)) {
+                        list_item_s.add(ln);
+                    }
                 }
 
                 adapter = new item_list_Adapter(LostandFActivity.this, R.layout.lostandf_item, list_item_s);
