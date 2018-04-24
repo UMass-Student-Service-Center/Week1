@@ -61,12 +61,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/marketplace"
+                style="?android:attr/buttonBarButtonStyle"
                 android:textSize="12sp"/>
 
             <Button
                 android:id="@+id/lost_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="?android:attr/buttonBarButtonStyle"
                 android:text="@string/lostandfound"
                 android:textSize="12sp"/>
 
