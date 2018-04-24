@@ -36,7 +36,6 @@ public class ProfileActivity extends AppCompatActivity {
     private DatabaseReference databaseReference_2;
     private String mUserId;
     private ListView listView_1;
-    private ListView listView_2;
     private List<item_names> list_item_1;
     private List<item_names> list_item_2;
     private item_list_Adapter adapter;
