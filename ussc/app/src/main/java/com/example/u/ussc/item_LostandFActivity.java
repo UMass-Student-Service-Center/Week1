@@ -164,7 +164,7 @@ public class item_LostandFActivity extends AppCompatActivity {
             dialog.show();
             mUserId = mFirebaseUser.getUid();
             final String reward_of_item ="Reward offer: $" + price;
-            final String type = "Lose item";
+            final String type = "Lost item";
 
             StorageReference sf = mStorageRef.child(fb_storage + System.currentTimeMillis() + "." + getImageExt(actualUri));
 

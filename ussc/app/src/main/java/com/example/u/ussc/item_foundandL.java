@@ -147,8 +147,8 @@ public class item_foundandL extends AppCompatActivity {
         //get data
         title = txt_title.getText().toString();
         desc = txt_desc.getText().toString();
-        price = "Reward offer: none";
-        type = "item found";
+        price = "Reward Offer: NONE";
+        type = "Found Item";
 
         //checks for user inputs are valid
         if (!checkIfValueSet(txt_title, "Title")) {

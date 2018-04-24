@@ -216,7 +216,7 @@ public class LostandFActivity extends AppCompatActivity {
     }
 
     public void display_lost(){
-        Query query = databaseReference.orderByChild("item_type").equalTo("Lose item");
+        Query query = databaseReference.orderByChild("item_type").equalTo("Lost Item");
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -237,7 +237,7 @@ public class LostandFActivity extends AppCompatActivity {
     }
 
     public void display_found(){
-        Query query = databaseReference.orderByChild("item_type").equalTo("item found");
+        Query query = databaseReference.orderByChild("item_type").equalTo("Found Item");
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

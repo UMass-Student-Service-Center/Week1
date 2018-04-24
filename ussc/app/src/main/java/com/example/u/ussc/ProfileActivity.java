@@ -12,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,6 +33,7 @@ public class ProfileActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private DatabaseReference databaseReference_1;
     private DatabaseReference databaseReference_2;
+    private DatabaseReference databaseReference_3;
     private String mUserId;
     private ListView listView_1;
     private List<item_names> list_item_1;
@@ -42,6 +42,7 @@ public class ProfileActivity extends AppCompatActivity {
     private String user_names;
     private String Userimages;
     private String User_year;
+    private TextView type_text;
     private Button market;
     private Button lostanffound;
 
@@ -69,6 +70,7 @@ public class ProfileActivity extends AppCompatActivity {
             final de.hdodenhof.circleimageview.CircleImageView imageView = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.profile_image);
             final TextView TextView1 = (TextView) findViewById(R.id.user_n);
             final TextView TextView2 = (TextView) findViewById(R.id.since);
+            final TextView TextView3 = (TextView) findViewById(R.id.view_type);
 
             Query query = databaseReference.orderByChild("muserId").equalTo(mUserId);
             query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -94,7 +96,6 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             });
             list_item_1 = new ArrayList<>();
-            //list_item_2 = new ArrayList<>();
             listView_1 = (ListView) findViewById(R.id.list1);
             market = (Button) findViewById(R.id.market_1);
             lostanffound = (Button) findViewById(R.id.lost_2);
@@ -118,7 +119,8 @@ public class ProfileActivity extends AppCompatActivity {
 
                             adapter = new item_list_Adapter(ProfileActivity.this, R.layout.lostandf_item, list_item_1);
                             listView_1.setAdapter(adapter);
-
+                            databaseReference_3  = databaseReference_1;
+                            TextView3.setText("Lost and Found");
                         }
 
                         @Override
@@ -145,7 +147,8 @@ public class ProfileActivity extends AppCompatActivity {
 
                             adapter = new item_list_Adapter(ProfileActivity.this, R.layout.lostandf_item, list_item_1);
                             listView_1.setAdapter(adapter);
-
+                            databaseReference_3 = databaseReference_2;
+                            TextView3.setText("Marketplace");
                         }
 
                         @Override
@@ -155,30 +158,24 @@ public class ProfileActivity extends AppCompatActivity {
                     });
                 }
             });
-            listView_1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    item_names lisName = list_item_1.get(i);
-                    Toast.makeText(ProfileActivity.this, lisName.getItem_key(), Toast.LENGTH_LONG).show();
-                }
-            });
 
 
 
 
-/*
+
+///*
             listView_1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int i, long l) {
                     item_names listName = list_item_1.get(i);
                     //DatabaseReference dR = FirebaseDatabase.getInstance().getReference(EditActivity.fb_database).child(listName.getKey());
                     // showUpdateDeleteDialog(listName.getKey(),listName.getTitle(),listName.getIsbn(),listName.getPrice(), listName.getCond() ,listName.getImages(), listName.getMUserId(),i, listName.getMUserEmail());
-                   // showUpdateDeleteDialog(listName.getItem_key());
-                    showUpdateDeleteDialog("hi");
+                   showUpdateDeleteDialog(listName.getItem_key());
+                   // showUpdateDeleteDialog("hi");
                     return true;
                 }
             });
-*/
+//*/
         }
 
     }
@@ -283,7 +280,7 @@ public class ProfileActivity extends AppCompatActivity {
     //delete node function
     public boolean booksremove(String id){
         //getting rhe specified node reference
-        DatabaseReference dR = FirebaseDatabase.getInstance().getReference(add_item_marketplaceActivity.fb_database).child(id);
+        DatabaseReference dR = databaseReference_3.child(id);
         //removing node
         dR.removeValue();
         return true;
