@@ -73,6 +73,7 @@ public class ConversationsActivity extends AppCompatActivity {
         progressDialog.dismiss();
 
         //ProfileItem pi1 = firstQuery();
+        conversationRefrences.clear();
         firstQuery();
         //secondQuery();
 
@@ -87,17 +88,15 @@ public class ConversationsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        //add (needs to be changed to write messages)
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ConversationsActivity.this, MessageUserActivity.class);
-                startActivity(intent);
-            }
-        });
     }
+
+    /*@Override
+    protected void onResume() {
+        super.onResume();
+        conversationRefrences.clear();
+        firstQuery();
+    }*/
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_conversations, menu);
@@ -128,6 +127,7 @@ public class ConversationsActivity extends AppCompatActivity {
 
     // Get the first query
     private void firstQuery() {
+        conversationRefrences.clear();
         Query query = databaseReferenceConversation.orderByChild("muserId1").startAt(mUserId).endAt(mUserId);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

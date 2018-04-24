@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -38,6 +39,9 @@ public class LostandFActivity extends AppCompatActivity {
     private Button all;
     private ProgressDialog progressDialog;
     private BottomNavigationView bottomNavigation;
+    public static String currentUsername;
+    public static String currentUserID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +87,9 @@ public class LostandFActivity extends AppCompatActivity {
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 item_names ln = snapshot.getValue(item_names.class);
                                 //if (ln.getMUserId().equals(mUserId))
-                                list_item_s.add(ln);
+                                if(!ln.getUserid().equals(mUserId)) {
+                                    list_item_s.add(ln);
+                                }
                             }
 
                             adapter = new item_list_Adapter(LostandFActivity.this, R.layout.lostandf_item, list_item_s);
@@ -126,6 +132,19 @@ public class LostandFActivity extends AppCompatActivity {
                         }
                     });
                     return false;
+                }
+            });
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
+                    item_names tempListItem = list_item_s.get(i);
+                    currentUsername = tempListItem.getName();
+                    currentUserID = tempListItem.getUserid();
+                    MarketplaceActivity.currentUserID = currentUserID;
+                    MarketplaceActivity.currentUsername = currentUsername;
+                    Intent intent = new Intent(LostandFActivity.this, MessageUserActivity.class);
+                    startActivity(intent);
                 }
             });
 

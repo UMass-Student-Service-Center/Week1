@@ -74,6 +74,8 @@ public class MessageUserActivity extends AppCompatActivity{
     private String messageToSend;
     private ProfileItem userInfo1;
     private ProfileItem userInfo2;
+    private String currentUsername = MarketplaceActivity.currentUsername;
+    private String currentUserID = MarketplaceActivity.currentUserID;
     private static final String TAG = "SignUp";
     Bitmap bm;
 
@@ -92,8 +94,10 @@ public class MessageUserActivity extends AppCompatActivity{
         databaseReferenceMessage = FirebaseDatabase.getInstance().getReference(fb_message_database);
 
         uidToSendTo = (EditText) findViewById(R.id.editText2);
+        uidToSendTo.setText(currentUsername);
         message = (EditText)findViewById(R.id.editText3);
         imageBtn = (Button) findViewById(R.id.text_mess);
+
 
         userInfo1 = new ProfileItem();
         userInfo2 = new ProfileItem();
@@ -106,7 +110,7 @@ public class MessageUserActivity extends AppCompatActivity{
         imageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            receiverID = uidToSendTo.getText().toString();
+            receiverID = currentUserID;
             messageToSend = message.getText().toString();
             ProfileItem pi1 = firstQuery();
             }
@@ -189,6 +193,10 @@ public class MessageUserActivity extends AppCompatActivity{
         databaseReferenceMessage.child(message_upload_id).setValue(mi);
         ref.child(upload_id).setValue(ci);
         dialog.dismiss();
+        dialog.setTitle("Message Sent");
+        dialog.show();
+        dialog.dismiss();
+        finish();
 
         return true;
 

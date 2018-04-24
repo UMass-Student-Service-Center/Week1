@@ -40,6 +40,8 @@ public class MarketplaceActivity extends AppCompatActivity {
     private Button sendMessage;
     private ProgressDialog progressDialog;
     private BottomNavigationView bottomNavigation;
+    public static String currentUsername;
+    public static String currentUserID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +116,9 @@ public class MarketplaceActivity extends AppCompatActivity {
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 item_names ln = snapshot.getValue(item_names.class);
                                 //if (ln.getMUserId().equals(mUserId))
-                                list_item_s.add(ln);
+                                if (!ln.getUserid().equals(mUserId)) {
+                                    list_item_s.add(ln);
+                                }
                             }
 
                             adapter = new item_list_Adapter(MarketplaceActivity.this, R.layout.lostandf_item, list_item_s);
@@ -162,21 +166,10 @@ public class MarketplaceActivity extends AppCompatActivity {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
-                    /*
-                    sendMessage.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent intent = new Intent(MarketplaceActivity.this, MessageUserActivity.class);
-                            startActivity(intent);
-                        }
-                    });*/
-                    //ConversationReferenceItem tempListName = conversationRefrences.get(i);
-                    //listName = tempListName;
-                    //setUsers(listName.getConversationId());
-                    //messageList = thirdQuery(listName.getConversationId());
-                    //Intent intent = new Intent(ConversationsActivity.this, ChatRoomActivity.class);
-                    //startActivity(intent);
-                    Intent intent = new Intent(MarketplaceActivity.this, MainMenuActivity.class);
+                    item_names tempListItem = list_item_s.get(i);
+                    currentUsername = tempListItem.getName();
+                    currentUserID = tempListItem.getUserid();
+                    Intent intent = new Intent(MarketplaceActivity.this, MessageUserActivity.class);
                     startActivity(intent);
                 }
             });

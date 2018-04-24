@@ -117,7 +117,7 @@ public class ProfileActivity extends AppCompatActivity {
                                     list_item_1.add(ln);
                             }
 
-                            adapter = new item_list_Adapter(ProfileActivity.this, R.layout.lostandf_item, list_item_1);
+                            adapter = new item_list_Adapter(ProfileActivity.this, R.layout.lostandfprofile_item, list_item_1);
                             listView_1.setAdapter(adapter);
                             databaseReference_3  = databaseReference_1;
                             TextView3.setText("Lost and Found");
@@ -145,7 +145,7 @@ public class ProfileActivity extends AppCompatActivity {
                                     list_item_1.add(ln);
                             }
 
-                            adapter = new item_list_Adapter(ProfileActivity.this, R.layout.lostandf_item, list_item_1);
+                            adapter = new item_list_Adapter(ProfileActivity.this, R.layout.lostandfprofile_item, list_item_1);
                             listView_1.setAdapter(adapter);
                             databaseReference_3 = databaseReference_2;
                             TextView3.setText("Marketplace");
