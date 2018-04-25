@@ -74,8 +74,8 @@ public class ConversationsActivity extends AppCompatActivity {
         progressDialog.dismiss();
 
         //ProfileItem pi1 = firstQuery();
-        conversationRefrences.clear();
-        firstQuery();
+        //conversationRefrences.clear();
+        //firstQuery();
         //secondQuery();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -91,12 +91,14 @@ public class ConversationsActivity extends AppCompatActivity {
         });
     }
 
-    /*@Override
+    @Override
     protected void onResume() {
         super.onResume();
         conversationRefrences.clear();
+        adapter = new ConversationListAdapter(ConversationsActivity.this,R.layout.list_conversation, conversationRefrences);
+        listView.setAdapter(adapter);
         firstQuery();
-    }*/
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

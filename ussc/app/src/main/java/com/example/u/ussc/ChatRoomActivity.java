@@ -46,7 +46,6 @@ public class ChatRoomActivity extends AppCompatActivity {
     public String conversationID;
     public static String ConversationID;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,13 +63,6 @@ public class ChatRoomActivity extends AppCompatActivity {
         progressDialog.show();
         progressDialog.dismiss();
 
-        /*
-        STILL NEED TO CREATE A NEW MESSAGE AND THEN ADD IT TO THE FIREBASE, AND THEN ADD THE MESSAGE
-        KEY TO messageKeys AND SET THE messageKeys CHILD OF CONVERSATION ON THE FIREBASE TO THE NEW
-        messageKeys IF POSSIBLE. IF NOT POSSIBLE I WILL HAVE TO DELETE THE CURRENT CONVERSATION CHILD
-        UPDATE IT ON THIS PAGE AND THEN RESEND THE SAME CONVERSATIONITEM BACK TO FIREBASE.
-         */
-
         listView = (ListView)findViewById(R.id.chatRoomList);
         ChatRoomAdapter adapter = new ChatRoomAdapter(ConversationsActivity.messageList,this);
         listView.setAdapter(adapter);
@@ -84,16 +76,13 @@ public class ChatRoomActivity extends AppCompatActivity {
         messageKeys = ConversationsActivity.listName.getMessageKeys();
         arraySize = messageKeys.size();
 
-        //add (needs to be changed to write messages)
         send = (Button)findViewById(R.id.btnSend);
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 messageToSend = message.getText().toString();
                 addQuery();
-                Intent intent = new Intent(ChatRoomActivity.this, ConversationsActivity.class);
-                startActivity(intent);
-                //ConversationsActivity.refreshMessageList();
+                finish();
             }
         });
     }
@@ -147,7 +136,6 @@ public class ChatRoomActivity extends AppCompatActivity {
         dialog.show();
 
         //set data
-        //ConversationItem tempCI = ci;
         ci.setLastMessage(mi.getMessage());
         ci.setLastMessageDate(mi.getMessageDate());
         ci.addMessageKey(mi.getMessageId());
