@@ -37,7 +37,7 @@
         android:id="@+id/lost_l"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Lost"
+        android:text="@string/lost"
         style="?android:attr/buttonBarButtonStyle"
         android:onClick="ButtonOnClick"
         android:textSize="18sp"/>
@@ -45,7 +45,7 @@
         android:id="@+id/found_f"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Found"
+        android:text="@string/found"
         style="?android:attr/buttonBarButtonStyle"
         android:onClick="ButtonOnClick"
         android:textSize="18sp"/>

@@ -28,12 +28,16 @@ import java.util.List;
 
 
 public class ProfileActivity extends AppCompatActivity {
+    public static String marketplace_key;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference databaseReference;
     private DatabaseReference databaseReference_1;
     private DatabaseReference databaseReference_2;
     private DatabaseReference databaseReference_3;
+    private Query query_f;
+    private Query query_l;
+    private String sandf_query;
     private String mUserId;
     private ListView listView_1;
     private List<item_names> list_item_1;
@@ -44,7 +48,8 @@ public class ProfileActivity extends AppCompatActivity {
     private String User_year;
     private TextView type_text;
     private Button market;
-    private Button lostanffound;
+    private Button lost;
+    private Button found;
 
 
     @Override
@@ -98,31 +103,59 @@ public class ProfileActivity extends AppCompatActivity {
             list_item_1 = new ArrayList<>();
             listView_1 = (ListView) findViewById(R.id.list1);
             market = (Button) findViewById(R.id.market_1);
-            lostanffound = (Button) findViewById(R.id.lost_2);
+            lost = (Button) findViewById(R.id.lost_2);
+            found = (Button) findViewById(R.id.found_2);
 
             databaseReference_1 = FirebaseDatabase.getInstance().getReference(item_LostandFActivity.fb_database);
             databaseReference_2 = FirebaseDatabase.getInstance().getReference(add_item_marketplaceActivity.fb_database);
-
-            lostanffound.setOnClickListener(new View.OnClickListener() {
+            query_f = databaseReference_1.orderByChild("item_type").equalTo("Found Item");
+            query_l = databaseReference_1.orderByChild("item_type").equalTo("Lost Item");
+            lost.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    databaseReference_1.addValueEventListener(new ValueEventListener() {
+                    query_l.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             //progressDialog.dismiss();
                             list_item_1.clear();
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                                 item_names ln = snapshot.getValue(item_names.class);
-                                if (ln.getUserid().equals(mUserId))
+                                if(ln.getUserid().equals(mUserId)) {
                                     list_item_1.add(ln);
+                                }
                             }
-
-                            adapter = new item_list_Adapter(ProfileActivity.this, R.layout.lostandfprofile_item, list_item_1);
+                            adapter = new item_list_Adapter(ProfileActivity.this,R.layout.lostandfprofile_item, list_item_1);
                             listView_1.setAdapter(adapter);
-                            databaseReference_3  = databaseReference_1;
-                            TextView3.setText("Lost and Found");
+                            TextView3.setText("Lost");
+                           // Quer_y = query_l;
+                            sandf_query = "lost";
                         }
-
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                           // progressDialog.dismiss();
+                        }
+                    });
+                }
+            });
+            found.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    query_f.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            //progressDialog.dismiss();
+                            list_item_1.clear();
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                                item_names ln = snapshot.getValue(item_names.class);
+                                if(ln.getUserid().equals(mUserId)) {
+                                    list_item_1.add(ln);
+                                }
+                            }
+                            adapter = new item_list_Adapter(ProfileActivity.this,R.layout.lostandfprofile_item, list_item_1);
+                            listView_1.setAdapter(adapter);
+                            TextView3.setText("Found");
+                            sandf_query = "found";
+                        }
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
                             // progressDialog.dismiss();
@@ -149,6 +182,7 @@ public class ProfileActivity extends AppCompatActivity {
                             listView_1.setAdapter(adapter);
                             databaseReference_3 = databaseReference_2;
                             TextView3.setText("Marketplace");
+                            //sandf_query ="marketplace";
                         }
 
                         @Override
@@ -168,6 +202,7 @@ public class ProfileActivity extends AppCompatActivity {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int i, long l) {
                     item_names listName = list_item_1.get(i);
+                    marketplace_key = listName.getItem_key();
                     //DatabaseReference dR = FirebaseDatabase.getInstance().getReference(EditActivity.fb_database).child(listName.getKey());
                     // showUpdateDeleteDialog(listName.getKey(),listName.getTitle(),listName.getIsbn(),listName.getPrice(), listName.getCond() ,listName.getImages(), listName.getMUserId(),i, listName.getMUserEmail());
                    showUpdateDeleteDialog(listName.getItem_key());
@@ -179,6 +214,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_profile, menu);
@@ -255,14 +291,30 @@ public class ProfileActivity extends AppCompatActivity {
 
         final Button buttonUpdate = (Button) dialogView.findViewById(R.id.buttonUpdate);
         final Button buttonDelete = (Button) dialogView.findViewById(R.id.buttonDelete);
-
+        //final String key = mkey;
         dialogBuilder.setTitle("UPDATE OR DELETE");
         final AlertDialog b = dialogBuilder.create();
         b.show();
 
         buttonUpdate.setOnClickListener(new View.OnClickListener() {
+            Query query1 = databaseReference_1.orderByChild("item_type").equalTo("Found Item");
+            Query query2 = databaseReference_1.orderByChild("item_type").equalTo("Lost Item");
             @Override
             public void onClick(View view) {
+
+                if(sandf_query.equals("lost")){
+                    Intent intent = new Intent(ProfileActivity.this, update_lost.class);
+                    startActivity(intent);
+
+                }else if(sandf_query.equals("found")){
+                    Intent intent = new Intent(ProfileActivity.this, update_found.class);
+                    startActivity(intent);
+
+                }else{
+
+                   Intent intent = new Intent(ProfileActivity.this, update_marketplace.class);
+                   startActivity(intent);
+                }
             }
         });
 

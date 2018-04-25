@@ -11,6 +11,8 @@
     <string name="title_activity_main_menu">MainMenuActivity</string>
     <string name="mainmenu">Student Service Center</string>
     <string name="lostandfound">Lost and Found</string>
+    <string name="lost">Lost</string>
+    <string name="found">Found</string>
     <string name="marketplace">MarketPlace</string>
     <string name="advising">Advising</string>
 
