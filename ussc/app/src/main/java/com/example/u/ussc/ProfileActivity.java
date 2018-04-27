@@ -182,7 +182,7 @@ public class ProfileActivity extends AppCompatActivity {
                             listView_1.setAdapter(adapter);
                             databaseReference_3 = databaseReference_2;
                             TextView3.setText("Marketplace");
-                            //sandf_query ="marketplace";
+                            sandf_query ="marketplace";
                         }
 
                         @Override

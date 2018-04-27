@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".update_lost">
+
     <!-- What did you lose -->
     <TextView
         android:id="@+id/lost_what"
@@ -65,24 +66,11 @@
     </LinearLayout>
 
     <!-- UPLOAD IMAGE TEXT -->
-    <TextView
-        android:id="@+id/image_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/do_you" />
-
-    <Button
-        android:id="@+id/select_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/select_image"
-        android:onClick="openImageSelector"/>
-
 
     <ImageView
         android:id="@+id/image_view"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="wrap_content"
         android:contentDescription="@string/item"
         android:rotation="90" />
 

@@ -17,7 +17,6 @@
 
     <EditText
         android:id="@+id/user_sel"
-        android:hint="@string/tell_"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
@@ -66,24 +65,11 @@
     </LinearLayout>
 
     <!-- UPLOAD IMAGE TEXT -->
-    <TextView
-        android:id="@+id/image_title_s"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/do_you" />
-
-    <Button
-        android:id="@+id/select_image_s"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/select_image"
-        android:onClick="openImageSelector"/>
-
 
     <ImageView
         android:id="@+id/image_view_s"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="wrap_content"
         android:contentDescription="@string/item"
         android:rotation="90" />
 </LinearLayout>

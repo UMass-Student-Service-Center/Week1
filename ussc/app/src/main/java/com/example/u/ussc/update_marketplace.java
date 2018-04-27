@@ -1,11 +1,15 @@
 package com.example.u.ussc;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -18,15 +22,20 @@ import java.util.Calendar;
 
 public class update_marketplace extends AppCompatActivity {
 
-    private static final int PICK_IMAGE_REQUEST = 0;
     private EditText txt_title;
     private EditText txt_desc;
     private EditText txt_price;
     private ImageView imageView;
     private String strDate;
-    private item_list_Adapter adapter;
-    public static final String fb_storage = "image/";
-    public static final String fb_database = "Marketplace";
+    private String editprice;
+    private String price_of_item;
+    private String image_user;
+    private String item_image;
+    private String mkey;
+    private String user_id;
+    private String type;
+    private String name;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,12 +58,19 @@ public class update_marketplace extends AppCompatActivity {
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     item_names ln = snapshot.getValue(item_names.class);
-                    //user_names = ln.getName();
-                    //Userimages =
-                    //(key,user_id,user_n,type ,u_image ,mtitle,mimage,mdecr,mprice,mtime)
-                    //ln.getItem_key(),ln.getUserid(),ln.getName(),ln.getItem_type(),ln.getUser_image(),ln.getTitle(),ln.getImage(),ln.getDescr(),ln.getPrice(),strDate
-                    updatemarketplace(ln.getItem_key(),ln.getUserid(),ln.getName(),ln.getItem_type(),ln.getUser_image(),ln.getTitle(),ln.getImage(),ln.getDescr(),ln.getPrice(),strDate);
+
+                    mkey = ln.getItem_key();
                     txt_title.setText(ln.getTitle());
+                    txt_desc.setText(ln.getDescr());
+                    editprice = ln.getPrice().replaceAll("[Price $]","");
+                    txt_price.setText(editprice);
+                   // price_of_item = "Price $" + txt_price.getText().toString();
+                    image_user = ln.getUser_image();
+                    item_image = ln.getImage();
+                    Glide.with(update_marketplace.this).load(ln.getImage()).into(imageView);
+                    name =ln.getName();
+                    type = ln.getItem_type();
+                    user_id = ln.getUserid();
                 }
             }
 
@@ -72,9 +88,30 @@ public class update_marketplace extends AppCompatActivity {
          item_names s = new item_names(upload_id,mUserId, user_names, type, Userimages, title, image, desc, price_of_item, _strDate);
        // ListName ln = new ListName(mkey,mtitle,misbn,mprice,_cond,muri,_muserid, _museremail);
         dR.setValue(s);
+        Intent intent = new Intent(update_marketplace.this, ProfileActivity.class);
+        startActivity(intent);
         Toast.makeText(getApplicationContext(), "Updated Marketplace", Toast.LENGTH_LONG).show();
         //books_list.clear();
-        adapter.notifyDataSetChanged();
+        //adapter.notifyDataSetChanged();
         return true;
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_details, menu);
+        return true;
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        price_of_item = "Price $" + txt_price.getText().toString();
+        switch (item.getItemId()) {
+            case R.id.action_save:
+                // Save data to firebase
+                if (!updatemarketplace(mkey,user_id,name,type,image_user,txt_title.getText().toString(),item_image,txt_desc.getText().toString(),price_of_item,strDate)) {
+                    // saying to onOptionsItemSelected that user clicked button
+                    return true;
+                }
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
