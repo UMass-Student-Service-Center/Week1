@@ -5,9 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <item
-        android:id="@+id/action_lostandfound"
-        android:title="@string/icon_lostandfound"
-        android:icon="@drawable/action_lostandf"
+        android:id="@+id/action_advising"
+        android:title="@string/icon_advising"
+        android:icon="@drawable/action_advising"
         app:showAsAction="always"/>
 
     <item

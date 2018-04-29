@@ -69,7 +69,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="?android:attr/buttonBarButtonStyle"
-                android:text="@string/lostandfound"
+                android:text="@string/lost"
+                android:textSize="12sp"/>
+            <Button
+                android:id="@+id/found_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?android:attr/buttonBarButtonStyle"
+                android:text="@string/found"
                 android:textSize="12sp"/>
 
         </LinearLayout>

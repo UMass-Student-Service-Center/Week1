@@ -37,7 +37,10 @@
 
         <activity android:name=".item_foundandL" />
         <activity android:name=".add_lostorfoundActivity" />
-        <activity android:name=".add_item_marketplaceActivity"></activity>
+        <activity android:name=".add_item_marketplaceActivity" />
+        <activity android:name=".update_lost" />
+        <activity android:name=".update_marketplace" />
+        <activity android:name=".update_found"></activity>
     </application>
 
 </manifest>

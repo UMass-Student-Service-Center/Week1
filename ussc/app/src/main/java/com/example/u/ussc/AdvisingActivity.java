@@ -19,7 +19,8 @@ public class AdvisingActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int ADVISING_LOADER = 0;
-
+    String credits;
+    int creditsTracker = 0;
     AdvisingCursorAdapter mCursorAdapter;
 
     @Override
@@ -75,12 +76,20 @@ public class AdvisingActivity extends AppCompatActivity implements
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         // Update {@link PetCursorAdapter} with this new cursor containing updated pet data
         mCursorAdapter.swapCursor(data);
+        if (mCursorAdapter.getCursor().moveToFirst()){
+            do{
+                credits = mCursorAdapter.getCursor().getString(mCursorAdapter.getCursor().getColumnIndex(AdvisingEntry.COL_CREDITS));
+                creditsTracker = creditsTracker + Integer.parseInt(credits);
+            }while(mCursorAdapter.getCursor().moveToNext());
+        }
+
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         // Callback called when the data needs to be deleted
         mCursorAdapter.swapCursor(null);
+
     }
 
     @Override
