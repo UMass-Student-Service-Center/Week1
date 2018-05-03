@@ -47,40 +47,12 @@ public class MarketplaceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_marketplace);
+        setTitle("Marketplace");
+
         // Initialize Firebase Auth and Database Reference
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         final FirebaseUser user = mFirebaseAuth.getCurrentUser();
-
-        /*
-        bottomNavigation = (BottomNavigationView)findViewById(R.id.bottom_navigation);
-        bottomNavigation.inflateMenu(R.menu.menu_market);
-        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_lostandfound:
-                        //go to lost and found
-                        goto_lost_and_found();
-                        return true;
-                    case R.id.action_advising:
-                        //go to advising
-                        goto_advising();
-                        return true;
-                    case R.id.action_chat:
-                        //go to chat
-                        goto_conversations();
-                        return true;
-                    case R.id.action_profile:
-                        //go to profile
-                        goto_profile();
-                        return true;
-                }
-                return true;
-            }
-        });
-        */
-        //mDatabase = FirebaseDatabase.getInstance().getReference();
 
         if (mFirebaseUser == null || !(user.isEmailVerified())) {
             // Not logged in, launch the Log In activity
@@ -115,7 +87,6 @@ public class MarketplaceActivity extends AppCompatActivity {
                             list_item_s.clear();
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 item_names ln = snapshot.getValue(item_names.class);
-                                //if (ln.getMUserId().equals(mUserId))
                                 if (!ln.getUserid().equals(mUserId)) {
                                     list_item_s.add(ln);
                                 }
@@ -133,6 +104,7 @@ public class MarketplaceActivity extends AppCompatActivity {
                 }
             });
 
+            //searchview that query firebase and only search for the title
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
                 @Override
@@ -163,6 +135,7 @@ public class MarketplaceActivity extends AppCompatActivity {
                 }
             });
 
+            //if item is clicked, it send the user to the message activity
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
@@ -173,15 +146,17 @@ public class MarketplaceActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-
         }
     }
+
+    //menu bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_market, menu);
         return true;
     }
 
+    //menu bar items
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_lostandfound:

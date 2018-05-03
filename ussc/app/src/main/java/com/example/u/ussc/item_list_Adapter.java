@@ -15,19 +15,18 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 public class item_list_Adapter extends ArrayAdapter<item_names> {
+    //adapter using item_names gets
+
     private Activity context;
     private int resource;
     private List<item_names> list_item_1;
     private List<ProfileItem> list_item_2;
-    //private List<item_names> list_item_2;
-    //private String mUserId;
 
     public item_list_Adapter(@NonNull Activity context, @LayoutRes int resource, @NonNull List<item_names> ls) {
         super(context, resource, ls);
         this.context = context;
         this.resource = resource;
         list_item_1 = ls;
-        //mUserId = _mUserId;
     }
     @NonNull
     @Override

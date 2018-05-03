@@ -18,6 +18,7 @@ public class add_lostorfoundActivity extends AppCompatActivity {
         lost = (Button) findViewById(R.id.lost);
         found = (Button) findViewById(R.id.found);
 
+        //one of the two based on if is a lose or found item
         lost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

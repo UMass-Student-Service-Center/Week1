@@ -41,15 +41,20 @@ public class update_found extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_found);
+        setTitle("Update Found");
+
+        //get the current day and time
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss MM-dd-yyyy");
         strDate = sdf.format(c.getTime());
+
         DatabaseReference databaseReference;
         imageView = (ImageView) findViewById(R.id.image_view_f);
         txt_title = (EditText) findViewById(R.id.user_found);
         txt_desc = (EditText) findViewById(R.id.user_describe_f);
         txt_price = (TextView) findViewById(R.id.user_amount);
 
+        //method that query firebase using the static variable from profile activity based on the item clicked on the listview
         databaseReference = FirebaseDatabase.getInstance().getReference(item_LostandFActivity.fb_database);
         Query query = databaseReference.orderByChild("item_key").equalTo(ProfileActivity.marketplace_key);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -59,12 +64,11 @@ public class update_found extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     item_names ln = snapshot.getValue(item_names.class);
 
+                    //set all the textviews, edittext and imageview
                     mkey = ln.getItem_key();
                     txt_title.setText(ln.getTitle());
                     txt_desc.setText(ln.getDescr());
                     price_of_item = ln.getPrice();
-                    //txt_price.setText(ln.getPrice().replaceAll("[Reward Offer: ]",""));
-                    // price_of_item = "Price $" + txt_price.getText().toString();
                     txt_price.setText(" NONE");
                     image_user = ln.getUser_image();
                     item_image = ln.getImage();
@@ -77,7 +81,7 @@ public class update_found extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                //progressDialog.dismiss();
+
             }
         });
     }
@@ -87,13 +91,11 @@ public class update_found extends AppCompatActivity {
         DatabaseReference dR = FirebaseDatabase.getInstance().getReference(item_LostandFActivity.fb_database).child(upload_id);
         //updating book
         item_names s = new item_names(upload_id,mUserId, user_names, type, Userimages, title, image, desc, price_of_item, _strDate);
-        // ListName ln = new ListName(mkey,mtitle,misbn,mprice,_cond,muri,_muserid, _museremail);
         dR.setValue(s);
         Intent intent = new Intent(update_found.this, ProfileActivity.class);
         startActivity(intent);
         Toast.makeText(getApplicationContext(), "Updated Found", Toast.LENGTH_LONG).show();
-        //books_list.clear();
-        //adapter.notifyDataSetChanged();
+
         return true;
     }
     @Override
@@ -101,13 +103,12 @@ public class update_found extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_details, menu);
         return true;
     }
+
+    // Save the new data to firebase
     public boolean onOptionsItemSelected(MenuItem item) {
-        //price_of_item = "Price $" + txt_price.getText().toString();
         switch (item.getItemId()) {
             case R.id.action_save:
-                // Save data to firebase
                 if (!updatemarketplace(mkey,user_id,name,type,image_user,txt_title.getText().toString(),item_image,txt_desc.getText().toString(),price_of_item,strDate)) {
-                    // saying to onOptionsItemSelected that user clicked button
                     return true;
                 }
                 finish();

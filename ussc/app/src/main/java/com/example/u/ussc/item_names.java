@@ -1,13 +1,13 @@
 package com.example.u.ussc;
 
 public class item_names {
+    //this class was create for the adapter,list, set and get
     private String userid;
     private String title;
     private String image;
     private String descr;
     private String price;
     private String time;
-    //private ProfileItem name;
     private String name;
     private String user_image;
     private String item_key;

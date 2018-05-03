@@ -40,16 +40,20 @@ public class update_marketplace extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_marketplace);
+        setTitle("Update Marketplace");
 
+        //get the current day and time
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss MM-dd-yyyy");
         strDate = sdf.format(c.getTime());
+
         DatabaseReference databaseReference;
         imageView = (ImageView) findViewById(R.id.image_view_s);
         txt_title = (EditText) findViewById(R.id.user_sel);
         txt_desc = (EditText) findViewById(R.id.user_describe_s);
         txt_price = (EditText) findViewById(R.id.user_amount);
 
+        //method that query firebase using the static variable from profile activity based on the item clicked on the listview
         databaseReference = FirebaseDatabase.getInstance().getReference(add_item_marketplaceActivity.fb_database);
         Query query = databaseReference.orderByChild("item_key").equalTo(ProfileActivity.marketplace_key);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -59,12 +63,12 @@ public class update_marketplace extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     item_names ln = snapshot.getValue(item_names.class);
 
+                    //set all the textviews, edittext and imageview
                     mkey = ln.getItem_key();
                     txt_title.setText(ln.getTitle());
                     txt_desc.setText(ln.getDescr());
                     editprice = ln.getPrice().replaceAll("[Price $]","");
                     txt_price.setText(editprice);
-                   // price_of_item = "Price $" + txt_price.getText().toString();
                     image_user = ln.getUser_image();
                     item_image = ln.getImage();
                     Glide.with(update_marketplace.this).load(ln.getImage()).into(imageView);
@@ -91,8 +95,6 @@ public class update_marketplace extends AppCompatActivity {
         Intent intent = new Intent(update_marketplace.this, ProfileActivity.class);
         startActivity(intent);
         Toast.makeText(getApplicationContext(), "Updated Marketplace", Toast.LENGTH_LONG).show();
-        //books_list.clear();
-        //adapter.notifyDataSetChanged();
         return true;
     }
     @Override

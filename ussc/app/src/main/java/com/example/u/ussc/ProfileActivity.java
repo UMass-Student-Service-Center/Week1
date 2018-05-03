@@ -56,7 +56,7 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        //setContentView(R.layout.profile_2);
+        setTitle("Profile");
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
@@ -77,6 +77,7 @@ public class ProfileActivity extends AppCompatActivity {
             final TextView TextView2 = (TextView) findViewById(R.id.since);
             final TextView TextView3 = (TextView) findViewById(R.id.view_type);
 
+            //query firebase from profile's child  and set up the current user textviews and imageview
             Query query = databaseReference.orderByChild("muserId").equalTo(mUserId);
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -127,7 +128,8 @@ public class ProfileActivity extends AppCompatActivity {
                             adapter = new item_list_Adapter(ProfileActivity.this,R.layout.lostandfprofile_item, list_item_1);
                             listView_1.setAdapter(adapter);
                             TextView3.setText("Lost");
-                           // Quer_y = query_l;
+
+                            //using a temp variable that it will be use in if statement for update button created in alert dialog builder
                             sandf_query = "lost";
                         }
                         @Override
@@ -137,6 +139,8 @@ public class ProfileActivity extends AppCompatActivity {
                     });
                 }
             });
+
+            //if found button is clicked it would only show the current user found items
             found.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -154,16 +158,18 @@ public class ProfileActivity extends AppCompatActivity {
                             adapter = new item_list_Adapter(ProfileActivity.this,R.layout.lostandfprofile_item, list_item_1);
                             listView_1.setAdapter(adapter);
                             TextView3.setText("Found");
+
+                            //using a temp variable that it will be use in if statement for update button created in alert dialog builder
                             sandf_query = "found";
                         }
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
-                            // progressDialog.dismiss();
                         }
                     });
                 }
             });
 
+            //if market button is clicked it would only show the current user for sale items
             market.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -182,45 +188,41 @@ public class ProfileActivity extends AppCompatActivity {
                             listView_1.setAdapter(adapter);
                             databaseReference_3 = databaseReference_2;
                             TextView3.setText("Marketplace");
+
+                            //using a temp variable that it will be use in if statement for update button created in alert dialog builder
                             sandf_query ="marketplace";
                         }
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
-                            // progressDialog.dismiss();
                         }
                     });
                 }
             });
 
-
-
-
-
-///*
+            //listview and it would get the item key from selected item
             listView_1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int i, long l) {
                     item_names listName = list_item_1.get(i);
                     marketplace_key = listName.getItem_key();
-                    //DatabaseReference dR = FirebaseDatabase.getInstance().getReference(EditActivity.fb_database).child(listName.getKey());
-                    // showUpdateDeleteDialog(listName.getKey(),listName.getTitle(),listName.getIsbn(),listName.getPrice(), listName.getCond() ,listName.getImages(), listName.getMUserId(),i, listName.getMUserEmail());
                    showUpdateDeleteDialog(listName.getItem_key());
-                   // showUpdateDeleteDialog("hi");
                     return true;
                 }
             });
-//*/
+
         }
 
     }
 
+    //menu bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_profile, menu);
         return true;
     }
 
+    //menu bar items
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             //go to lost and found
@@ -283,6 +285,8 @@ public class ProfileActivity extends AppCompatActivity {
         Intent intent = new Intent(ProfileActivity.this, ConversationsActivity.class);
         startActivity(intent);
     }
+
+    //method that creates an alert dialog builder with two buttons update and delete
     private void showUpdateDeleteDialog(final String mkey){
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -291,17 +295,14 @@ public class ProfileActivity extends AppCompatActivity {
 
         final Button buttonUpdate = (Button) dialogView.findViewById(R.id.buttonUpdate);
         final Button buttonDelete = (Button) dialogView.findViewById(R.id.buttonDelete);
-        //final String key = mkey;
         dialogBuilder.setTitle("UPDATE OR DELETE");
         final AlertDialog b = dialogBuilder.create();
         b.show();
 
         buttonUpdate.setOnClickListener(new View.OnClickListener() {
-            Query query1 = databaseReference_1.orderByChild("item_type").equalTo("Found Item");
-            Query query2 = databaseReference_1.orderByChild("item_type").equalTo("Lost Item");
             @Override
             public void onClick(View view) {
-
+                //if statement based on user selection it will go to one of three updates activities
                 if(sandf_query.equals("lost")){
                     Intent intent = new Intent(ProfileActivity.this, update_lost.class);
                     startActivity(intent);
@@ -318,6 +319,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        //if the user would like to delete item
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

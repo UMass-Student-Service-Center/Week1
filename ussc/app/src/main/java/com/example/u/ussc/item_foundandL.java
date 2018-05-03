@@ -67,6 +67,7 @@ public class item_foundandL extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_foundand_l);
+        setTitle("Add Found Item");
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
         ref = FirebaseDatabase.getInstance().getReference(fb_database);
@@ -79,12 +80,14 @@ public class item_foundandL extends AppCompatActivity {
         txt_desc = (EditText) findViewById(R.id.user_describe_f);
         imageBtn = (Button) findViewById(R.id.select_image_f);
 
+        //get current day and time
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss MM-dd-yyyy");
         strDate = sdf.format(c.getTime());
 
         databaseReference = FirebaseDatabase.getInstance().getReference(RegistrationActivity.fb_database);
 
+        //query profile from the firebase to get the user name and image
         Query query = databaseReference.orderByChild("muserId").equalTo(mUserId);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -102,126 +105,128 @@ public class item_foundandL extends AppCompatActivity {
         });
 
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_details, menu);
-        return true;
-    }
 
+        //menu bar
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
+            getMenuInflater().inflate(R.menu.menu_details, menu);
+            return true;
+        }
 
-    public void openImageSelector(View v) {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-    }
+        //select an image
+        public void openImageSelector(View v) {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+        }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
-        // The ACTION_OPEN_DOCUMENT intent was sent with the request code READ_REQUEST_CODE.
-        // If the request code seen here doesn't match, it's the response to some other intent,
-        // and the below code shouldn't run at all.
-        super.onActivityResult(requestCode,resultCode, resultData);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && resultData != null && resultData.getData() != null) {
-            actualUri = resultData.getData();
-            try {
-                Bitmap bm = MediaStore.Images.Media.getBitmap(getContentResolver(),actualUri);
-                imageView.setImageBitmap(bm);
-            } catch (FileNotFoundException e){
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+            // The ACTION_OPEN_DOCUMENT intent was sent with the request code READ_REQUEST_CODE.
+            // If the request code seen here doesn't match, it's the response to some other intent,
+            // and the below code shouldn't run at all.
+            super.onActivityResult(requestCode,resultCode, resultData);
+            if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && resultData != null && resultData.getData() != null) {
+                actualUri = resultData.getData();
+                try {
+                    Bitmap bm = MediaStore.Images.Media.getBitmap(getContentResolver(),actualUri);
+                    imageView.setImageBitmap(bm);
+                } catch (FileNotFoundException e){
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
-    }
-    public String getImageExt (Uri uri) {
-        ContentResolver contentResolver = getContentResolver();
-        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-        return  mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
-    }
-
-    //DISPLAY INPUT DIALOG
-    //DISPLAY INPUT DIALOG
-    private boolean savebook() {
-        boolean isAllOk = true;
-        //get data
-        title = txt_title.getText().toString();
-        desc = txt_desc.getText().toString();
-        price = "Reward Offer: NONE";
-        type = "Found Item";
-
-        //checks for user inputs are valid
-        if (!checkIfValueSet(txt_title, "Title")) {
-            isAllOk = false;
-        }if (!checkIfValueSet(txt_desc, "Description")) {
-            isAllOk = false;
-        }if (actualUri == null) {
-            isAllOk = false;
-            imageBtn.setError("Missing image");
-        }if (!isAllOk) {
-            return false;
-        } else {
-            final ProgressDialog dialog = new ProgressDialog(this);
-            dialog.setTitle("Uploading");
-            dialog.show();
-            mUserId = mFirebaseUser.getUid();
-
-            StorageReference sf = mStorageRef.child(fb_storage + System.currentTimeMillis() + "." + getImageExt(actualUri));
-
-            sf.putFile(actualUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    dialog.dismiss();
-                    Toast.makeText(getApplicationContext(), "uploaded",Toast.LENGTH_SHORT).show();
-
-                    //set data
-                    String upload_id = ref.push().getKey();
-
-                    item_names s = new item_names(upload_id, mUserId,user_names,type,Userimages, title,taskSnapshot.getDownloadUrl().toString(), txt_desc.getText().toString(),price,strDate);
-
-                    //save data
-                    ref.child(upload_id).setValue(s);
-                }
-            })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                            dialog.setMessage("Uploaded" + (int) progress + "0");
-
-                        }
-                    });
-            dialog.dismiss();
-
-        Intent intent = new Intent(item_foundandL.this, ProfileActivity.class);
-        startActivity(intent);
-            return true;
+        public String getImageExt (Uri uri) {
+            ContentResolver contentResolver = getContentResolver();
+            MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+            return  mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
         }
-    }
 
-    //checks for all user inputs are valid and returns a boolean if is valid or not
-    private boolean checkIfValueSet(EditText text, String description) {
-        if (TextUtils.isEmpty(text.getText())) {
-            text.setError("Missing " + description);
-            return false;
-        } else {
-            text.setError(null);
-            return true;
-        }
-    }
+        //DISPLAY INPUT DIALOG
+        private boolean savebook() {
+            boolean isAllOk = true;
+            //get data
+            title = txt_title.getText().toString();
+            desc = txt_desc.getText().toString();
+            price = "Reward Offer: NONE";
+            type = "Found Item";
 
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_save:
-                // Save data to firebase
-                if (!savebook()) {
-                    // saying to onOptionsItemSelected that user clicked button
-                    return true;
-                }
-                finish();
+            //checks for user inputs are valid
+            if (!checkIfValueSet(txt_title, "Title")) {
+                isAllOk = false;
+            }if (!checkIfValueSet(txt_desc, "Description")) {
+                isAllOk = false;
+            }if (actualUri == null) {
+                isAllOk = false;
+                imageBtn.setError("Missing image");
+            }if (!isAllOk) {
+                return false;
+            } else {
+                final ProgressDialog dialog = new ProgressDialog(this);
+                dialog.setTitle("Uploading");
+                dialog.show();
+                mUserId = mFirebaseUser.getUid();
+
+                StorageReference sf = mStorageRef.child(fb_storage + System.currentTimeMillis() + "." + getImageExt(actualUri));
+
+                sf.putFile(actualUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        dialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "uploaded",Toast.LENGTH_SHORT).show();
+
+                        //set data
+                        String upload_id = ref.push().getKey();
+
+                        item_names s = new item_names(upload_id, mUserId,user_names,type,Userimages, title,taskSnapshot.getDownloadUrl().toString(), txt_desc.getText().toString(),price,strDate);
+
+                        //save data
+                        ref.child(upload_id).setValue(s);
+                     }
+                  })
+                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                                dialog.setMessage("Uploaded" + (int) progress + "0");
+
+                            }
+                        });
+                dialog.dismiss();
+
+            Intent intent = new Intent(item_foundandL.this, ProfileActivity.class);
+            startActivity(intent);
                 return true;
+            }
         }
-        return super.onOptionsItemSelected(item);
-    }
+
+        //checks for all user inputs are valid and returns a boolean if is valid or not
+        private boolean checkIfValueSet(EditText text, String description) {
+            if (TextUtils.isEmpty(text.getText())) {
+                text.setError("Missing " + description);
+                return false;
+            } else {
+                text.setError(null);
+                return true;
+            }
+        }
+
+        //menu bar items
+        public boolean onOptionsItemSelected(MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.action_save:
+                    // Save data to firebase
+                    if (!savebook()) {
+                        // saying to onOptionsItemSelected that user clicked button
+                        return true;
+                    }
+                    finish();
+                    return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
 }
 

@@ -40,15 +40,20 @@ public class update_lost extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_lost);
+        setTitle("Update Lost");
+
+        //get the current day and time
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss MM-dd-yyyy");
         strDate = sdf.format(c.getTime());
+
         DatabaseReference databaseReference;
         imageView = (ImageView) findViewById(R.id.image_view);
         txt_title = (EditText) findViewById(R.id.user_lost);
         txt_desc = (EditText) findViewById(R.id.user_describe);
         txt_price = (EditText) findViewById(R.id.user_amount);
 
+        //method that query firebase using the static variable from profile activity based on the item clicked on the listview
         databaseReference = FirebaseDatabase.getInstance().getReference(item_LostandFActivity.fb_database);
         Query query = databaseReference.orderByChild("item_key").equalTo(ProfileActivity.marketplace_key);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -58,12 +63,12 @@ public class update_lost extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     item_names ln = snapshot.getValue(item_names.class);
 
+                    //set all the textviews, edittext and imageview
                     mkey = ln.getItem_key();
                     txt_title.setText(ln.getTitle());
                     txt_desc.setText(ln.getDescr());
                     editprice = ln.getPrice().replaceAll("[Reward offer: $]","");
                     txt_price.setText(editprice);
-                    // price_of_item = "Price $" + txt_price.getText().toString();
                     image_user = ln.getUser_image();
                     item_image = ln.getImage();
                     Glide.with(update_lost.this).load(ln.getImage()).into(imageView);
@@ -85,13 +90,10 @@ public class update_lost extends AppCompatActivity {
         DatabaseReference dR = FirebaseDatabase.getInstance().getReference(item_LostandFActivity.fb_database).child(upload_id);
         //updating book
         item_names s = new item_names(upload_id,mUserId, user_names, type, Userimages, title, image, desc, price_of_item, _strDate);
-        // ListName ln = new ListName(mkey,mtitle,misbn,mprice,_cond,muri,_muserid, _museremail);
         dR.setValue(s);
         Intent intent = new Intent(update_lost.this, ProfileActivity.class);
         startActivity(intent);
         Toast.makeText(getApplicationContext(), "Updated Lost", Toast.LENGTH_LONG).show();
-        //books_list.clear();
-        //adapter.notifyDataSetChanged();
         return true;
     }
     @Override

@@ -14,6 +14,7 @@ public class two_choicesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_two_choices);
+        setTitle("Add");
 
         lost_and_found = (Button) findViewById(R.id.lostandfound_1);
         marketPlace = (Button) findViewById(R.id.Marketplace_1);

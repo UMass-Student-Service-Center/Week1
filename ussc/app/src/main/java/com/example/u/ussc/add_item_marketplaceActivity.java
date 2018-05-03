@@ -64,6 +64,8 @@ public class add_item_marketplaceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item_marketplace);
+        setTitle("Add Marketplace Item");
+
         mStorageRef = FirebaseStorage.getInstance().getReference();
         ref = FirebaseDatabase.getInstance().getReference(fb_database);
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -77,6 +79,7 @@ public class add_item_marketplaceActivity extends AppCompatActivity {
         txt_price = (EditText) findViewById(R.id.user_amount);
         imageBtn = (Button) findViewById(R.id.select_image_s);
 
+        //get current day and time
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss MM-dd-yyyy");
         strDate = sdf.format(c.getTime());
@@ -100,16 +103,16 @@ public class add_item_marketplaceActivity extends AppCompatActivity {
                 //progressDialog.dismiss();
             }
         });
-
     }
 
+    //menu bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_details, menu);
         return true;
     }
 
-
+    //select an image
     public void openImageSelector(View v) {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -216,6 +219,7 @@ public class add_item_marketplaceActivity extends AppCompatActivity {
         }
     }
 
+    //menu bar item
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
