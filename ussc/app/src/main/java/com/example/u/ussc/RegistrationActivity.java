@@ -244,7 +244,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 //save data
                 String upload_id = ref.push().getKey();
                 ref.child(upload_id).setValue(pi);
-                // ref.child("Books").push().setValue(s);
             }
         })
                 .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -256,11 +255,6 @@ public class RegistrationActivity extends AppCompatActivity {
                     }
                 });
         dialog.dismiss();
-
-        //ProfileItem pi = new ProfileItem(userId, userEmail, usersName,
-                //date.toString(), _actualUri.toString());
-        //ref.child(upload_id).setValue(pi);
-        //Toast.makeText(getApplicationContext(), "Profile Created", Toast.LENGTH_LONG).show();
         return true;
     }
 }
