@@ -76,72 +76,21 @@
 
             </android.support.constraint.ConstraintLayout>
 
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/linearLayout2"
+            <Button
+                android:id="@+id/save_class_button"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/semesterLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:text="Semester:"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/semester"
-                    app:layout_constraintEnd_toStartOf="@+id/semester"
-                    app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/semester" />
-
-                <Spinner
-                    android:id="@+id/semester"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    tools:layout_editor_absoluteX="84dp" />
-
-            </android.support.constraint.ConstraintLayout>
-
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/linearLayout3"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/yearLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:text="Year:"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/year"
-                    app:layout_constraintEnd_toStartOf="@+id/year"
-                    app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/year" />
-
-                <Spinner
-                    android:id="@+id/year"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    tools:layout_editor_absoluteX="0dp"
-                    tools:layout_editor_absoluteY="0dp" />
-
-            </android.support.constraint.ConstraintLayout>
+                android:layout_height="wrap_content"
+                android:text="Add Class"
+                android:layout_marginLeft="20dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginTop="10dp"
+                android:tint="@android:color/holo_green_dark" />
 
         </LinearLayout>
 
+
     </LinearLayout>
 
-    <Button
-        android:id="@+id/save_class_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Class"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginTop="10dp"
-        android:tint="@android:color/holo_green_dark" />
+
 </LinearLayout>

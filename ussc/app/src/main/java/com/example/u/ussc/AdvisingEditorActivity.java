@@ -86,21 +86,16 @@ public class AdvisingEditorActivity extends AppCompatActivity implements
         myJson= inputStreamToString(getResources().openRawResource(R.raw.cs_catalog));
         classModel myModel = new Gson().fromJson(myJson, classModel.class);
 
-        //populate drop down
-        String[] semesterArr = new String[] { "Fall", "Winter", "Spring", "Summer"};
-        ArrayAdapter<String> adapterSemester = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, semesterArr);
-        Spinner spinSemester = (Spinner)findViewById(R.id.semester);
-        spinSemester.setAdapter(adapterSemester);
-
-        ArrayList<String> yearsArr = new ArrayList<String>();
-        int thisYear = Calendar.getInstance().get(Calendar.YEAR);
-        for (int i = thisYear; i <= 2030; i++) {
-            yearsArr.add(Integer.toString(i));
-        }
-
-        ArrayAdapter<String> adapterYear = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, yearsArr);
-        Spinner spinYear = (Spinner)findViewById(R.id.year);
-        spinYear.setAdapter(adapterYear);
+//        //populate drop down
+//        ArrayList<String> yearsArr = new ArrayList<String>();
+//        int thisYear = Calendar.getInstance().get(Calendar.YEAR);
+//        for (int i = thisYear; i <= 2030; i++) {
+//            yearsArr.add(Integer.toString(i));
+//        }
+//
+//        ArrayAdapter<String> adapterYear = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, yearsArr);
+//        Spinner spinYear = (Spinner)findViewById(R.id.year);
+//        spinYear.setAdapter(adapterYear);
 
 
         //adding the course values to their respective spinner
